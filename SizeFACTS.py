@@ -192,7 +192,7 @@ def SaveToExcel(caselist, dirout='./', fnameXlsx='Results.xlsx', SortCases=False
         row +=1
 
     # Preparing real and reactive power flows
-    if SortCases: dfS.sort_index(inplace=True)
+    if SortCases: caselist.sort() # dfS.loc[caselist].sort_index(inplace=True)
     dfSf = dfS.loc[caselist, ['Ss', 'S0', 'S1', 'Sm', "Sm'", 'S2', 'S3', 'S4', 'Sr']]
     dfP = dfSf.applymap(lambda x: np.real(x)).round(1)
     dfQ = dfSf.applymap(lambda x: np.imag(x)).round(1)
@@ -206,7 +206,7 @@ def SaveToExcel(caselist, dirout='./', fnameXlsx='Results.xlsx', SortCases=False
     row += dfx1.index.size + 2
 
     # Preparing voltages 
-    if SortCases: dfU.sort_index(inplace=True)
+    # if SortCases: dfU.sort_index(inplace=True)
     dfUmagpu = dfU.loc[caselist].applymap(lambda x: np.abs(x)).round(4)
     dfUang = dfU.loc[caselist].applymap(lambda x: np.angle(x, deg=True)).round(2)
     dfUmag = dfU.loc[caselist].applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
@@ -220,17 +220,17 @@ def SaveToExcel(caselist, dirout='./', fnameXlsx='Results.xlsx', SortCases=False
     row += dfx2.index.size + 2
 
     # Preparing UPFC sizing info
-    UFPCcases = list(set(caselist) & set(dfUPFC.index.tolist())) # intersect cases from dfUPFC index with specified cases
+    UPFCcases = list(set(caselist) & set(dfUPFC.index.tolist())) # intersect cases from dfUPFC index with specified cases
     # dfUPFC = pd.DataFrame(columns=['Ssh', 'Sser', 'Ush', 'User'])
-    if SortCases: dfUPFC.sort_index(inplace=True)
-    df1 = dfUPFC.loc[UFPCcases, ['Ssh', 'Sser']]
+    if SortCases: UPFCcases.sort() # dfUPFC.loc[UPFCcases].sort_index(inplace=True)
+    df1 = dfUPFC.loc[UPFCcases, ['Ssh', 'Sser']]
     df1re = df1.applymap(lambda x: np.real(x)).round(2)
     df1im = df1.applymap(lambda x: np.imag(x)).round(1)
 
     df1re.columns = ['Re('+x+')' for x in df1.columns.tolist()]
     df1im.columns = ['Im('+x+')' for x in df1.columns.tolist()]
 
-    df2 = dfUPFC.loc[UFPCcases, ['Ush', 'User']]
+    df2 = dfUPFC.loc[UPFCcases, ['Ush', 'User']]
     df2magpu = df2.applymap(lambda x: np.abs(x)).round(4)
     df2ang = df2.applymap(lambda x: np.angle(x, deg=True)).round(2)
     df2mag = df2.applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
@@ -244,18 +244,18 @@ def SaveToExcel(caselist, dirout='./', fnameXlsx='Results.xlsx', SortCases=False
     row += dfx3.index.size + 2
 
     # Preparing HPFC sizing info
-    HFPCcases = list(set(caselist) & set(dfHPFC.index.tolist())) # intersect cases from dfHPFC index with specified cases
+    HPFCcases = list(set(caselist) & set(dfHPFC.index.tolist())) # intersect cases from dfHPFC index with specified cases
     # dfHPFC = pd.DataFrame(columns=['SM', 'SX', 'SY', 'UM', 'UX', 'UY'])
-    if SortCases: dfHPFC.sort_index(inplace=True)
-    df0 = dfHPFC.loc[HFPCcases, 'QM'].round(1)
-    df1 = dfHPFC.loc[HFPCcases, ['SX', 'SY']]
+    if SortCases: HPFCcases.sort() # dfHPFC.loc[HPFCcases].sort_index(inplace=True)
+    df0 = dfHPFC.loc[HPFCcases, 'QM'].round(1)
+    df1 = dfHPFC.loc[HPFCcases, ['SX', 'SY']]
     df1re = df1.applymap(lambda x: np.real(x)).round(2)
     df1im = df1.applymap(lambda x: np.imag(x)).round(1)
 
     df1re.columns = ['Re('+x+')' for x in df1.columns.tolist()]
     df1im.columns = ['Im('+x+')' for x in df1.columns.tolist()]
 
-    df2 = dfHPFC.loc[HFPCcases, ['UM', 'UX', 'UY']]
+    df2 = dfHPFC.loc[HPFCcases, ['UM', 'UX', 'UY']]
     df2magpu = df2.applymap(lambda x: np.abs(x)).round(4)
     df2ang = df2.applymap(lambda x: np.angle(x, deg=True)).round(2)
     df2mag = df2.applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
@@ -682,7 +682,7 @@ CalculateHPFCop('State6')
 dfS.at['State6', 'Note'] = 'Solved circuit compensated by SVC using PV commands, P=0 V2pu of uncompensated system'
 
 #%% Save results to Excel
-SaveToExcel(['State1a', 'State2', 'State3', 'State4']) # 'State5', 'State6'
+SaveToExcel(['State1a', 'State2', 'State3', 'State4'], SortCases=True) # 'State5', 'State6'
 
 if OutputPlots:
     foutLog.write('Starting to plot at: %s\n' %(str(datetime.now())))
