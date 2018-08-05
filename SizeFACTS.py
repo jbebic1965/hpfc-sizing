@@ -5,8 +5,15 @@ Created on Fri Aug 3 18:53:53 2018
 
 @author: Jovan Z. Bebic
 
+v1.1 JZB 20180805
+Added PVV and SVC specification for the compensator, ability to use snapshots,
+and filtering of cases saved to Excel.
+
 v1.0 JZB 20180803
-Library functions for FACTS sizing to facilitiate scenario analysis
+Consolidated all earlier sizing code to facilitiate scenario analysis
+- Scenario specifications and results are held in dataframes
+- Results are saved to an excel spreadsheet to facilitate cross-checking and comparison
+- Plots adjusted to Vsh and Vser in UPFC cases
 
 """
 #%% Import packages
@@ -21,7 +28,7 @@ from datetime import datetime # time stamps
 import os # operating system interface
 
 #%% Code info and file names
-codeVersion = '1.0'
+codeVersion = '1.1'
 codeCopyright = 'GNU General Public License v3.0'
 codeAuthors = 'Jovan Z Bebic\n'
 codeName = 'SizeFACTS.py'
@@ -30,82 +37,6 @@ fnameLog = 'SizeFACTS.log'
 fnamePlt = 'SizeFACTS.pdf'
 OutputPlots = True
 
-#%% Define circuit parameters to specified values
-def DefineCircuitParameters():
-    
-    global fs, ws, ZL, Zm, Zs, Zr
-
-    fs = 50 # system frequency China
-    ws = 2*np.pi*fs # 
-    
-    XL = ws * 0.015836 # equivalent reactance of each single line, per spec
-    ZL = 1.j * XL # Setting line impedance as purely inductive, per spec
-    
-    Xm = ws * 0.17807 # equivalent reactance of parallel connection
-    Zm = 1.j * Xm 
-    
-    Zs = 0.423125 + 1.j * ws * 0.011464 # Thevenin's impedance of the sending end, per spec
-    Zr = 2.5159  + 1.j * ws * 0.05059  # Thevenin's impedance of the receiving end, per spec
-
-    return
-
-#%% Overcoming incomplete definitions of power flows
-def SolveSs(Uspu, S0, UbLL=220.):
-
-    nw = pypsa.Network() # holds network data
-
-    nw.add("Bus","Us", v_nom=UbLL, v_mag_pu_set=Uspu) # PV bus, voltage set here, P set in the corresponding generator
-    nw.add("Bus","U1", v_nom=UbLL)
-
-    nw.add("Line", "Zs", bus0="Us", bus1="U1", x=np.imag(Zs), r=np.real(Zs))
-    nw.add("Generator", "U1", bus="U1", control="PQ", p_set=np.real(S0), q_set=np.imag(S0))
-    nw.add("Generator", "Us", bus="Us", control="Slack")    
-    
-    nw.pf() # Solve load flow
-    return np.complex(nw.lines_t.p0.Zs['now'], nw.lines_t.q0.Zs['now'])
-
-def SolveSr(Urpu, S4, UbLL=220.):
-
-    nw = pypsa.Network() # holds network data
-
-    nw.add("Bus","U3", v_nom=UbLL) 
-    nw.add("Bus","Ur", v_nom=UbLL, v_mag_pu_set=Urpu) # PV bus, voltage set here, P set in the corresponding generator
-
-    nw.add("Line", "Zr", bus0="U3", bus1="Ur", x=np.imag(Zr), r=np.real(Zr))
-    nw.add("Generator", "U3", bus="U3", control="PQ", p_set=np.real(S4), q_set=np.imag(S4))
-    nw.add("Generator", "Ur", bus="Ur", control="Slack")
-
-    nw.pf() # Solve load flow
-    
-    return np.complex(-nw.lines_t.p1.Zr['now'], -nw.lines_t.q1.Zr['now'])
-
-#%% Solve baseline
-def SolveBaselineFlows(Us, Ur, UbLL=220.):
-    Z12 = 1./(1./Zm + 1./ZL + 1./ZL)
-    Is = (Us-Ur)/(Zs + Z12 + Zr)
-    Ir = Is
-    
-    U1 = Us - Zs*Is # voltage at Bus1
-    U2 = U1 # No FACTS compensator
-    U3 = Ur + Zr*Ir
-    
-    IL = (U2-U3)/ZL # Current flows
-    Im = (U1-U3)/Zm
-    
-    Ss = 3.*Us*np.conj(Is) # Apparent powers
-    S2 = 3.*U2*np.conj(2.*IL)
-    S3 = 3.*U3*np.conj(2.*IL)
-    Sr = 3.*Ur*np.conj(Ir)
-    Sm = 3.*U1*np.conj(Im)
-    Smm = 3.*U3*np.conj(Im)
-    S1 = -S2
-    S0 = S1-Sm
-    S4 = S3+Smm
-    
-    Ub = UbLL/np.sqrt(3.)
-    return [pd.Series({'Us':Us/Ub, 'U1':U1/Ub, 'U2':U2/Ub, 'U3':U3/Ub, 'Ur':Ur/Ub}),
-            pd.Series({'Ss':Ss, 'S0':S0, 'S1':S1, 'Sm':Sm, 'Sm\'':Smm, 'S2':S2, 'S3':S3, 'S4':S4, 'Sr':Sr})]
-    
 def OutputVectorsPage(pltPdf, caseIx, Iscale=2*1300, pageTitle = ''):
     fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(8,10)) # , sharex=True
     
@@ -241,12 +172,207 @@ def OutputVectorsPage(pltPdf, caseIx, Iscale=2*1300, pageTitle = ''):
     
     return
 
+#%% Save the results to Excel
+def SaveToExcel(caselist, dirout='./', fnameXlsx='Results.xlsx', SortCases=False):
 
+    # opening an excel file 
+    writer = pd.ExcelWriter(os.path.join(dirout, fnameXlsx), engine='xlsxwriter')
+
+    # Recording code version info
+    workbook = writer.book
+    worksheet1 = workbook.add_worksheet('Intro')
+    worksheet1.write('A1', codeName+' v'+codeVersion)
+    worksheet1.write('A2', codeCopyright)
+    worksheet1.write('A3', codeAuthors)
+    worksheet1.write('A4', 'Ran on %s' %str(codeTstart))
+    row = 5
+    for case in caselist: # dfS.index.tolist()
+        worksheet1.write_string(row, 0, case)
+        worksheet1.write_string(row, 1, dfS.Note[case])
+        row +=1
+
+    # Preparing real and reactive power flows
+    if SortCases: dfS.sort_index(inplace=True)
+    dfSf = dfS.loc[caselist, ['Ss', 'S0', 'S1', 'Sm', "Sm'", 'S2', 'S3', 'S4', 'Sr']]
+    dfP = dfSf.applymap(lambda x: np.real(x)).round(1)
+    dfQ = dfSf.applymap(lambda x: np.imag(x)).round(1)
+
+    dfP.columns = ['Re('+x+')' for x in dfSf.columns.tolist()]
+    dfQ.columns = ['Im('+x+')' for x in dfSf.columns.tolist()]
+
+    row = 0
+    dfx1 = pd.concat([dfP, dfQ], axis=1, join_axes=[dfP.index])
+    dfx1.to_excel(writer, 'Results', startrow=row)
+    row += dfx1.index.size + 2
+
+    # Preparing voltages 
+    if SortCases: dfU.sort_index(inplace=True)
+    dfUmagpu = dfU.loc[caselist].applymap(lambda x: np.abs(x)).round(4)
+    dfUang = dfU.loc[caselist].applymap(lambda x: np.angle(x, deg=True)).round(2)
+    dfUmag = dfU.loc[caselist].applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
+
+    dfUmagpu.columns = ['|'+x+'pu|' for x in dfU.columns.tolist()]
+    dfUang.columns = ['ang('+x+')' for x in dfU.columns.tolist()]
+    dfUmag.columns = ['|'+x+'|' for x in dfU.columns.tolist()]
+
+    dfx2 = pd.concat([dfUmagpu, dfUang, dfUmag], axis=1, join_axes=[dfUmagpu.index])
+    dfx2.to_excel(writer, 'Results', startrow=row)
+    row += dfx2.index.size + 2
+
+    # Preparing UPFC sizing info
+    UFPCcases = list(set(caselist) & set(dfUPFC.index.tolist())) # intersect cases from dfUPFC index with specified cases
+    # dfUPFC = pd.DataFrame(columns=['Ssh', 'Sser', 'Ush', 'User'])
+    if SortCases: dfUPFC.sort_index(inplace=True)
+    df1 = dfUPFC.loc[UFPCcases, ['Ssh', 'Sser']]
+    df1re = df1.applymap(lambda x: np.real(x)).round(2)
+    df1im = df1.applymap(lambda x: np.imag(x)).round(1)
+
+    df1re.columns = ['Re('+x+')' for x in df1.columns.tolist()]
+    df1im.columns = ['Im('+x+')' for x in df1.columns.tolist()]
+
+    df2 = dfUPFC.loc[UFPCcases, ['Ush', 'User']]
+    df2magpu = df2.applymap(lambda x: np.abs(x)).round(4)
+    df2ang = df2.applymap(lambda x: np.angle(x, deg=True)).round(2)
+    df2mag = df2.applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
+
+    df2magpu.columns = ['|'+x+'pu|' for x in df2.columns.tolist()]
+    df2ang.columns = ['ang('+x+')' for x in df2.columns.tolist()]
+    df2mag.columns = ['|'+x+'|' for x in df2.columns.tolist()]
+
+    dfx3 = pd.concat([df1re, df1im, df2magpu, df2ang, df2mag], axis=1, join_axes=[df1re.index])
+    dfx3.to_excel(writer,'Results', startrow=row)
+    row += dfx3.index.size + 2
+
+    # Preparing HPFC sizing info
+    HFPCcases = list(set(caselist) & set(dfHPFC.index.tolist())) # intersect cases from dfHPFC index with specified cases
+    # dfHPFC = pd.DataFrame(columns=['SM', 'SX', 'SY', 'UM', 'UX', 'UY'])
+    if SortCases: dfHPFC.sort_index(inplace=True)
+    df0 = dfHPFC.loc[HFPCcases, 'QM'].round(1)
+    df1 = dfHPFC.loc[HFPCcases, ['SX', 'SY']]
+    df1re = df1.applymap(lambda x: np.real(x)).round(2)
+    df1im = df1.applymap(lambda x: np.imag(x)).round(1)
+
+    df1re.columns = ['Re('+x+')' for x in df1.columns.tolist()]
+    df1im.columns = ['Im('+x+')' for x in df1.columns.tolist()]
+
+    df2 = dfHPFC.loc[HFPCcases, ['UM', 'UX', 'UY']]
+    df2magpu = df2.applymap(lambda x: np.abs(x)).round(4)
+    df2ang = df2.applymap(lambda x: np.angle(x, deg=True)).round(2)
+    df2mag = df2.applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
+
+    df2magpu.columns = ['|'+x+'pu|' for x in df2.columns.tolist()]
+    df2ang.columns = ['ang('+x+')' for x in df2.columns.tolist()]
+    df2mag.columns = ['|'+x+'|' for x in df2.columns.tolist()]
+
+    dfx4 = pd.concat([df0, df1re, df1im, df2magpu, df2ang, df2mag], axis=1, join_axes=[df0.index])
+    dfx4.to_excel(writer,'Results', startrow=row)
+    row += dfx4.index.size + 2
+
+    # writing parameters
+    worksheet2 = workbook.add_worksheet('Parameters')
+    worksheet2.write('A1', fs); worksheet2.write('B1', 'fs [Hz]')
+    worksheet2.write_formula('A2', '=2.*PI()*A1'); worksheet2.write('B2', 'ws [rad/s]')
+    
+    worksheet2.write('A3', np.real(Zs)); worksheet2.write('B3', 'Rs [ohm]')
+    worksheet2.write('A4', np.imag(Zs)); worksheet2.write('B4', 'Xs [ohm]')
+    worksheet2.write_formula('A5', '=A4/A$2'); worksheet2.write('B5', 'Ls [H]')
+
+    worksheet2.write('A6', np.imag(Zm)); worksheet2.write('B6', 'Xm [ohm]')
+    worksheet2.write_formula('A7', '=A6/A$2'); worksheet2.write('B7', 'Lm [H]')
+    worksheet2.write('A8', np.imag(ZL)); worksheet2.write('B8', 'XL [ohm]')
+    worksheet2.write_formula('A9', '=A8/A$2'); worksheet2.write('B9', 'LL [H]')
+
+    worksheet2.write('A10', np.real(Zr)); worksheet2.write('B10', 'Rr [ohm]')
+    worksheet2.write('A11', np.imag(Zr)); worksheet2.write('B11', 'Xr [ohm]')
+    worksheet2.write_formula('A12', '=A11/A$2'); worksheet2.write('B12', 'Lr [H]')
+    
+    # Save excel file to disk
+    writer.save()
+
+    return
+
+#%% Define circuit parameters to specified values
+def DefineCircuitParameters():
+    
+    global fs, ws, ZL, Zm, Zs, Zr
+
+    fs = 50 # system frequency China
+    ws = 2*np.pi*fs # 
+    
+    XL = ws * 0.015836 # equivalent reactance of each single line, per spec
+    ZL = 1.j * XL # Setting line impedance as purely inductive, per spec
+    
+    Xm = ws * 0.17807 # equivalent reactance of parallel connection
+    Zm = 1.j * Xm 
+    
+    Zs = 0.423125 + 1.j * ws * 0.011464 # Thevenin's impedance of the sending end, per spec
+    Zr = 2.5159  + 1.j * ws * 0.05059  # Thevenin's impedance of the receiving end, per spec
+
+    return
+
+#%% Overcoming incomplete definitions of power flows
+def SolveSs(Uspu, S0, UbLL=220.):
+
+    nw = pypsa.Network() # holds network data
+
+    nw.add("Bus","Us", v_nom=UbLL, v_mag_pu_set=Uspu) # PV bus, voltage set here, P set in the corresponding generator
+    nw.add("Bus","U1", v_nom=UbLL)
+
+    nw.add("Line", "Zs", bus0="Us", bus1="U1", x=np.imag(Zs), r=np.real(Zs))
+    nw.add("Generator", "U1", bus="U1", control="PQ", p_set=np.real(S0), q_set=np.imag(S0))
+    nw.add("Generator", "Us", bus="Us", control="Slack")    
+    
+    nw.pf() # Solve load flow
+    return np.complex(nw.lines_t.p0.Zs['now'], nw.lines_t.q0.Zs['now'])
+
+def SolveSr(Urpu, S4, UbLL=220.):
+
+    nw = pypsa.Network() # holds network data
+
+    nw.add("Bus","U3", v_nom=UbLL) 
+    nw.add("Bus","Ur", v_nom=UbLL, v_mag_pu_set=Urpu) # PV bus, voltage set here, P set in the corresponding generator
+
+    nw.add("Line", "Zr", bus0="U3", bus1="Ur", x=np.imag(Zr), r=np.real(Zr))
+    nw.add("Generator", "U3", bus="U3", control="PQ", p_set=np.real(S4), q_set=np.imag(S4))
+    nw.add("Generator", "Ur", bus="Ur", control="Slack")
+
+    nw.pf() # Solve load flow
+    
+    return np.complex(-nw.lines_t.p1.Zr['now'], -nw.lines_t.q1.Zr['now'])
+
+#%% Solve baseline
+def SolveBaselineFlows(Us, Ur, UbLL=220.):
+    Z12 = 1./(1./Zm + 1./ZL + 1./ZL)
+    Is = (Us-Ur)/(Zs + Z12 + Zr)
+    Ir = Is
+    
+    U1 = Us - Zs*Is # voltage at Bus1
+    U2 = U1 # No FACTS compensator
+    U3 = Ur + Zr*Ir
+    
+    IL = (U2-U3)/ZL # Current flows
+    Im = (U1-U3)/Zm
+    
+    Ss = 3.*Us*np.conj(Is) # Apparent powers
+    S2 = 3.*U2*np.conj(2.*IL)
+    S3 = 3.*U3*np.conj(2.*IL)
+    Sr = 3.*Ur*np.conj(Ir)
+    Sm = 3.*U1*np.conj(Im)
+    Smm = 3.*U3*np.conj(Im)
+    S1 = -S2
+    S0 = S1-Sm
+    S4 = S3+Smm
+    
+    Ub = UbLL/np.sqrt(3.)
+    return [pd.Series({'Us':Us/Ub, 'U1':U1/Ub, 'U2':U2/Ub, 'U3':U3/Ub, 'Ur':Ur/Ub}),
+            pd.Series({'Ss':Ss, 'S0':S0, 'S1':S1, 'Sm':Sm, "Sm'":Smm, 'S2':S2, 'S3':S3, 'S4':S4, 'Sr':Sr})]
+    
 #%% Create a baseline network: Bus1 is the same as Bus2
-def CreateNetwork(Uspu, Urpu, UbLL=220.):
+def CreateNetwork(Uspu, Urpu, snapshots=['now'], UbLL=220.):
 
     # create network object
     nw = pypsa.Network() # holds network data
+    nw.set_snapshots(snapshots) # provision to add snapshots
 
     #add the buses
     nw.add("Bus","Us", v_nom=UbLL, v_mag_pu_set=Uspu) # PV bus, voltage set here, P set in the corresponding generator
@@ -263,11 +389,34 @@ def CreateNetwork(Uspu, Urpu, UbLL=220.):
     
     return nw
 
-#% Creates a network with separate buses 1 and 2 that are coupled via PQ specs at the terminals
-def CreateNetwork4Comp(Uspu, Urpu, UbLL=220.):
+#%% Creates a baseline network with a provision to add an SVC at Bus2 (Bus1 = Bus2)
+def CreateNetwork4SVCComp(Uspu, Urpu, snapshots=['now'], U2pu=1., UbLL=220.):
 
     # create network object
     nw = pypsa.Network() # holds network data
+    nw.set_snapshots(snapshots) # provision to add snapshots
+
+    #add the buses
+    nw.add("Bus","Us", v_nom=UbLL, v_mag_pu_set=Uspu) # PV bus, voltage set here, P set in the corresponding generator
+    nw.add("Bus","U2", v_nom=UbLL, v_mag_pu_set=U2pu)
+    nw.add("Bus","U3", v_nom=UbLL)
+    nw.add("Bus","Ur", v_nom=UbLL, v_mag_pu_set=Urpu) # PV bus
+    
+    # add the lines
+    nw.add("Line", "Zs", bus0="Us", bus1="U2", x=np.imag(Zs), r=np.real(Zs))
+    nw.add("Line", "Zm", bus0="U2", bus1="U3", x=np.imag(Zm), r=np.real(Zm))
+    nw.add("Line", "ZL1", bus0="U2", bus1="U3", x=np.imag(ZL), r=np.real(ZL))
+    nw.add("Line", "ZL2", bus0="U2", bus1="U3", x=np.imag(ZL), r=np.real(ZL))
+    nw.add("Line", "Zr", bus0="U3", bus1="Ur", x=np.imag(Zr), r=np.real(Zr))
+    
+    return nw
+
+#%% Creates a network with separate buses 1 and 2 that are coupled via PQ specs at the terminals
+def CreateNetwork4PQQComp(Uspu, Urpu, snapshots=['now'], UbLL=220.):
+
+    # create network object
+    nw = pypsa.Network() # holds network data
+    nw.set_snapshots(snapshots) # provision to add snapshots
 
     #add the buses
     nw.add("Bus","Us", v_nom=UbLL, v_mag_pu_set=Uspu) # PV bus, voltage set here, P set in the corresponding generator
@@ -285,32 +434,66 @@ def CreateNetwork4Comp(Uspu, Urpu, UbLL=220.):
     
     return nw
 
+#%% Creates a network with separate buses 1 and 2 that are coupled via PVV specs at the terminals
+def CreateNetwork4PVVComp(Uspu, Urpu, snapshots=['now'], U1pu=1., U2pu=1., UbLL=220.):
+
+    # create network object
+    nw = pypsa.Network() # holds network data
+    nw.set_snapshots(snapshots) # provision to add snapshots
+
+    #add the buses
+    nw.add("Bus","Us", v_nom=UbLL, v_mag_pu_set=Uspu) # PV bus, voltage set here, P set in the corresponding generator
+    nw.add("Bus","U1", v_nom=UbLL, v_mag_pu_set=U1pu)
+    nw.add("Bus","U2", v_nom=UbLL, v_mag_pu_set=U2pu)
+    nw.add("Bus","U3", v_nom=UbLL)
+    nw.add("Bus","Ur", v_nom=UbLL, v_mag_pu_set=Urpu) # PV bus
+    
+    # add the lines
+    nw.add("Line", "Zs", bus0="Us", bus1="U1", x=np.imag(Zs), r=np.real(Zs))
+    nw.add("Line", "Zm", bus0="U1", bus1="U3", x=np.imag(Zm), r=np.real(Zm))
+    nw.add("Line", "ZL1", bus0="U2", bus1="U3", x=np.imag(ZL), r=np.real(ZL))
+    nw.add("Line", "ZL2", bus0="U2", bus1="U3", x=np.imag(ZL), r=np.real(ZL))
+    nw.add("Line", "Zr", bus0="U3", bus1="Ur", x=np.imag(Zr), r=np.real(Zr))
+    
+    return nw
+
 #%% Add Generators
 def AddGeneratorsUsUr(nw, Ps):
-    #%% sets up system generators
+    # sets up system generators
     nw.add("Generator", "Us", bus="Us", control="PV", p_set=Ps)
     nw.add("Generator", "Ur", bus="Ur", control="Slack")
     return nw
 
-def AddGenerators4Comp(nw, P, Q1, Q2):
+def AddGenerators4PQQComp(nw, P, Q1, Q2):
     #%% set up equivlent generators for the compensator
     nw.add("Generator", "U1", bus="U1", control="PQ", p_set=-P, q_set=Q1)
     nw.add("Generator", "U2", bus="U2", control="PQ", p_set=P, q_set=Q2)
     return nw
 
+def AddGenerators4PVVComp(nw, P):
+    #%% set up equivlent generators for the compensator
+    nw.add("Generator", "U1", bus="U1", control="PV", p_set=-P)
+    nw.add("Generator", "U2", bus="U2", control="PV", p_set=P)
+    return nw
+
+def AddGenerators4SVCComp(nw):
+    #%% set up equivlent generators for the compensator
+    nw.add("Generator", "U2", bus="U2", control="PV", p_set=0.)
+    return nw
+
 #%% Store load flow solutions into dataframes
-def StoreSolutions(nw, caseIx):
+def StoreSolutions(nw, caseIx, snapshot='now'):
     # Store solved voltages all at once
-    dfU.at[caseIx]=nw.buses_t.v_mag_pu.loc['now'] * np.exp(nw.buses_t.v_ang.loc['now']*1.j)
+    dfU.at[caseIx]=nw.buses_t.v_mag_pu.loc[snapshot] * np.exp(nw.buses_t.v_ang.loc[snapshot]*1.j)
     # Store solved aparent powers, pull them out of active and reactive flows of circuit elements
-    dfS.at[caseIx, 'Ss'] = np.complex(nw.lines_t.p0.Zs.now, nw.lines_t.q0.Zs.now)
-    dfS.at[caseIx, 'S0'] = np.complex(nw.lines_t.p1.Zs.now, nw.lines_t.q1.Zs.now)
-    dfS.at[caseIx, 'Sm'] = np.complex(nw.lines_t.p0.Zm.now, nw.lines_t.q0.Zm.now)
-    dfS.at[caseIx, 'Sm\''] = np.complex(-nw.lines_t.p1.Zm.now, -nw.lines_t.q1.Zm.now)
-    dfS.at[caseIx, 'S2'] = np.complex(nw.lines_t.p0.ZL1.now + nw.lines_t.p0.ZL2.now, nw.lines_t.q0.ZL1.now + nw.lines_t.q0.ZL2.now)
-    dfS.at[caseIx, 'S3'] = np.complex(-nw.lines_t.p1.ZL1.now - nw.lines_t.p1.ZL2.now, -nw.lines_t.q1.ZL1.now - nw.lines_t.q1.ZL2.now)
-    dfS.at[caseIx, 'S4'] = np.complex(nw.lines_t.p0.Zr.now, nw.lines_t.q0.Zr.now)
-    dfS.at[caseIx, 'Sr'] = np.complex(-nw.lines_t.p1.Zr.now, -nw.lines_t.q1.Zr.now)
+    dfS.at[caseIx, 'Ss'] = np.complex(nw.lines_t.p0.Zs[snapshot], nw.lines_t.q0.Zs[snapshot])
+    dfS.at[caseIx, 'S0'] = np.complex(nw.lines_t.p1.Zs[snapshot], nw.lines_t.q1.Zs[snapshot])
+    dfS.at[caseIx, 'Sm'] = np.complex(nw.lines_t.p0.Zm[snapshot], nw.lines_t.q0.Zm[snapshot])
+    dfS.at[caseIx, "Sm'"] = np.complex(-nw.lines_t.p1.Zm[snapshot], -nw.lines_t.q1.Zm[snapshot])
+    dfS.at[caseIx, 'S2'] = np.complex(nw.lines_t.p0.ZL1[snapshot] + nw.lines_t.p0.ZL2[snapshot], nw.lines_t.q0.ZL1[snapshot] + nw.lines_t.q0.ZL2[snapshot])
+    dfS.at[caseIx, 'S3'] = np.complex(-nw.lines_t.p1.ZL1[snapshot] - nw.lines_t.p1.ZL2[snapshot], -nw.lines_t.q1.ZL1[snapshot] - nw.lines_t.q1.ZL2[snapshot])
+    dfS.at[caseIx, 'S4'] = np.complex(nw.lines_t.p0.Zr[snapshot], nw.lines_t.q0.Zr[snapshot])
+    dfS.at[caseIx, 'Sr'] = np.complex(-nw.lines_t.p1.Zr[snapshot], -nw.lines_t.q1.Zr[snapshot])
     dfS.at[caseIx, 'S1'] = dfS.S0[caseIx]+dfS.Sm[caseIx]
     return
 
@@ -344,7 +527,7 @@ def CalculateHPFCop(caseIx):
     
     UM = IM/(1.j*BM)
     dfHPFC.at[caseIx, 'UM'] = UM/Ub
-    dfHPFC.at[caseIx, 'SM'] = -3.*UM*np.conj(IM)/1000.
+    dfHPFC.at[caseIx, 'QM'] = np.imag(-3.*UM*np.conj(IM)/1000.)
 
     UX = U1-UM
     UY = U2-UM
@@ -353,121 +536,6 @@ def CalculateHPFCop(caseIx):
     dfHPFC.at[caseIx, 'SY'] = 3.*UY*np.conj(I2)/1000.
     dfHPFC.at[caseIx, 'UX'] = UX/Ub
     dfHPFC.at[caseIx, 'UY'] = UY/Ub
-
-    return
-
-#%% Save the results to Excel
-def SaveToExcel(dirout='./', fnameXlsx='Results.xlsx', SortCases=False):
-
-    # opening an excel file 
-    writer = pd.ExcelWriter(os.path.join(dirout, fnameXlsx), engine='xlsxwriter')
-
-    # Recording code version info
-    workbook = writer.book
-    worksheet1 = workbook.add_worksheet('Intro')
-    worksheet1.write('A1', codeName+' v'+codeVersion)
-    worksheet1.write('A2', codeCopyright)
-    worksheet1.write('A3', codeAuthors)
-    worksheet1.write('A4', 'Ran on %s' %str(codeTstart))
-    row = 5
-    for case in dfS.index.tolist():
-        worksheet1.write_string(row, 0, case)
-        worksheet1.write_string(row, 1, dfS.Note[case])
-        row +=1
-
-    # Preparing real and reactive power flows
-    if SortCases: dfS.sort_index(inplace=True)
-    dfP = dfS.applymap(lambda x: np.real(x)).round(1)
-    dfQ = dfS.applymap(lambda x: np.imag(x)).round(1)
-
-    dfP.columns = ['Re('+x+')' for x in dfS.columns.tolist()]
-    dfQ.columns = ['Im('+x+')' for x in dfS.columns.tolist()]
-
-    row = 0
-    dfx1 = pd.concat([dfP, dfQ], axis=1, join_axes=[dfS.index])
-    dfx1.to_excel(writer, 'Results', startrow=row)
-    row += dfx1.index.size + 2
-
-    # Preparing voltages 
-    if SortCases: dfU.sort_index(inplace=True)
-    dfUmagpu = dfU.applymap(lambda x: np.abs(x)).round(4)
-    dfUang = dfU.applymap(lambda x: np.angle(x, deg=True)).round(2)
-    dfUmag = dfU.applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
-
-    dfUmagpu.columns = ['|'+x+'pu|' for x in dfU.columns.tolist()]
-    dfUang.columns = ['ang('+x+')' for x in dfU.columns.tolist()]
-    dfUmag.columns = ['|'+x+'|' for x in dfU.columns.tolist()]
-
-    dfx2 = pd.concat([dfUmagpu, dfUang, dfUmag], axis=1, join_axes=[dfU.index])
-    dfx2.to_excel(writer, 'Results', startrow=row)
-    row += dfx2.index.size + 2
-
-    # Preparing UPFC sizing info
-    # dfUPFC = pd.DataFrame(columns=['Ssh', 'Sser', 'Ush', 'User'])
-    if SortCases: dfUPFC.sort_index(inplace=True)
-    df1 = dfUPFC.loc[:, ['Ssh', 'Sser']]
-    df1re = df1.applymap(lambda x: np.real(x)).round(2)
-    df1im = df1.applymap(lambda x: np.imag(x)).round(1)
-
-    df1re.columns = ['Re('+x+')' for x in df1.columns.tolist()]
-    df1im.columns = ['Im('+x+')' for x in df1.columns.tolist()]
-
-    df2 = dfUPFC.loc[:, ['Ush', 'User']]
-    df2magpu = df2.applymap(lambda x: np.abs(x)).round(4)
-    df2ang = df2.applymap(lambda x: np.angle(x, deg=True)).round(2)
-    df2mag = df2.applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
-
-    df2magpu.columns = ['|'+x+'pu|' for x in df2.columns.tolist()]
-    df2ang.columns = ['ang('+x+')' for x in df2.columns.tolist()]
-    df2mag.columns = ['|'+x+'|' for x in df2.columns.tolist()]
-
-    dfx3 = pd.concat([df1re, df1im, df2magpu, df2ang, df2mag], axis=1, join_axes=[df1re.index])
-    dfx3.to_excel(writer,'Results', startrow=row)
-    row += dfx3.index.size + 2
-
-    # Preparing HPFC sizing info
-    # dfHPFC = pd.DataFrame(columns=['SM', 'SX', 'SY', 'UM', 'UX', 'UY'])
-    if SortCases: dfHPFC.sort_index(inplace=True)
-    df1 = dfHPFC.loc[:, ['SM', 'SX', 'SY']]
-    df1re = df1.applymap(lambda x: np.real(x)).round(2)
-    df1im = df1.applymap(lambda x: np.imag(x)).round(1)
-
-    df1re.columns = ['Re('+x+')' for x in df1.columns.tolist()]
-    df1im.columns = ['Im('+x+')' for x in df1.columns.tolist()]
-
-    df2 = dfHPFC.loc[:, ['UM', 'UX', 'UY']]
-    df2magpu = df2.applymap(lambda x: np.abs(x)).round(4)
-    df2ang = df2.applymap(lambda x: np.angle(x, deg=True)).round(2)
-    df2mag = df2.applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
-
-    df2magpu.columns = ['|'+x+'pu|' for x in df2.columns.tolist()]
-    df2ang.columns = ['ang('+x+')' for x in df2.columns.tolist()]
-    df2mag.columns = ['|'+x+'|' for x in df2.columns.tolist()]
-
-    dfx4 = pd.concat([df1re, df1im, df2magpu, df2ang, df2mag], axis=1, join_axes=[df1re.index])
-    dfx4.to_excel(writer,'Results', startrow=row)
-    row += dfx4.index.size + 2
-
-    # writing parameters
-    worksheet2 = workbook.add_worksheet('Parameters')
-    worksheet2.write('A1', fs); worksheet2.write('B1', 'fs [Hz]')
-    worksheet2.write_formula('A2', '=2.*PI()*A1'); worksheet2.write('B2', 'ws [rad/s]')
-    
-    worksheet2.write('A3', np.real(Zs)); worksheet2.write('B3', 'Rs [ohm]')
-    worksheet2.write('A4', np.imag(Zs)); worksheet2.write('B4', 'Xs [ohm]')
-    worksheet2.write_formula('A5', '=A4/A$2'); worksheet2.write('B5', 'Ls [H]')
-
-    worksheet2.write('A6', np.imag(Zm)); worksheet2.write('B6', 'Xm [ohm]')
-    worksheet2.write_formula('A7', '=A6/A$2'); worksheet2.write('B7', 'Lm [H]')
-    worksheet2.write('A8', np.imag(ZL)); worksheet2.write('B8', 'XL [ohm]')
-    worksheet2.write_formula('A9', '=A8/A$2'); worksheet2.write('B9', 'LL [H]')
-
-    worksheet2.write('A10', np.real(Zr)); worksheet2.write('B10', 'Rr [ohm]')
-    worksheet2.write('A11', np.imag(Zr)); worksheet2.write('B11', 'Xr [ohm]')
-    worksheet2.write_formula('A12', '=A11/A$2'); worksheet2.write('B12', 'Lr [H]')
-    
-    # Save excel file to disk
-    writer.save()
 
     return
 
@@ -483,7 +551,7 @@ foutLog.write('%s\n' %(codeAuthors))
 foutLog.write('Run started on: %s\n\n' %(str(codeTstart)))
 
 #%% Define datastructure to hold the results
-dfS = pd.DataFrame(columns=['Ss', 'S0', 'S1', 'Sm', 'Sm\'', 'S2', 'S3', 'S4', 'Sr', 'Note'])
+dfS = pd.DataFrame(columns=['Ss', 'S0', 'S1', 'Sm', "Sm'", 'S2', 'S3', 'S4', 'Sr', 'Note'])
 dfU = pd.DataFrame(columns=['Us', 'U1', 'U2', 'U3', 'Ur'])
 
 dfUPFC = pd.DataFrame(columns=['Ssh', 'Sser', 'Ush', 'User'])
@@ -501,6 +569,7 @@ Ur = 172.2/np.sqrt(2.)
 #%% Solve for accurate State1 flows: 'State1a'
 [dfU.at['State1a'], dfS.at['State1a']] = SolveBaselineFlows(Us, Ur)
 dfS.at['State1a', 'Note'] = "Solved baseline circuit ('a' = accurate)"
+
 #%% Specified apparent powers
 State1s = {'S0': -733   - 161.3j, 
            'S1': -701.8 - 154.4j,
@@ -530,9 +599,9 @@ Uspu = np.abs(dfU.Us.State1s)
 Urpu = np.abs(dfU.Ur.State1s)
 
 #%% Set up and solve baseline load flow 'State1'
-n4c = CreateNetwork4Comp(Uspu, Urpu)
+n4c = CreateNetwork4PQQComp(Uspu, Urpu)
 n4c = AddGeneratorsUsUr(n4c, np.real(dfS.Ss.State1a))
-n4c = AddGenerators4Comp(n4c, np.real(dfS.S2.State1a), np.imag(dfS.S1.State1a), np.imag(dfS.S2.State1a))
+n4c = AddGenerators4PQQComp(n4c, np.real(dfS.S2.State1a), np.imag(dfS.S1.State1a), np.imag(dfS.S2.State1a))
 n4c.pf()
 StoreSolutions(n4c, 'State1')
 dfS.at['State1', 'Note'] = 'Solved baseline circuit with apparent power set points from State1a'
@@ -549,9 +618,9 @@ dfS.at['State11', 'Note'] = 'Solved baseline circuit with increased dispatch of 
 dfS.Ss.State2s = SolveSs(Uspu, dfS.S0.State2s)
 dfS.Sr.State2s = SolveSr(Urpu, dfS.S4.State2s)
 dfS.at['State2s', 'Ss'] = dfS.Ss.State2s - 3.431  # hand corrected to restore ang(Us) = 18.8deg
-nu = CreateNetwork4Comp(Uspu, Urpu)
+nu = CreateNetwork4PQQComp(Uspu, Urpu)
 nu = AddGeneratorsUsUr(nu, np.real(dfS.Ss.State2s))
-nu = AddGenerators4Comp(nu, np.real(dfS.S2.State2s), np.imag(dfS.S1.State2s), np.imag(dfS.S2.State2s))
+nu = AddGenerators4PQQComp(nu, np.real(dfS.S2.State2s), np.imag(dfS.S1.State2s), np.imag(dfS.S2.State2s))
 nu.pf()
 StoreSolutions(nu, 'State2')
 CalculateUPFCop('State2')
@@ -565,9 +634,9 @@ Q2ref = np.imag(dfS.S2.State3s)
 dfS.at['State3s', 'S1'] = np.complex(-np.real(dfS.S2.State3s), Q1ref) # reactive power hand adjusted to balance the converter ratings
 dfS.at['State3s', 'S2'] = np.complex( np.real(dfS.S2.State3s), Q2ref) # reactive power hand adjusted to balance the converter ratings
 dfS.at['State3s', 'Ss'] = dfS.Ss.State3s - 3.407  # hand corrected to restore ang(Us) = 18.8deg
-nh = CreateNetwork4Comp(Uspu, Urpu)
+nh = CreateNetwork4PQQComp(Uspu, Urpu)
 nh = AddGeneratorsUsUr(nh, np.real(dfS.Ss.State3s))
-nh = AddGenerators4Comp(nh, np.real(dfS.S2.State3s), np.imag(dfS.S1.State3s), np.imag(dfS.S2.State3s))
+nh = AddGenerators4PQQComp(nh, np.real(dfS.S2.State3s), np.imag(dfS.S1.State3s), np.imag(dfS.S2.State3s))
 nh.pf()
 StoreSolutions(nh, 'State3')
 CalculateHPFCop('State3')
@@ -579,9 +648,9 @@ dfS.at['State4s'] = dfS.loc['State3s']
 dfS.at['State4s', 'S1'] = np.complex(-np.real(dfS.S2.State3s), Q1ref) # reactive power hand adjusted to balance the converter ratings
 dfS.at['State4s', 'S2'] = np.complex( np.real(dfS.S2.State3s), Q2ref+dQ) # reactive power hand adjusted to balance the converter ratings
 dfS.at['State4s', 'Ss'] = dfS.Ss.State4s + 2.227  # hand corrected to restore ang(Us) = 18.8deg
-nh4 = CreateNetwork4Comp(Uspu, Urpu)
+nh4 = CreateNetwork4PQQComp(Uspu, Urpu)
 nh4 = AddGeneratorsUsUr(nh4, np.real(dfS.Ss.State4s))
-nh4 = AddGenerators4Comp(nh4, np.real(dfS.S2.State4s), np.imag(dfS.S1.State4s), np.imag(dfS.S2.State4s))
+nh4 = AddGenerators4PQQComp(nh4, np.real(dfS.S2.State4s), np.imag(dfS.S1.State4s), np.imag(dfS.S2.State4s))
 nh4.pf()
 StoreSolutions(nh4, 'State4')
 CalculateHPFCop('State4')
@@ -589,18 +658,31 @@ dfS.at['State4', 'Note'] = 'Solved circuit compensated by HPFC with adjusted Q1c
 
 #%% Sensitivity case
 dfS.at['State5s'] = dfS.loc['State3s']
-dfS.at['State5s', 'S1'] = np.complex(-np.real(dfS.S2.State3s), Q1ref) # reactive power hand adjusted to balance the converter ratings
-dfS.at['State5s', 'S2'] = np.complex( np.real(dfS.S2.State3s), Q2ref+1.5*dQ) # reactive power hand adjusted to balance the converter ratings
-nh5 = CreateNetwork4Comp(Uspu, Urpu)
+dfS.at['State5s', 'S1'] = np.complex(-np.real(dfS.S2.State3s), np.nan) # reactive power hand adjusted to balance the converter ratings
+dfS.at['State5s', 'S2'] = np.complex( np.real(dfS.S2.State3s), np.nan) # reactive power hand adjusted to balance the converter ratings
+nh5 = CreateNetwork4PVVComp(Uspu, Urpu, U1pu=1.02, U2pu=1.03) # references balance Q supply into sending and receiving network
 nh5 = AddGeneratorsUsUr(nh5, np.real(dfS.Ss.State5s))
-nh5 = AddGenerators4Comp(nh5, np.real(dfS.S2.State5s), np.imag(dfS.S1.State5s), np.imag(dfS.S2.State5s))
+nh5 = AddGenerators4PVVComp(nh5, np.real(dfS.S2.State5s))
 nh5.pf()
 StoreSolutions(nh5, 'State5')
 CalculateHPFCop('State5')
-dfS.at['State5', 'Note'] = 'Spare case'
+dfS.at['State5', 'Note'] = 'Solved circuit compensated by HPFC using PVV commands V1pu=1.02, V2pu=1.03'
+
+#%% Sensitivity case
+dfS.at['State6s'] = dfS.loc['State1a']
+dfS.at['State6s', 'S1'] = np.complex(np.nan, np.nan) # 
+dfS.at['State6s', 'S2'] = np.complex(np.real(dfS.S2.State1a), np.nan) # reactive power hand adjusted to balance the converter ratings
+nh6 = CreateNetwork4SVCComp(Uspu, Urpu, U2pu=np.abs(dfU.U2.State1a)+0.001)
+nh6 = AddGeneratorsUsUr(nh6, np.real(dfS.Ss.State6s))
+nh6 = AddGenerators4SVCComp(nh6)
+nh6.pf()
+StoreSolutions(nh6, 'State6')
+dfU.at['State6', 'U1'] = dfU.U2.State6 # The circuit for SVC compensation does not include bus U1 (because U1=U2), define it to enable solving HPFC operating point
+CalculateHPFCop('State6')
+dfS.at['State6', 'Note'] = 'Solved circuit compensated by SVC using PV commands, P=0 V2pu of uncompensated system'
 
 #%% Save results to Excel
-SaveToExcel()
+SaveToExcel(['State1a', 'State2', 'State3', 'State4']) # 'State5', 'State6'
 
 if OutputPlots:
     foutLog.write('Starting to plot at: %s\n' %(str(datetime.now())))
@@ -608,7 +690,7 @@ if OutputPlots:
     pltPdf1 = dpdf.PdfPages(os.path.join(dirout,fnamePlt))
 
 if OutputPlots:
-    for case in ['State1a', 'State2', 'State3', 'State4', 'State5']:
+    for case in ['State1a', 'State2', 'State3', 'State4', 'State5', 'State6']:
         OutputVectorsPage(pltPdf1, case, 
                           pageTitle='Calculated by '+codeName+' v'+codeVersion+'\n\n'+r'$\bf{' + case + '}$')
 
