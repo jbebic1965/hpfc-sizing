@@ -192,8 +192,8 @@ def SaveToExcel(caselist, dirout='./', fnameXlsx='Results.xlsx', SortCases=False
         row +=1
 
     # Preparing real and reactive power flows
-    if SortCases: caselist.sort() # dfS.loc[caselist].sort_index(inplace=True)
-    dfSf = dfS.loc[caselist, ['Ss', 'S0', 'S1', 'Sm', "Sm'", 'S2', 'S3', 'S4', 'Sr']]
+    dfSf = dfS.loc[dfS.index.intersection(caselist), ['Ss', 'S0', 'S1', 'Sm', "Sm'", 'S2', 'S3', 'S4', 'Sr']]
+    if SortCases: dfSf.sort_index(inplace=True)
     dfP = dfSf.applymap(lambda x: np.real(x)).round(1)
     dfQ = dfSf.applymap(lambda x: np.imag(x)).round(1)
 
@@ -205,15 +205,16 @@ def SaveToExcel(caselist, dirout='./', fnameXlsx='Results.xlsx', SortCases=False
     dfx1.to_excel(writer, 'Results', startrow=row)
     row += dfx1.index.size + 2
 
-    # Preparing voltages 
-    # if SortCases: dfU.sort_index(inplace=True)
-    dfUmagpu = dfU.loc[caselist].applymap(lambda x: np.abs(x)).round(4)
-    dfUang = dfU.loc[caselist].applymap(lambda x: np.angle(x, deg=True)).round(2)
-    dfUmag = dfU.loc[caselist].applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
+    # Preparing voltages
+    dfUf = dfU.loc[dfU.index.intersection(caselist)]
+    if SortCases: dfUf.sort_index(inplace=True)
+    dfUmagpu = dfUf.applymap(lambda x: np.abs(x)).round(4)
+    dfUang = dfUf.applymap(lambda x: np.angle(x, deg=True)).round(2)
+    dfUmag = dfUf.applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
 
-    dfUmagpu.columns = ['|'+x+'pu|' for x in dfU.columns.tolist()]
-    dfUang.columns = ['ang('+x+')' for x in dfU.columns.tolist()]
-    dfUmag.columns = ['|'+x+'|' for x in dfU.columns.tolist()]
+    dfUmagpu.columns = ['|'+x+'pu|' for x in dfUf.columns.tolist()]
+    dfUang.columns = ['ang('+x+')' for x in dfUf.columns.tolist()]
+    dfUmag.columns = ['|'+x+'|' for x in dfUf.columns.tolist()]
 
     dfx2 = pd.concat([dfUmagpu, dfUang, dfUmag], axis=1, join_axes=[dfUmagpu.index])
     dfx2.to_excel(writer, 'Results', startrow=row)
@@ -221,16 +222,16 @@ def SaveToExcel(caselist, dirout='./', fnameXlsx='Results.xlsx', SortCases=False
 
     # Preparing UPFC sizing info
     UPFCcases = list(set(caselist) & set(dfUPFC.index.tolist())) # intersect cases from dfUPFC index with specified cases
-    # dfUPFC = pd.DataFrame(columns=['Ssh', 'Sser', 'Ush', 'User'])
-    if SortCases: UPFCcases.sort() # dfUPFC.loc[UPFCcases].sort_index(inplace=True)
-    df1 = dfUPFC.loc[UPFCcases, ['Ssh', 'Sser']]
+    dfUPFCf = dfUPFC.loc[dfUPFC.index.intersection(UPFCcases)]
+    if SortCases: dfUPFCf.sort_index(inplace=True)
+    df1 = dfUPFCf.loc[:, ['Ssh', 'Sser']]
     df1re = df1.applymap(lambda x: np.real(x)).round(2)
     df1im = df1.applymap(lambda x: np.imag(x)).round(1)
 
     df1re.columns = ['Re('+x+')' for x in df1.columns.tolist()]
     df1im.columns = ['Im('+x+')' for x in df1.columns.tolist()]
 
-    df2 = dfUPFC.loc[UPFCcases, ['Ush', 'User']]
+    df2 = dfUPFCf.loc[:, ['Ush', 'User']]
     df2magpu = df2.applymap(lambda x: np.abs(x)).round(4)
     df2ang = df2.applymap(lambda x: np.angle(x, deg=True)).round(2)
     df2mag = df2.applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
@@ -245,17 +246,17 @@ def SaveToExcel(caselist, dirout='./', fnameXlsx='Results.xlsx', SortCases=False
 
     # Preparing HPFC sizing info
     HPFCcases = list(set(caselist) & set(dfHPFC.index.tolist())) # intersect cases from dfHPFC index with specified cases
-    # dfHPFC = pd.DataFrame(columns=['SM', 'SX', 'SY', 'UM', 'UX', 'UY'])
-    if SortCases: HPFCcases.sort() # dfHPFC.loc[HPFCcases].sort_index(inplace=True)
-    df0 = dfHPFC.loc[HPFCcases, 'QM'].round(1)
-    df1 = dfHPFC.loc[HPFCcases, ['SX', 'SY']]
+    dfHPFCf = dfHPFC.loc[dfHPFC.index.intersection(HPFCcases)]
+    if SortCases: dfHPFCf.sort_index(inplace=True)
+    df0 = dfHPFCf.loc[:, 'QM'].round(1)
+    df1 = dfHPFCf.loc[:, ['SX', 'SY']]
     df1re = df1.applymap(lambda x: np.real(x)).round(2)
     df1im = df1.applymap(lambda x: np.imag(x)).round(1)
 
     df1re.columns = ['Re('+x+')' for x in df1.columns.tolist()]
     df1im.columns = ['Im('+x+')' for x in df1.columns.tolist()]
 
-    df2 = dfHPFC.loc[HPFCcases, ['UM', 'UX', 'UY']]
+    df2 = dfHPFCf.loc[:, ['UM', 'UX', 'UY']]
     df2magpu = df2.applymap(lambda x: np.abs(x)).round(4)
     df2ang = df2.applymap(lambda x: np.angle(x, deg=True)).round(2)
     df2mag = df2.applymap(lambda x: np.abs(x)*Ub*np.sqrt(2.)).round(1)
@@ -566,123 +567,124 @@ Ub = UbLL/np.sqrt(3.) # L-N RMS [kV], backed out from specified flows
 Us = 186.5/np.sqrt(2.)*np.exp(18.8*np.pi/180.*1.j)
 Ur = 172.2/np.sqrt(2.)
 
-#%% Solve for accurate State1 flows: 'State1a'
-[dfU.at['State1a'], dfS.at['State1a']] = SolveBaselineFlows(Us, Ur)
-dfS.at['State1a', 'Note'] = "Solved baseline circuit ('a' = accurate)"
+#%% Solve for accurate State01 flows: 'State01a'
+[dfU.at['State01a'], dfS.at['State01a']] = SolveBaselineFlows(Us, Ur)
+dfS.at['State01a', 'Note'] = "Solved baseline circuit ('a' = accurate)"
 
 #%% Specified apparent powers
-State1s = {'S0': -733   - 161.3j, 
+State01s = {'S0': -733   - 161.3j, 
            'S1': -701.8 - 154.4j,
            'S2':  701.8 + 154.4j,
            'S3':  700.6 + 128.5j,
            'S4':  731.7 + 134.2j}
 
-State2s = {'S0': -881.6 - 111.5j, 
+State02s = {'S0': -881.6 - 111.5j, 
            'S1': -903.4 - 107.1j,
            'S2':  900.0 + 200.0j,
            'S3':  899.8 + 158.4j,
            'S4':  878.0 + 162.3j}
 
 #%% Store specified values into dataframes
-dfS.at['State1s'] = pd.Series(State1s)
-dfS.at['State1s', 'Note'] = 'Apparent powers before compensation, as specified by NARI'
-dfS.at['State2s'] = pd.Series(State2s)
-dfS.at['State2s', 'Note'] = 'Apparent powers after compensation by UPFC, as specified by NARI and adjusted by Jovan to achieve ang(Us)=18.8deg'
-dfS.at['State3s'] = pd.Series(State2s) # the same spec for HPFC as for the UPFC
-dfS.at['State3s', 'Note'] = 'Apparent powers for compensation by HPFC, adjusted by Jovan to balance HPFC converter ratings.'
-dfU.at['State1s'] = pd.Series({'Us': Us/Ub, 'Ur': Ur/Ub})
-dfU.at['State2s'] = pd.Series({'Us': Us/Ub, 'Ur': Ur/Ub})
-dfU.at['State3s'] = pd.Series({'Us': Us/Ub, 'Ur': Ur/Ub})
+dfS.at['State01s'] = pd.Series(State01s)
+dfS.at['State01s', 'Note'] = 'Apparent powers before compensation, as specified by NARI'
+dfS.at['State02s'] = pd.Series(State02s)
+dfS.at['State02s', 'Note'] = 'Apparent powers after compensation by UPFC, as specified by NARI and adjusted by Jovan to achieve ang(Us)=18.8deg'
+dfS.at['State03s'] = pd.Series(State02s) # the same spec for HPFC as for the UPFC
+dfS.at['State03s', 'Note'] = 'Apparent powers for compensation by HPFC, adjusted by Jovan to balance HPFC converter ratings.'
+dfU.at['State01s'] = pd.Series({'Us': Us/Ub, 'Ur': Ur/Ub})
+dfU.at['State02s'] = pd.Series({'Us': Us/Ub, 'Ur': Ur/Ub})
+dfU.at['State03s'] = pd.Series({'Us': Us/Ub, 'Ur': Ur/Ub})
 
 #%% Define per unit voltages used to set up load flows
-Uspu = np.abs(dfU.Us.State1s)
-Urpu = np.abs(dfU.Ur.State1s)
+Uspu = np.abs(dfU.Us.State01s)
+Urpu = np.abs(dfU.Ur.State01s)
 
-#%% Set up and solve baseline load flow 'State1'
+#%% Set up and solve baseline load flow 'State01'
 n4c = CreateNetwork4PQQComp(Uspu, Urpu)
-n4c = AddGeneratorsUsUr(n4c, np.real(dfS.Ss.State1a))
-n4c = AddGenerators4PQQComp(n4c, np.real(dfS.S2.State1a), np.imag(dfS.S1.State1a), np.imag(dfS.S2.State1a))
+n4c = AddGeneratorsUsUr(n4c, np.real(dfS.Ss.State01a))
+n4c = AddGenerators4PQQComp(n4c, np.real(dfS.S2.State01a), np.imag(dfS.S1.State01a), np.imag(dfS.S2.State01a))
 n4c.pf()
-StoreSolutions(n4c, 'State1')
-dfS.at['State1', 'Note'] = 'Solved baseline circuit with apparent power set points from State1a'
+StoreSolutions(n4c, 'State01')
+dfS.at['State01', 'Note'] = 'Solved baseline circuit with apparent power set points from State01a'
 
 #%% Increase flow by taking 200MW more from Us without any compensation
 n11 = CreateNetwork(Uspu, Urpu)
-n11 = AddGeneratorsUsUr(n11, np.real(dfS.Ss.State1)+200)
+n11 = AddGeneratorsUsUr(n11, np.real(dfS.Ss.State01)+200)
 n11.pf()
 StoreSolutions(n11, 'State11')
 dfU.at['State11', 'U1'] = dfU.U2.State11
 dfS.at['State11', 'Note'] = 'Solved baseline circuit with increased dispatch of Us units by 200MW'
 
-#%% Set up and solve the UPFC-compensated load flow: State2
-dfS.Ss.State2s = SolveSs(Uspu, dfS.S0.State2s)
-dfS.Sr.State2s = SolveSr(Urpu, dfS.S4.State2s)
-dfS.at['State2s', 'Ss'] = dfS.Ss.State2s - 3.431  # hand corrected to restore ang(Us) = 18.8deg
+#%% Set up and solve the UPFC-compensated load flow: State02
+dfS.Ss.State02s = SolveSs(Uspu, dfS.S0.State02s)
+dfS.Sr.State02s = SolveSr(Urpu, dfS.S4.State02s)
+dfS.at['State02s', 'Ss'] = dfS.Ss.State02s - 3.431  # hand corrected to restore ang(Us) = 18.8deg
 nu = CreateNetwork4PQQComp(Uspu, Urpu)
-nu = AddGeneratorsUsUr(nu, np.real(dfS.Ss.State2s))
-nu = AddGenerators4PQQComp(nu, np.real(dfS.S2.State2s), np.imag(dfS.S1.State2s), np.imag(dfS.S2.State2s))
+nu = AddGeneratorsUsUr(nu, np.real(dfS.Ss.State02s))
+nu = AddGenerators4PQQComp(nu, np.real(dfS.S2.State02s), np.imag(dfS.S1.State02s), np.imag(dfS.S2.State02s))
 nu.pf()
-StoreSolutions(nu, 'State2')
-CalculateUPFCop('State2')
-dfS.at['State2', 'Note'] = 'Solved circuit compensated by UPFC'
+StoreSolutions(nu, 'State02')
+CalculateUPFCop('State02')
+dfS.at['State02', 'Note'] = 'Solved circuit compensated by UPFC'
 
-#%% Set up and solve the HPFC-compensated system: 'State3'
-dfS.Ss.State3s = SolveSs(Uspu, dfS.S0.State3s)
-dfS.Sr.State3s = SolveSr(Urpu, dfS.S4.State3s)
-Q1ref = np.imag(dfS.S1.State1) + (np.imag(dfS.S2.State2) - np.imag(dfS.S2.State1))
-Q2ref = np.imag(dfS.S2.State3s)
-dfS.at['State3s', 'S1'] = np.complex(-np.real(dfS.S2.State3s), Q1ref) # reactive power hand adjusted to balance the converter ratings
-dfS.at['State3s', 'S2'] = np.complex( np.real(dfS.S2.State3s), Q2ref) # reactive power hand adjusted to balance the converter ratings
-dfS.at['State3s', 'Ss'] = dfS.Ss.State3s - 3.407  # hand corrected to restore ang(Us) = 18.8deg
+#%% Set up and solve the HPFC-compensated system: 'State03'
+dfS.Ss.State03s = SolveSs(Uspu, dfS.S0.State03s)
+dfS.Sr.State03s = SolveSr(Urpu, dfS.S4.State03s)
+Q1ref = np.imag(dfS.S1.State01) + (np.imag(dfS.S2.State02) - np.imag(dfS.S2.State01))
+Q2ref = np.imag(dfS.S2.State03s)
+dfS.at['State03s', 'S1'] = np.complex(-np.real(dfS.S2.State03s), Q1ref) # reactive power hand adjusted to balance the converter ratings
+dfS.at['State03s', 'S2'] = np.complex( np.real(dfS.S2.State03s), Q2ref) # reactive power hand adjusted to balance the converter ratings
+dfS.at['State03s', 'Ss'] = dfS.Ss.State03s - 3.407  # hand corrected to restore ang(Us) = 18.8deg
 nh = CreateNetwork4PQQComp(Uspu, Urpu)
-nh = AddGeneratorsUsUr(nh, np.real(dfS.Ss.State3s))
-nh = AddGenerators4PQQComp(nh, np.real(dfS.S2.State3s), np.imag(dfS.S1.State3s), np.imag(dfS.S2.State3s))
+nh = AddGeneratorsUsUr(nh, np.real(dfS.Ss.State03s))
+nh = AddGenerators4PQQComp(nh, np.real(dfS.S2.State03s), np.imag(dfS.S1.State03s), np.imag(dfS.S2.State03s))
 nh.pf()
-StoreSolutions(nh, 'State3')
-CalculateHPFCop('State3')
-dfS.at['State3', 'Note'] = 'Solved circuit compensated by HPFC with original Q1cmd, Q2cmd as were used in UPFC'
+StoreSolutions(nh, 'State03')
+CalculateHPFCop('State03')
+dfS.at['State03', 'Note'] = 'Solved circuit compensated by HPFC with original Q1cmd, Q2cmd as were used in UPFC'
 
 #%% Sensitivity case
 dQ = 30
-dfS.at['State4s'] = dfS.loc['State3s']
-dfS.at['State4s', 'S1'] = np.complex(-np.real(dfS.S2.State3s), Q1ref) # reactive power hand adjusted to balance the converter ratings
-dfS.at['State4s', 'S2'] = np.complex( np.real(dfS.S2.State3s), Q2ref+dQ) # reactive power hand adjusted to balance the converter ratings
-dfS.at['State4s', 'Ss'] = dfS.Ss.State4s + 2.227  # hand corrected to restore ang(Us) = 18.8deg
+dfS.at['State04s'] = dfS.loc['State03s']
+dfS.at['State04s', 'S1'] = np.complex(-np.real(dfS.S2.State03s), Q1ref) # reactive power hand adjusted to balance the converter ratings
+dfS.at['State04s', 'S2'] = np.complex( np.real(dfS.S2.State03s), Q2ref+dQ) # reactive power hand adjusted to balance the converter ratings
+dfS.at['State04s', 'Ss'] = dfS.Ss.State04s + 2.227  # hand corrected to restore ang(Us) = 18.8deg
 nh4 = CreateNetwork4PQQComp(Uspu, Urpu)
-nh4 = AddGeneratorsUsUr(nh4, np.real(dfS.Ss.State4s))
-nh4 = AddGenerators4PQQComp(nh4, np.real(dfS.S2.State4s), np.imag(dfS.S1.State4s), np.imag(dfS.S2.State4s))
+nh4 = AddGeneratorsUsUr(nh4, np.real(dfS.Ss.State04s))
+nh4 = AddGenerators4PQQComp(nh4, np.real(dfS.S2.State04s), np.imag(dfS.S1.State04s), np.imag(dfS.S2.State04s))
 nh4.pf()
-StoreSolutions(nh4, 'State4')
-CalculateHPFCop('State4')
-dfS.at['State4', 'Note'] = 'Solved circuit compensated by HPFC with adjusted Q1cmd, Q2cmd to balance HPFC converters'
+StoreSolutions(nh4, 'State04')
+CalculateHPFCop('State04')
+dfS.at['State04', 'Note'] = 'Solved circuit compensated by HPFC with adjusted Q1cmd, Q2cmd to balance HPFC converters'
 
 #%% Sensitivity case
-dfS.at['State5s'] = dfS.loc['State3s']
-dfS.at['State5s', 'S1'] = np.complex(-np.real(dfS.S2.State3s), np.nan) # reactive power hand adjusted to balance the converter ratings
-dfS.at['State5s', 'S2'] = np.complex( np.real(dfS.S2.State3s), np.nan) # reactive power hand adjusted to balance the converter ratings
+dfS.at['State05s'] = dfS.loc['State03s']
+dfS.at['State05s', 'S1'] = np.complex(-np.real(dfS.S2.State03s), np.nan) # reactive power hand adjusted to balance the converter ratings
+dfS.at['State05s', 'S2'] = np.complex( np.real(dfS.S2.State03s), np.nan) # reactive power hand adjusted to balance the converter ratings
 nh5 = CreateNetwork4PVVComp(Uspu, Urpu, U1pu=1.02, U2pu=1.03) # references balance Q supply into sending and receiving network
-nh5 = AddGeneratorsUsUr(nh5, np.real(dfS.Ss.State5s))
-nh5 = AddGenerators4PVVComp(nh5, np.real(dfS.S2.State5s))
+nh5 = AddGeneratorsUsUr(nh5, np.real(dfS.Ss.State05s))
+nh5 = AddGenerators4PVVComp(nh5, np.real(dfS.S2.State05s))
 nh5.pf()
-StoreSolutions(nh5, 'State5')
-CalculateHPFCop('State5')
-dfS.at['State5', 'Note'] = 'Solved circuit compensated by HPFC using PVV commands V1pu=1.02, V2pu=1.03'
+StoreSolutions(nh5, 'State05')
+CalculateHPFCop('State05')
+dfS.at['State05', 'Note'] = 'Solved circuit compensated by HPFC using PVV commands V1pu=1.02, V2pu=1.03'
 
 #%% Sensitivity case
-dfS.at['State6s'] = dfS.loc['State1a']
-dfS.at['State6s', 'S1'] = np.complex(np.nan, np.nan) # 
-dfS.at['State6s', 'S2'] = np.complex(np.real(dfS.S2.State1a), np.nan) # reactive power hand adjusted to balance the converter ratings
-nh6 = CreateNetwork4SVCComp(Uspu, Urpu, U2pu=np.abs(dfU.U2.State1a)+0.001)
-nh6 = AddGeneratorsUsUr(nh6, np.real(dfS.Ss.State6s))
+dfS.at['State06s'] = dfS.loc['State01a']
+dfS.at['State06s', 'S1'] = np.complex(np.nan, np.nan) # 
+dfS.at['State06s', 'S2'] = np.complex(np.real(dfS.S2.State01a), np.nan) # reactive power hand adjusted to balance the converter ratings
+nh6 = CreateNetwork4SVCComp(Uspu, Urpu, U2pu=np.abs(dfU.U2.State01a)+0.001)
+nh6 = AddGeneratorsUsUr(nh6, np.real(dfS.Ss.State06s))
 nh6 = AddGenerators4SVCComp(nh6)
 nh6.pf()
-StoreSolutions(nh6, 'State6')
-dfU.at['State6', 'U1'] = dfU.U2.State6 # The circuit for SVC compensation does not include bus U1 (because U1=U2), define it to enable solving HPFC operating point
-CalculateHPFCop('State6')
-dfS.at['State6', 'Note'] = 'Solved circuit compensated by SVC using PV commands, P=0 V2pu of uncompensated system'
+StoreSolutions(nh6, 'State06')
+dfU.at['State06', 'U1'] = dfU.U2.State06 # The circuit for SVC compensation does not include bus U1 (because U1=U2), define it to enable solving HPFC operating point
+CalculateHPFCop('State06')
+dfS.at['State06', 'Note'] = 'Solved circuit compensated by SVC using PV commands, P=0 V2pu of uncompensated system'
 
 #%% Save results to Excel
-SaveToExcel(['State1a', 'State2', 'State3', 'State4'], SortCases=True) # 'State5', 'State6'
+caselist = dfS.index.tolist() # caselist = ['State01a', 'State02', 'State03', 'State04', 'State06']
+SaveToExcel(caselist, SortCases=True) 
 
 if OutputPlots:
     foutLog.write('Starting to plot at: %s\n' %(str(datetime.now())))
@@ -690,7 +692,7 @@ if OutputPlots:
     pltPdf1 = dpdf.PdfPages(os.path.join(dirout,fnamePlt))
 
 if OutputPlots:
-    for case in ['State1a', 'State2', 'State3', 'State4', 'State5', 'State6']:
+    for case in ['State01a', 'State02', 'State03', 'State04', 'State05', 'State06']:
         OutputVectorsPage(pltPdf1, case, 
                           pageTitle='Calculated by '+codeName+' v'+codeVersion+'\n\n'+r'$\bf{' + case + '}$')
 
