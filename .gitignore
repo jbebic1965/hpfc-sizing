@@ -1,2 +1,12 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-pypsa_example1.py
+# working directories
+Retired Code/**
+Retired Images/**
+Inputs/**
+
+# log files
+*.log

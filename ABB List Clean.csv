@@ -1,0 +1,932 @@
+Contract Year,Type,Client,Project,End Country,Application,Upgrade,Voltage,Inductive Rating,Capacitive Rating
+2015,STATCOM,ABB,Delta House,Sweden,Pilot,N,8.6,20.0,20.0
+2015,SVC,Kvaerner,Nyhamna SVC,Norway,Utility,N,132.0,200.0,200.0
+2015,SVC,Comisión Federal de Electricidad,Carmen (PID 1804),Mexico,Utility,N,115.0,15.0,50.0
+2014,SVC,Comisión Federal de Electricidad,La Higuera (PID 1902),Mexico,Utility,N,230.0,300.0,300.0
+2014,SVC,Xcel Energy,China Draw,USA,Utility,N,230.0,70.0,135.0
+2014,SVC,Xcel Energy,Roadrunner,USA,Utility,N,230.0,70.0,200.0
+2014,SVC,PHI,Cedar SVC,USA,Utility,N,230.0,100.0,150.0
+2014,STATCOM,US Steel Company,Fairfield EAF Facility,USA,Industry,N,33.0,0.0,220.0
+2014,SVC,First Energy,Erie South,USA,Utility,N,230.0,100.0,250.0
+2014,SVC,First Energy,New Castle SVC,USA,Utility,N,138.0,75.0,150.0
+2014,SVC,First Energy,Lakeshore SVC,USA,Utility,N,138.0,100.0,250.0
+2014,SVC,Danieli,IIC Steel,Egypt,Industry,N,22.0,0.0,85.0
+2014,FSC,IPC,IPC Midpoint 2 SC,USA,Utility,N,230.0,,320.0
+2014,FSC,IPC,IPC Midpoint 1 SC,USA,Utility,N,230.0,,320.0
+2013,STATCOM,AUSENCO Kazakhmys PLC,Aktogay Sulphide Plant,Kazakhstan,Industry,N,35.0,32.0,32.0
+2013,TCSC,National Grid Electricity Transmission,APC,England,Utility,N,400.0,,393.42
+2013,STATCOM,Vattenfall AB,Pen y Cymoedd,W ales,Renewable,N,132.0,50.0,70.0
+2013,TCSC,National Grid Electricity Transmission,Hutton TCSC 2,England,Utility,N,400.0,,393.42
+2013,SVC,"Standard Steel, LLC",Standard Steel,USA,Industry,N,46.0,0.0,80.0
+2013,SVC,CGN,El Estor,Guatemala,Industry,N,34.5,43.0,157.0
+2013,SVC,JSW Steel Limited,JSW Steel,India,Industry,N,33.0,0.0,180.0
+2013,SVC,Gulf Power,Alligator Swamp and Highland City 1,USA,Utility,N,230.0,100.0,125.0
+2013,SVC,Gulf Power,Alligator Swamp and Highland City 2,USA,Utility,N,230.0,100.0,125.0
+2013,SVC,EEB,Tunal SVC,Colombia,Utility,N,230.0,60.0,240.0
+2013,FSC,Transener,Choele Choel & Olavarria,Argentina,Utility,Y,500.0,,
+2013,SVC,Bechtel Chile Ltda,Minera Escondida,Chile,Industry,N,220.0,80.0,120.0
+2013,SVC,Transgrid,Broken Hill 1,Australia,Utility,Y,220.0,,
+2013,SVC,Transgrid,Broken Hill 2,Australia,Utility,Y,220.0,,
+2013,SVC,First Energy,Waldo Run SVC,USA,Utility,N,138.0,25.0,75.0
+2013,SVC,Alabama Power Company (APC),APC SVC Light V2,USA,Industry,N,34.5,0.0,220.0
+2013,FSC,San Diego Gas & Electric,Imperial Valley East,USA,Utility,Y,500.0,,
+2013,SVC,Powerlink,Blackwall,Australia,Utility,Y,275.0,50.0,250.0
+2013,SVC,Hydro-Québec (HQ),Albanel SVC 1,Canada,Utility,Y,735.0,100.0,300.0
+2013,SVC,Hydro-Québec (HQ),Albanel SVC 2,Canada,Utility,Y,735.0,100.0,300.0
+2013,SVC,"Saudi Electricity Company, SEC",Shedgum & Faras SVC,Saudi Arabia,Utility,Y,380.0,200.0,0.0
+2013,SVC,Tronox Minerals Sands,Namakwa Sands SVC,Sydafrika,Industry,Y,33.0,,
+2013,SVC,Tennessee Valley Authority (TVA),TVA Davidson,USA,Utility,N,161.0,194.0,300.0
+2013,SVC,"Arcelor Mittal, Coatesville",Coatesville,USA,Industry,Y,13.8,,
+2012,FSC,Rio Tinto Alcan Inc.,Kitimat,Canada,Utility,N,315.0,0.0,208.0
+2012,SVC,Dashiell,Piloncillo Ranch,USA,Industry,N,34.5,35.0,50.0
+2012,SVC,Saudi Electricity Company,HHR 1&6,Saudi Arabia,Utility,N,380.0,300.0,600.0
+2012,SVC,Transelec,Cardones SVC,Chile,Utility,N,220.0,60.0,100.0
+2012,STATCOM,Danieli Far East Co. Ltd,POSCO SS Vina,Vietnam,Industry,N,33.0,0.0,144.0
+2012,STATCOM,Evraz,Evraz SVC Light,Canada,Industry,N,14.4,0.0,80.0
+2012,FSC,BC Hydro,Ruby Creek,Canada,Utility,N,500.0,,1050.0
+2012,SVC,GoldCorp,Musselwhite Mine 1,Canada,Industry,N,13.8,0.0,30.0
+2012,SVC,GoldCorp,Musselwhite Mine 2,Canada,Industry,N,13.8,0.0,30.0
+2012,FSC,BC Hydro,Seymour Arms 1,Canada,Utility,N,500.0,,1266.0
+2012,FSC,BC Hydro,Seymour Arms 2,Canada,Utility,N,500.0,,1266.0
+2012,SVC,Oceanic Impex Trading DMCC,Sagamu Steel,Nigeria,Industry,N,33.0,0.0,40.0
+2012,SVC,ZESA,Insukamini Upgrade,Zimbabwe,Utility,Y,330.0,,
+2012,SVC,Pepco (PHI),Ocean City,USA,Utility,N,138.0,75.0,75.0
+2012,SVC,Kamineni Steel & Power,Kamineni Steel & Power,India,Industry,N,33.0,0.0,90.0
+2012,SVC,Landsnet,Klafastadir,Iceland,Utility,N,220.0,100.0,150.0
+2012,STATCOM,MGI Steel Factory,MGI Suleymania,Iraq,Industry,N,33.0,0.0,164.0
+2012,FSC,BC Hydro,Chapman Upgrade,Canada,Utility,Y,500.0,,
+2012,FSC,BC Hydro,Bob Quinn,Canada,Utility,N,287.0,,56.0
+2012,SVC,Xcel Energy,Forbes,USA,Utility,Y,500.0,,
+2012,SVC,First Energy,Meadow Brook,USA,Utility,N,500.0,165.0,600.0
+2012,SVC,First Energy,Hunterstown,USA,Utility,N,500.0,100.0,500.0
+2012,SVC,Bangor Hydro Electric Company,Chester,USA,Utility,Y,345.0,,
+2012,SVC,CFE,Texcoco,Mexico,Utility,Y,400.0,,
+2012,SVC,CFE,T opilejo,Mexico,Utility,Y,400.0,,
+2012,FSC,Idaho Power,Boise Bench SC (2),USA,Utility,N,230.0,0.0,150.0
+2012,FSC,Idaho Power,Boise Bench SC (1),USA,Utility,N,230.0,0.0,150.0
+2012,STATCOM PCS6000,DONG Energy A/S,Westermost Rough,England,Renewable,N,33.0,100.0,50.0
+2012,STATCOM PCS6000,ScottishPower Renewables Ltd,Harestanes,Scotland,Renewable,N,33.0,68.0,68.0
+2011,SVC,United Steel,United Steel,T aiwan,Industry,N,23.0,0.0,60.0
+2011,SVC,Oncor,Parker,USA,Utility,N,345.0,265.0,300.0
+2011,SVC,CFE,La Paz Site works,Mexico,Utility,N,400.0,300.0,300.0
+2011,SVC,Powerlink,Ross Upgrade,Australia,Utility,Y,275.0,,
+2011,SVC,Saudi Electricity Company,Ghazalah,Saudi Arabia,Utility,N,132.0,30.0,150.0
+2011,SVC,American Electric Power (ETT),Hamilton 1,USA,Utility,N,138.0,25.0,100.0
+2011,SVC,American Electric Power (ETT),Hamilton 2,USA,Utility,N,138.0,25.0,100.0
+2011,SVC,American Electric Power (ETT),Tesla 1,USA,Utility,N,345.0,62.0,150.0
+2011,SVC,American Electric Power (ETT),Tesla 2,USA,Utility,N,345.0,62.0,150.0
+2011,SVC,Hydro-Québec,Nemiscau 1,Canada,Utility,Y,735.0,100.0,300.0
+2011,SVC,Hydro-Québec,Nemiscau 2,Canada,Utility,Y,735.0,100.0,300.0
+2011,SVC,Evraz,Evraz Upgrade,Canada,Industry,Y,15.0,,
+2011,SVC,Hydro-Québec,Chateauguay Upgrade,Canada,Utility,Y,120.0,,
+2011,SVC,Pepco (PHI),Indian River Upgrade,USA,Utility,Y,230.0,,
+2011,SVC,Pepco (PHI),Nelson Upgrade,USA,Utility,Y,135.0,,
+2011,SVC,Pepco (PHI),Cardiff Upgrade,USA,Utility,Y,230.0,,
+2011,SVC,Rochester Gas & Electric,Station 124,USA,Utility,N,115.0,100.0,200.0
+2011,STATCOM,ArcelorMittal,ArcelorMittal Bremen,Germany,Industry,N,30.0,32.0,48.0
+2011,SVC,LKAB,LKAB Malmberget,Sweden,Industry,N,21.5,0.0,41.0
+2011,SVC,Comisión Federal de Electricidad,Temascal (2nd part) Upgrade,Mexico,Utility,Y,400.0,,
+2011,SVC,Elecnor,Anastacio,Brazil,Utility,N,230.0,50.0,50.0
+2011,FSC,Pacific Gas & Electric,Table Mountain 3 Upgrade,USA,Utility,Y,500.0,,
+2011,SVC,"Sohar Steel, SSSRM",SSSRM Upgrade,Oman,Industry,Y,33.0,0.0,30.0
+2011,SVC,CHESF,Extremoz,Brazil,Utility,N,230.0,75.0,150.0
+2011,OLC,Red Eléctrica de Espana,Twenties,Spain,Utility,N,220.0,,28.0
+2011,SVC,Danieli,Andec,Ecuador,Industry,N,14.0,0.0,32.0
+2011,SVC,Jindal Steel Power (JSPL),JSPL Angul,India,Industry,N,33.0,0.0,290.0
+2011,STATCOM,Abul Khair Group,Chittagong 1,Bangladesh,Industry,N,33.0,0.0,110.0
+2011,STATCOM,Abul Khair Group,Chittagong 2,Bangladesh,Industry,N,33.0,0.0,110.0
+2011,SVC,Keystone,Keystone Upgrade,USA,Industry,Y,35.0,0.0,0.0
+2011,SVC,National Transmission & Despatch (NT,DL Ca h) o r e,Pakistan,Utility,N,220.0,50.0,450.0
+2011,SVC,Deacero,Saltillo,Mexico,Industry,N,35.0,0.0,275.0
+2011,SVC,Hassoune Group,Ramco,Jordan,Industry,N,33.0,0.0,45.0
+2011,STATCOM PCS6000,Nordex UK Ltd,Baillie PCS,Scotland,Renewable,N,33.0,12.5,12.5
+2011,STATCOM PCS6000,Vestas Celtic Wind Technology Ltd,Middlemoor,England,Renewable,N,33.0,26.0,26.0
+2011,STATCOM PCS6000,ScottishPower Renewables Ltd,Whitelee Extension - Phase 3,Scotland,Renewable,N,33.0,51.0,51.0
+2010,SVC,Timken,Timken Upgrade,USA,Industry,Y,35.0,,
+2010,SVC,Bofetti Impianti S.R.L,Arvedi,Italy,Industry,N,33.0,20.0,330.0
+2010,SVC,Altalink,Hansman Lake,Canada,Utility,N,240.0,100.0,200.0
+2010,SVC,Rio Tinto,Oyu Tolgoi 1,Mongolia,Utility,N,220.0,100.0,100.0
+2010,SVC,Rio Tinto,Oyu Tolgoi 2,Mongolia,Utility,N,220.0,100.0,100.0
+2010,SVC,Namakwa Sands,Namakwa Sands Upgrade,South Africa,Industry,Y,33.0,,
+2010,SVC,Bangor Hydro,Chester Upgrade,USA,Utility,Y,345.0,0.0,12.5
+2010,FSC,Eskom,Komsberg 1 Upgrade,South Africa,Utility,Y,400.0,,
+2010,FSC,Eskom,Komsberg 2 Upgrade,South Africa,Utility,Y,400.0,,
+2010,SVC,Pacific Gas & Electric,Garberville,USA,Utility,N,60.0,10.0,20.0
+2010,SVC,Pacific Gas & Electric,Big River,USA,Utility,N,60.0,10.0,20.0
+2010,SVC,Eletronorte,Sao Luis 2,Brazil,Utility,N,230.0,100.0,150.0
+2010,SVC,Danieli,Posco Special Steel,S.Korea,Industry,N,30.0,0.0,95.0
+2010,SVC,Comisión Federal de Electricidad,Topilejo Upgrade,Mexico,Utility,Y,400.0,,
+2010,SVC,Eyser de Mexico,Tyasa,Mexico,Industry,N,14.0,0.0,90.0
+2010,SVC,Shyeh Sheng,SSF Steel,T aiwan,Industry,N,23.0,0.0,80.0
+2010,SVC,Rio Tinto,Juna Downs,Australia,Utility,N,220.0,100.0,100.0
+2010,SVC,Transmantaro,Socabaya 1,Peru,Utility,N,220.0,100.0,300.0
+2010,FSC,Transmantaro,Cotaruse-Mantaro 2,Peru,Utility,N,220.0,,387.0
+2010,FSC,Transmantaro,Cotaruse-Mantaro 1,Peru,Utility,N,220.0,,387.0
+2010,FSC,Transmantaro,Cotaruse-Socabaya 2,Peru,Utility,N,220.0,,415.0
+2010,FSC,Transmantaro,Cotaruse-Socabaya 1,Peru,Utility,N,220.0,,415.0
+2010,SVC,Eletronorte,Vilhena,Brazil,Utility,N,230.0,50.0,100.0
+2010,STATCOM,Concast,South Steel,Saudi Arabia,Industry,N,33.0,0.0,175.0
+2010,STATCOM PCS6000,ESB International (ESBI),Fullabrook Down,England,Renewable,N,33.0,13.0,26.0
+2009,SVC,Calvisano,Calvisano,Italy,Industry,N,32.0,0.0,135.0
+2009,SVC,National Grid USA,Leeds Upgrade,USA,Utility,Y,345.0,,
+2009,SVC,Statnett,Kvandal Upgrade,Norway,Utility,Y,420.0,,
+2009,SVC,Statnett,Nedre Rössåga Upgrade,Norway,Utility,Y,420.0,,
+2009,SVC,Columbus Stainless,Columbus Mill Upgrade,South Africa,Rolling Mill,Y,33.0,0.0,55.0
+2009,FSC,Hydro-Québec,Chamouchouane Nord 1 Upgrade,Canada,Utility,Y,735.0,,35.0
+2009,FSC,Hydro-Québec,Chamouchouane Nord 2 Upgrade,Canada,Utility,Y,735.0,,35.0
+2009,FSC,Hydro-Québec,Chamouchouane Nord 3 Upgrade,Canada,Utility,Y,735.0,,35.0
+2009,SVC,Transelec,Polpaico,Chile,Utility,N,220.0,65.0,100.0
+2009,SVC,Hydro-Québec,Chenier 1,Canada,Utility,N,735.0,300.0,300.0
+2009,SVC,Hydro-Québec,Chenier 2,Canada,Utility,N,735.0,300.0,300.0
+2009,SVC,Hydro One,Detweiler,Canada,Utility,N,230.0,30.0,350.0
+2009,FSC,San Diego Gas & Electric,Suncrest,USA,Utility,N,525.0,,975.0
+2009,FSC,North China Grid Company,Hangu 1,China,Utility,N,500.0,,417.0
+2009,FSC,North China Grid Company,Hangu 2,China,Utility,N,500.0,,417.0
+2009,SVC,Comisión Federal de Electricidad,La Ventosa (PID 1220),Mexico,Utility,N,400.0,300.0,300.0
+2009,STATCOM,Transelec,Cerro Navia,Chile,Utility,N,220.0,65.0,140.0
+2009,SVC,Abengoa,Tucurui-Manaus (Lot C),Brazil,Utility,N,500.0,200.0,200.0
+2009,FSC,Idaho Power,Borah Upgrade,USA,Utility,Y,345.0,,130.0
+2009,SVC,Société Nationale d'Électricité (SNEL),Karavia,Congo,Utility,N,220.0,75.0,75.0
+2009,SVC,Visa Steel,VISA Steel,India,Industry,N,33.0,45.0,90.0
+2009,SVC,Comisión Federal de Electricidad,Escarcega (PID 1204),Mexico,Utility,N,400.0,300.0,300.0
+2009,FSC,Power Grid Corporation of India (PGCI,R) aipur 3,India,Utility,N,400.0,,197.0
+2009,FSC,Power Grid Corporation of India (PGCI,R) aipur 4,India,Utility,N,400.0,,197.0
+2009,SVC,Comisión Federal de Electricidad,El Palmar (PID 1201),Mexico,Utility,N,230.0,50.0,150.0
+2009,SVC,Oncor,Renner 2,USA,Utility,N,138.0,265.0,300.0
+2009,STATCOM,Danieli,UniSteel,Kuwait,Industry,N,33.0,0.0,164.0
+2009,STATCOM,Danieli,GHC2,Un. Arab Emira,Industry,N,33.0,0.0,164.0
+2009,SVC,Tung Ho,Tao Yuan Plant,T aiwan,Industry,N,33.0,0.0,165.0
+2009,SVC,Koniambo Nickel SAS,Koniambo Nickel SAS,New Caledonia,Industry,N,63.0,0.0,200.0
+2009,STATCOM PCS6000,Balfour Beatty Engineering Services Lt,Arecleoch,Scotland,Renewable,N,33.0,54.0,54.0
+2008,FSC,Eskom,Beta 1,South Africa,Utility,N,765.0,,1350.0
+2008,FSC,Eskom,Beta 2,South Africa,Utility,N,765.0,,1350.0
+2008,FSC,Eskom,Alpha 1,South Africa,Utility,N,765.0,,450.0
+2008,FSC,Eskom,Alpha 2,South Africa,Utility,N,765.0,,450.0
+2008,FSC,Eskom,Perseus,South Africa,Utility,N,765.0,,900.0
+2008,FSC,Eskom,Mercury,South Africa,Utility,N,765.0,,1125.0
+2008,SVC,ArcelorMittal,Ispat Mexicana,Mexico,Industry,N,69.0,177.0,48.0
+2008,FSC,Florida Power & Light Energy,Horse Hollow,USA,Utility,N,345.0,,400.0
+2008,SVC,Pilsen Steel,Pilsen Steel,Czech Republi,Industry,N,22.0,0.0,70.0
+2008,SVC,ArcelorMittal,Mittal Steel,Mexico,Industry,N,69.0,0.0,225.0
+2008,SVC,Salem Steel,Salem Steel,India,Industry,N,35.0,0.0,60.0
+2008,SVC,Oncor,Renner 1,USA,Utility,N,138.0,265.0,300.0
+2008,FSC,Empresa Nacional de Electricidade,Gabela-Quileva,Angola,Utility,N,220.0,,30.0
+2008,SVC,Abengoa,Cajamarca,Peru,Utility,N,220.0,60.0,120.0
+2008,SVC,Altalink,Langdon Upgrade,Canada,Utility,Y,240.0,,
+2008,SVC,Hydro One,Kirkland Lake,Canada,Utility,N,115.0,0.0,200.0
+2008,SVC,Lo Toun Steel,Lo Toun,T aiwan,Industry,N,23.0,0.0,125.0
+2008,SVC,Pacific Gas & Electric,Humboldt,USA,Utility,N,60.0,25.0,50.0
+2008,FSC,Isolux,Ribeiro Goncalves 3,Brazil,Utility,N,500.0,,445.0
+2008,FSC,Isolux,Ribeiro Goncalves 4,Brazil,Utility,N,500.0,,427.0
+2008,SVC,LKAB,LKAB Kiruna,Sweden,Industry,N,6.0,0.0,35.0
+2008,SVC,American Electric Power,Rio Pecos,USA,Utility,N,69.0,40.0,50.0
+2008,FSC,Fingrid,Toumela,Finland,Utility,N,400.0,,301.0
+2008,FSC,Fingrid,Asmunti,Finland,Utility,N,400.0,,369.0
+2008,SVC,Hai Kwang,Hai-Kwang,T aiwan,Industry,N,23.0,0.0,65.0
+2008,FSC,Comisión Federal de Electricidad,Lázaro Cárdenaz,Mexico,Utility,N,400.0,,506.0
+2008,FSC,Comisión Federal de Electricidad,Piterera 1,Mexico,Utility,N,400.0,,232.0
+2008,FSC,Comisión Federal de Electricidad,Piterera 2,Mexico,Utility,N,400.0,,232.0
+2008,SVC,Nstar,Barnstable,USA,Utility,N,115.0,113.0,225.0
+2008,STATCOM,Asia Special Steel,Asia Special Steel,Japan,Industry,N,22.0,10.0,90.0
+2008,SVC,Beshay Steel,Esisco 2,Egypt,Industry,N,33.0,0.0,195.0
+2008,SVC,Oncor,Parkdale 1,USA,Utility,N,138.0,265.0,300.0
+2008,SVC,Oncor,Parkdale 2,USA,Utility,N,138.0,265.0,300.0
+2008,SVC,Duferdofin,Duferdofin,Italy,Industry,N,30.0,0.0,175.0
+2008,FSC,Hydro One,Nobel 1,Canada,Utility,N,500.0,,750.0
+2008,FSC,Hydro One,Nobel 2,Canada,Utility,N,500.0,,750.0
+2008,SVC,Magnitogorsk Iron & Steel (MMK),MMK,Turkey,Industry,N,35.0,0.0,330.0
+2008,SVC,OneSteel,OneSteel,Australia,Industry,N,22.0,0.0,115.0
+2008,SVC,Danieli,AMET,Russia,Industry,N,33.0,0.0,100.0
+2008,FSC,Eskom,Iziko 1,South Africa,Utility,N,400.0,,679.0
+2008,FSC,Eskom,Iziko 2,South Africa,Utility,N,400.0,,697.0
+2008,FSC,Eskom,Serumula,South Africa,Utility,N,400.0,,879.0
+2008,SVC,Western Power,Southern Terminal,Australia,Utility,N,132.0,100.0,200.0
+2007,SVC,Interconexión Eléctrica (ISA),Caño Limón,Colombia,Utility,N,35.0,0.0,85.0
+2007,SVC,Beshay Steel,Esisco 1,Egypt,Industry,N,33.0,0.0,195.0
+2007,FSC,Salt River Project,Silverking,USA,Utility,N,500.0,,314.0
+2007,FSC,Salt River Project,Coronado,USA,Utility,N,500.0,,314.0
+2007,SVC,Kosco,Kosco,S.Korea,Industry,N,22.0,0.0,140.0
+2007,SVC,Dominion Power,Colington Upgrade,USA,Utility,Y,115.0,,
+2007,SVC,Cemtas,Cemtas,Turkey,Industry,N,35.0,0.0,35.0
+2007,SVC,Jindal Steel Power (JSPL),Jindal,India,Industry,N,33.0,0.0,200.0
+2007,STATCOM,Siam Yamato Steel,Siam Yamato Steel,Thailand,Industry,N,22.0,0.0,120.0
+2007,TCSC,Svenska Kraftnät,Stöde Upgrade,Sweden,Utility,Y,400.0,,
+2007,SVC,Pervouralsk,Pervouralsk,Russia,Industry,N,35.0,0.0,110.0
+2007,SVC,Emirate Steel,Emirate Steels,Un. Arab Emira,Industry,N,33.0,0.0,65.0
+2007,SVC,Niksic,Niksic,Montenegro,Industry,N,35.0,0.0,90.0
+2007,FSC,Ukrenergo,Dzjankoj,Ukraine,Utility,N,330.0,,189.0
+2007,SVC,Bhushan Steel,Bhushan,India,Industry,N,33.0,0.0,185.0
+2007,FSC,Pacific Gas & Electric,Vaca Dixon 2 Upgrade,USA,Utility,Y,500.0,,
+2007,SVC,Eskom,Hydra 1 Upgrade,South Africa,Utility,Y,400.0,,
+2007,SVC,Eskom,Hydra 2 Upgrade,South Africa,Utility,Y,400.0,,
+2007,SVC,Eskom,Perseus 1 Upgrade,South Africa,Utility,Y,400.0,,
+2007,SVC,Eskom,Perseus 2 Upgrade,South Africa,Utility,Y,400.0,,
+2007,SVC,Eskom,Poseidon Upgrade,South Africa,Utility,Y,400.0,,
+2007,DynaPeaQ,UK Power Networks,Norfolk Dynamic Energy Storage,United Kingdo,Utility,N,11.0,0.6,0.7
+2007,SVC,Icdas,Istanbul 3,Turkey,Industry,N,35.0,0.0,300.0
+2007,SVC,Statnett,Hasle Upgrade,Norway,Utility,Y,420.0,,
+2007,SVC,Powerlink,W oolooga,Australia,Utility,N,275.0,100.0,350.0
+2007,SVC,Statnett,Viklandet,Norway,Utility,N,420.0,250.0,250.0
+2007,SVC,Statnett,Tunnsjödal,Norway,Utility,N,420.0,250.0,250.0
+2007,SVC,First Energy,Atlantic Upgrade,USA,Utility,Y,230.0,,
+2007,SVC,Commercial Metals Company,Mesa,USA,Industry,N,35.0,0.0,40.0
+2007,FSC,Idaho Power,Three Mile Knoll,USA,Utility,N,345.0,,465.0
+2007,SVC,Manitoba Hydro,Birchtree,Canada,Utility,N,230.0,60.0,185.0
+2007,STATCOM,Société Nationale des Chemins de fer,Mraensçnaaisy (SNCF),France,Utility,N,63.0,15.0,15.0
+2007,FSC,Furnas,Itumbiara,Brazil,Utility,N,230.0,,34.0
+2007,FSC,Furnas,Rio Verde 1,Brazil,Utility,N,230.0,,34.0
+2007,FSC,Furnas,Rio Verde 2,Brazil,Utility,N,230.0,,37.0
+2007,SVC,London Underground (LUL),Wood Green,United Kingdo,Utility,N,11.0,16.0,16.0
+2007,SVC,Mineracao Onca Puma,Onca Puma 1,Brazil,Industry,N,35.0,0.0,140.0
+2007,SVC,Mineracao Onca Puma,Onca Puma 2,Brazil,Industry,N,35.0,0.0,140.0
+2007,SVC,Luz y Fuerza,La Paz,Mexico,Utility,N,400.0,300.0,300.0
+2007,STATCOM PCS6000,Nordex UK Ltd,Little Cheyne Court,England,Renewable,N,33.0,24.0,24.0
+2007,STATCOM PCS6000,Nordex UK Ltd,Scout Moor,England,Renewable,N,33.0,24.0,24.0
+2006,SVC,Ramsharup,Ramsharup,India,Industry,N,33.0,0.0,80.0
+2006,SVC,Nucor,Nucor Plymouth Upgrade,USA,Industry,Y,35.0,0.0,32.0
+2006,SVC,Electranet,South East 1 Upgrade,Australia,Utility,Y,275.0,0.0,80.0
+2006,SVC,Electranet,South East 2 Upgrade,Australia,Utility,Y,275.0,,
+2006,SVC,Tucson Electric Power,Northeast,USA,Utility,N,138.0,75.0,200.0
+2006,SVC,Xcel Energy,Tuco,USA,Utility,N,230.0,50.0,150.0
+2006,SVC,Allegheny Power,Black Oak,USA,Utility,N,500.0,145.0,575.0
+2006,FSC,Power Grid Corporation of India (PGCI,R) anchi 1,India,Utility,N,400.0,,396.0
+2006,FSC,Power Grid Corporation of India (PGCI,R) anchi 2,India,Utility,N,400.0,,396.0
+2006,FSC,Hydro-Québec,Des Hetres,Canada,Utility,N,230.0,,108.0
+2006,FSC,Abengoa,Itacaiunas,Brazil,Utility,N,500.0,,431.0
+2006,SVC,NSC-Tisco,Tisco,China,Industry,N,35.0,0.0,100.0
+2006,SVC,Yazici Steel,Yazici Steel,Turkey,Industry,N,32.0,0.0,100.0
+2006,SVC,Bao Steel,Bao Steel,China,Industry,N,33.0,0.0,180.0
+2006,SVC,Al Fouladh,El Fouladh,Tunisia,Industry,N,11.0,0.0,45.0
+2006,SVC,Pepco (PHI),Dennis,USA,Utility,N,230.0,100.0,150.0
+2006,SVC,PEME,SSSRM,Oman,Industry,N,33.0,30.0,45.0
+2006,SVC,Duke Power,Beckerdite,USA,Utility,N,100.0,100.0,300.0
+2006,SVC,Balboa,Balboa DC,Spain,Industry,N,20.0,0.0,80.0
+2006,SVC,American Electric Power,Bluff Creek,USA,Utility,N,35.0,40.0,50.0
+2006,SVC,Saudi Electricity Company,Medinah South,Saudi Arabia,Utility,N,110.0,60.0,600.0
+2006,SVC,Saudi Electricity Company,Jamia,Saudi Arabia,Utility,N,110.0,60.0,600.0
+2006,SVC,Saudi Electricity Company,Faisaliyah,Saudi Arabia,Utility,N,110.0,60.0,600.0
+2006,SVC,Bergara,Bergara,Spain,Industry,N,30.0,0.0,120.0
+2006,SVC,Halyvourgiki,Halyvourgiki,Greece,Industry,N,22.0,0.0,115.0
+2006,SVC,MRM,Gerdau Ameristeel,Canada,Industry,N,13.0,0.0,80.0
+2006,SVC,P Madrid,P Madrid,Spain,Industry,N,30.0,0.0,120.0
+2006,SVC,Corus Steel,Port Talbot 1 Upgrade,United Kingdo,Industry,Y,11.0,,
+2006,SVC,Corus Steel,Port Talbot 2 Upgrade,United Kingdo,Industry,Y,11.0,,
+2006,SVC,Balboa,Balboa,Spain,Industry,N,33.0,0.0,200.0
+2006,STATCOM PCS6000,Vestas Celtic Wind Technology Ltd,Glanlee - Midas,Ireland,Renewable,N,21.0,12.5,12.5
+2006,STATCOM PCS6000,BASF PETRONAS Chemicals,GTREM,Malaysia,Industry,N,11.0,13.0,13.0
+2006,STATCOM PCS6000,Gunung Gahapi Sakti PT,Gahapi Arc Furnace,Indonesia,Industry,N,20.0,10.0,30.0
+2006,STATCOM PCS6000,Vestas Celtic Wind Technology Ltd,Braes of Doune,Scotland,Renewable,N,33.0,25.0,25.0
+2006,STATCOM PCS6000,British Columbia Transmission Corpora,tBioCnTC,Canada,Utility,N,138.0,72.0,72.0
+2005,SVC,Alfa Acciai,Alfa Acciai,Italy,Industry,N,23.0,0.0,163.0
+2005,STATCOM,Gerdau,Gerdau Charlotte,USA,Industry,N,13.0,0.0,64.0
+2005,SVC,Comisión Federal de Electricidad,Culiacan 2 Upgrade,Mexico,Utility,Y,230.0,,
+2005,SVC,Belgo,Piracicaba,Brazil,Industry,N,33.0,10.0,130.0
+2005,SVC,American Electric Power,Crane,USA,Utility,N,69.0,40.0,50.0
+2005,SVC,American Electric Power,Dilley,USA,Utility,N,69.0,40.0,50.0
+2005,SVC,American Electric Power,Airline,USA,Utility,N,69.0,40.0,50.0
+2005,SVC,Transelec,Puerto Montt,Chile,Utility,N,220.0,40.0,70.0
+2005,STATCOM,Voest Alpine,ZPSS,China,Industry,N,35.0,0.0,164.0
+2005,FSC,Abengoa,S.Joao do Piaui,Brazil,Utility,N,500.0,,376.0
+2005,FSC,Isolux,Ribeiro Goncalves 1,Brazil,Utility,N,500.0,,425.0
+2005,FSC,Isolux,Ribeiro Goncalves 2,Brazil,Utility,N,500.0,,462.0
+2005,SVC,Global Steel Wire,GSW /f10001,Spain,Industry,N,30.0,0.0,145.0
+2005,FSC,San Diego Gas & Electric,Imperial Valley East,USA,Utility,N,500.0,,372.0
+2005,SVC,Nervacero,Nervacero,Spain,Industry,N,32.0,0.0,140.0
+2005,SVC,Tung Ho,Tung Ho,T aiwan,Industry,N,23.0,0.0,90.0
+2005,SVC,Insig,Insig,Iran,Industry,N,33.0,0.0,105.0
+2004,SVC,Comisión Federal de Electricidad,Moctezuma,Mexico,Utility,N,230.0,90.0,300.0
+2004,SVC,Comisión Federal de Electricidad,Pie de la Cuesta,Mexico,Utility,N,230.0,50.0,150.0
+2004,SVC,Comisión Federal de Electricidad,Cerro de Oro,Mexico,Utility,N,400.0,300.0,300.0
+2004,SVC,Deacero,Deacero Celaya,Mexico,Industry,N,35.0,30.0,110.0
+2004,FSC,Pacific Gas & Electric,Midway 4,USA,Utility,N,500.0,,504.0
+2004,SVC,Réseau de Transport d'Électricité (RTE,)Poteau Rouge,France,Utility,N,225.0,100.0,200.0
+2004,SVC,Réseau de Transport d'Électricité (RTE,)Plaine Haute,France,Utility,N,225.0,50.0,100.0
+2004,SVC,Golden Valley Electric Association,Jarvis Creek,USA,Utility,N,138.0,8.0,45.0
+2004,SVC,Vai Technika,MMK 1,Russia,Industry,N,35.0,0.0,180.0
+2004,SVC,Vai Technika,MMK 2,Russia,Industry,N,35.0,0.0,180.0
+2004,FSC,Idaho Power,Goshen,USA,Utility,N,345.0,,465.0
+2004,SVC,Outokumpu,Outokumpu Upgrade,Finland,Rolling Mill,Y,21.0,,
+2004,SVC,Outokumpu,Outokumpu Upgrade,Finland,Industry,Y,20.0,,
+2004,SVC,Outokumpu,Outokumpu,Finland,Industry,N,20.0,0.0,140.0
+2004,FSC,Southern Vietnam Power Project Mana,gTeamneDnitnBhoard,Vietnam,Utility,N,500.0,,101.0
+2004,SVC,Comisión Federal de Electricidad,Canada (PID 806),Mexico,Utility,N,400.0,90.0,300.0
+2004,SVC,Carinox,Carinox,Belgium,Industry,N,33.0,0.0,190.0
+2004,STATCOM PCS6000,PT International Nickel Indonesia Tbk (,PINTCInOco),Indonesia,Industry,N,33.0,64.0,64.0
+2003,FSC,San Diego Gas & Electric,Imperial Valley West,USA,Utility,N,500.0,,519.0
+2003,SVC,Powerlink,W oree,Australia,Utility,N,132.0,80.0,150.0
+2003,SVC,Danieli,BH Steel,Italy,Industry,N,35.0,0.0,120.0
+2003,SVC,Eramet,Nouvelle Caledonie,New Caledonia,Industry,N,63.0,2.0,64.0
+2003,FSC,Pacific Gas & Electric,Vaca Dixon 1 Upgrade,USA,Utility,Y,500.0,,
+2003,SVC,Colakoglu,Colakoglu,Turkey,Industry,N,35.0,0.0,310.0
+2003,SVC,Egyptian American Steel Rolling Comp,aEnAySRCO,Egypt,Industry,N,33.0,0.0,160.0
+2003,FSC,Saudi Consolidated Electricity Compan,yE(aSsCt ESCheOd)gum-Riyadh,Saudi Arabia,Utility,N,380.0,,503.0
+2003,FSC,Saudi Consolidated Electricity Compan,yE(aSsCt ESCheOd)gum-Riyadh,Saudi Arabia,Utility,N,380.0,,503.0
+2003,FSC,Saudi Consolidated Electricity Compan,y E ( aS s Ct EF Ca r Oa s) - A l K h a r j,Saudi Arabia,Utility,N,380.0,,424.0
+2003,FSC,Saudi Consolidated Electricity Compan,y E ( aS s Ct EF Ca r Oa s) - A l K h a r j,Saudi Arabia,Utility,N,380.0,,424.0
+2003,FSC,Transener,Olavarria 1,Argentina,Utility,N,500.0,,299.0
+2003,FSC,Transener,Olavarria 2,Argentina,Utility,N,500.0,,222.0
+2003,FSC,Transener,Olavarria 3,Argentina,Utility,N,500.0,,199.0
+2003,FSC,Transener,Olavarria 4,Argentina,Utility,N,500.0,,201.0
+2003,FSC,Transener,Choele Choel 1,Argentina,Utility,N,500.0,,313.0
+2003,FSC,Transener,Choele Choel 2,Argentina,Utility,N,500.0,,314.0
+2003,FSC,Transener,Choele Choel 3,Argentina,Utility,N,500.0,,298.0
+2003,FSC,Transener,Choele Choel 4,Argentina,Utility,N,500.0,,248.0
+2003,FSC,Nevada Power,McCullough,USA,Utility,N,500.0,,453.0
+2003,SVC,Powerlink,Nebo Upgrade,Australia,Utility,Y,275.0,,
+2003,SVC,Pacific Gas & Electric,Potrero,USA,Utility,N,115.0,100.0,240.0
+2003,SVC,ArcelorMittal,Olaberria,Spain,Industry,N,30.0,0.0,150.0
+2003,FSC,Power Grid Corporation of India (PGCI,R) aipur-Rourkela Circuit 1,India,Utility,N,400.0,,394.0
+2003,FSC,Power Grid Corporation of India (PGCI,R) aipur-Rourkela Circuit 2,India,Utility,N,400.0,,394.0
+2003,TCSC,Power Grid Corporation of India (PGCI,R) aipur-Rourkela 1,India,Utility,N,400.0,,71.0
+2003,TCSC,Power Grid Corporation of India (PGCI,R) aipur-Rourkela 2,India,Utility,N,400.0,,71.0
+2003,SVC,Transgrid,Sydney West,Australia,Utility,N,330.0,100.0,280.0
+2003,STATCOM,Austin Energy,Holly,USA,Utility,N,138.0,80.0,110.0
+2002,SVC,Comisión Federal de Electricidad,Temascal Upgrade,Mexico,Utility,Y,400.0,,
+2002,SVC,Comisión Federal de Electricidad,Acatlan Upgrade,Mexico,Utility,Y,400.0,,
+2002,SVC,Nanjing Iron & Steel,Nisco,China,Industry,N,33.0,0.0,88.0
+2002,SVC,Allegheny,Allegheny Ludlum,USA,Industry,N,25.0,10.0,100.0
+2002,FSC,Hydro-Québec,Bergeronnes Upgrade,Canada,Utility,Y,735.0,,413.0
+2002,FSC,BC Hydro,McLeese 1 Upgrade,Canada,Utility,Y,500.0,,616.0
+2002,FSC,BC Hydro,McLeese 2 Upgrade,Canada,Utility,Y,500.0,,616.0
+2002,SVC,Celsa,Celsa,Spain,Industry,N,25.0,0.0,135.0
+2002,SVC,High-Speed 1,Barking 1,United Kingdo,Utility,N,25.0,5.0,40.0
+2002,SVC,High-Speed 1,Barking 2,United Kingdo,Utility,N,25.0,5.0,40.0
+2002,SVC,High-Speed 1,Singlewell 3,United Kingdo,Utility,N,25.0,5.0,40.0
+2002,SVC,Icdas,Icdas,Turkey,Industry,N,35.0,0.0,180.0
+2002,FSC,Eskom,Komsberg 1,South Africa,Utility,N,400.0,,710.0
+2002,FSC,Eskom,Komsberg 2,South Africa,Utility,N,400.0,,650.0
+2002,FSC,Eskom,Proteus 1,South Africa,Utility,N,400.0,,230.0
+2002,FSC,Eskom,Bacchus 1,South Africa,Utility,N,400.0,,247.0
+2002,SVC,Saudi Electricity Company,Muhayil,Saudi Arabia,Utility,N,132.0,10.0,50.0
+2002,SVC,Comisión Federal de Electricidad,Durango Sur,Mexico,Utility,N,230.0,50.0,150.0
+2002,SVC,Comisión Federal de Electricidad,Camargo 2,Mexico,Utility,N,230.0,50.0,200.0
+2002,SVC,Posco,SMP 3 Pohang,S.Korea,Industry,N,22.0,0.0,70.0
+2001,FSC,Pacific Gas & Electric,Gates North 1,USA,Utility,N,500.0,,584.0
+2001,FSC,Pacific Gas & Electric,Gates North 2,USA,Utility,N,500.0,,584.0
+2001,FSC,Pacific Gas & Electric,Gates South 3,USA,Utility,N,500.0,,545.0
+2001,FSC,Pacific Gas & Electric,Gates South 4,USA,Utility,N,500.0,,545.0
+2001,FSC,Enelven,El Tablazo 1,Venezuela,Utility,N,400.0,,126.0
+2001,FSC,Enelven,El Tablazo 2,Venezuela,Utility,N,400.0,,126.0
+2001,FSC,Enelven,El Tablazo 3,Venezuela,Utility,N,400.0,,126.0
+2001,FSC,Enelven,Yaracuy 1,Venezuela,Utility,N,400.0,,197.0
+2001,FSC,Enelven,Yaracuy 2,Venezuela,Utility,N,400.0,,197.0
+2001,SVC,Pepco (PHI),Cardiff,USA,Utility,N,230.0,100.0,150.0
+2001,SVC,SMS,Posco 2,S.Korea,Industry,N,22.0,0.0,120.0
+2001,SVC,Meishan,Meishan 2,China,Industry,N,30.0,2.0,24.0
+2001,FSC,Pacific Gas & Electric,Round Mountain South 3,USA,Utility,N,500.0,,444.0
+2001,FSC,Pacific Gas & Electric,Round Mountain South 4,USA,Utility,N,500.0,,444.0
+2001,SVC,Taiyuan Iron & Steel,Taiyuan 1,China,Rolling Mill,N,35.0,0.0,40.0
+2001,FSC,Pacific Gas & Electric,Table Mountain North 1,USA,Utility,N,500.0,,444.0
+2001,FSC,Pacific Gas & Electric,Table Mountain North 2,USA,Utility,N,500.0,,444.0
+2001,SVC,Allegheny-Longdoz,ALZ via Voest Alpine,Belgium,Industry,N,32.0,15.0,125.0
+2001,FSC,Empresa Amazonense de Transmissã,MdaerEabnáer2gia (EATE),Brazil,Utility,N,500.0,,279.0
+2001,FSC,Empresa Amazonense de Transmissã,A d ç e a i El â n n e d r i g a i a 1 ( E A T E ),Brazil,Utility,N,500.0,,315.0
+2001,FSC,Empresa Amazonense de Transmissã,AdçeaEilânnedrigaia2(EATE),Brazil,Utility,N,500.0,,435.0
+2001,FSC,Empresa Amazonense de Transmissã,PdresEidnenrgteiaD(EutAraTE),Brazil,Utility,N,500.0,,435.0
+2001,SVC,Ferriere Nord,Ferriere Nord,Italy,Industry,N,21.0,0.0,90.0
+2001,SVC,High-Speed 1,Singlewell 4,United Kingdo,Utility,N,25.0,5.0,40.0
+2001,SVC,Pacific Gas & Electric,Newark,USA,Utility,N,230.0,100.0,220.0
+2001,STATCOM,Français (SNCF),Evron,France,Utility,N,90.0,16.0,16.0
+2000,SVC,Cascade Steel,Cascade Steel,USA,Industry,N,34.0,0.0,90.0
+2000,SVC,(NYSEG),Fraser Upgrade,USA,Utility,Y,345.0,,
+2000,FSC,North China Power (NCPG),Dafang 1,China,Utility,N,500.0,,372.0
+2000,FSC,North China Power (NCPG),Dafang 2,China,Utility,N,500.0,,372.0
+2000,SVC,CERN,CERN,Switzerland,Utility,N,18.0,20.0,130.0
+2000,SVC,High-Speed 1,Sellingde,United Kingdo,Utility,N,33.0,80.0,170.0
+2000,SVC,High-Speed 1,Singlewell 1,United Kingdo,Utility,N,25.0,5.0,40.0
+2000,SVC,High-Speed 1,Singlewell 2,United Kingdo,Utility,N,25.0,5.0,40.0
+2000,SVC,London Underground (LUL),Neasden 1,United Kingdo,Utility,N,22.0,37.0,23.0
+2000,SVC,London Underground (LUL),Neasden 2,United Kingdo,Utility,N,22.0,37.0,23.0
+2000,SVC,London Underground (LUL),Neasden 3,United Kingdo,Utility,N,22.0,37.0,23.0
+2000,SVC,London Underground (LUL),Bethnal Green,United Kingdo,Utility,N,22.0,27.0,33.0
+2000,SVC,London Underground (LUL),Greenwich,United Kingdo,Utility,N,22.0,27.0,33.0
+2000,FSC,Société de Gestion de l'Energie de Ma,Manattalim(S1OGEM),Senegal,Utility,N,225.0,,22.5
+2000,FSC,Société de Gestion de l'Energie de Ma,Manattalim(S2OGEM),Senegal,Utility,N,225.0,,22.5
+2000,FSC,Société de Gestion de l'Energie de Ma,Kanatyaelis(SOGEM),Mali,Utility,N,225.0,,22.5
+2000,STATCOM,Outokumpu,Outokumpu,Finland,Industry,N,33.0,0.0,164.0
+2000,SVC,Kaptan Demir Celik,Kaptan,Turkey,Industry,N,32.0,100.0,100.0
+2000,SVC,Minerva Antamina,Vizcarra,Peru,Utility,N,220.0,45.0,90.0
+1999,STATCOM,Amprion,Trierer Stahlwerk,Germany,Industry,N,20.0,0.0,38.0
+1999,FSC,Transener,Recreo,Argentina,Utility,N,500.0,,240.0
+1999,FSC,Société de Gestion de l'Energie de Ma,Da n a t g a a l i n ( a S O1 G E M ),Senegal,Utility,N,225.0,,22.5
+1999,FSC,Société de Gestion de l'Energie de Ma,Da n a t g a a l i n ( a S O2 G E M ),Senegal,Utility,N,225.0,,22.5
+1999,FSC,Idaho Power,Ontario,USA,Utility,N,230.0,,135.0
+1999,SVC,Nampower,AUAS,Namibia,Utility,N,400.0,250.0,80.0
+1999,SVC,Powerlink,Blackwall,Australia,Utility,N,275.0,50.0,250.0
+1999,SVC,Powerlink,Braemar,Australia,Utility,N,275.0,80.0,150.0
+1999,SVC,Siderurgica Balboa,Aceralia,Spain,Industry,N,30.0,0.0,72.0
+1999,SVC,Vattenfall,Hofors,Sweden,Industry,N,33.0,0.0,105.0
+1999,STATCOM,Central and South West Corp,Eagle Pass BtB,USA,Utility,N,138.0,72.0,72.0
+1999,SVC,PHI,Indian River,USA,Utility,N,230.0,100.0,150.0
+1999,SVC,PHI,Nelson,USA,Utility,N,138.0,100.0,150.0
+1999,SVC,ISO,Ispat,USA,Utility,N,138.0,0.0,200.0
+1999,SVC,Outokumpu,Outokumpu Stainless,Finland,Industry,N,10.0,0.0,164.0
+1998,SVC,Posco,Kwang Yang Minimill 1,S.Korea,Rolling Mill,N,22.0,0.0,83.0
+1998,SVC,Posco,Kwang Yang Minimill 2,S.Korea,Rolling Mill,N,22.0,0.0,83.0
+1998,SVC,Posco,Kwang Yang Minimill 3,S.Korea,Rolling Mill,N,22.0,0.0,83.0
+1998,SVC,Posco,Kwang Yang Minimill 4,S.Korea,Rolling Mill,N,22.0,0.0,83.0
+1998,FSC,Eletronorte,N/S Intertie-Miracema,Brazil,Utility,N,500.0,,161.0
+1998,FSC,Eletronorte,N/S Intertie-Colinas 1,Brazil,Utility,N,500.0,,161.0
+1998,FSC,Eletronorte,N/S Intertie-Colinas 2,Brazil,Utility,N,500.0,,161.0
+1998,FSC,Eletronorte,N/S Intertie-Imperatriz 2,Brazil,Utility,N,500.0,,161.0
+1998,FSC,Eletronorte,N/S Intertie-Marabá 1,Brazil,Utility,N,500.0,,348.0
+1998,TCSC,Eletronorte,N/S Intertie-Imperatriz,Brazil,Utility,N,500.0,,107.0
+1998,SVC,Evraz,EVRAZ,Canada,Industry,N,15.0,0.0,75.0
+1998,SVC,Panzhihua Iron & Steel,Panzhihua 2,China,Rolling Mill,N,11.0,0.0,55.0
+1998,SVC,Schwermetall Halbzeugwerk,Schwermetall Halbzeugwerk,Germany,Rolling Mill,N,10.0,,24.0
+1998,SVC,Kepco,Seo-Daegu,S.Korea,Utility,N,345.0,100.0,100.0
+1998,SVC,Comisión Federal de Electricidad,Nizuc,Mexico,Utility,N,115.0,30.0,100.0
+1998,SVC,Comisión Federal de Electricidad,Texcoco,Mexico,Utility,N,400.0,90.0,300.0
+1998,SVC,Comisión Federal de Electricidad,Güemez,Mexico,Utility,N,400.0,90.0,300.0
+1998,SVC,Comisión Federal de Electricidad,T opilejo,Mexico,Utility,N,400.0,90.0,300.0
+1998,FSC,Furnas,Ivaipora 6,Brazil,Utility,N,800.0,,1056.0
+1998,TCSC,Svenska Kraftnät,Stöde,Sweden,Utility,N,400.0,,493.0
+1997,SVC,Anyang Iron & Steel,Anyang,China,Industry,N,33.0,0.0,50.0
+1997,SVC,Megasteel,Megasteel 1,Malaysia,Industry,N,33.0,0.0,190.0
+1997,SVC,Megasteel,Megasteel 2,Malaysia,Industry,N,33.0,0.0,105.0
+1997,SVC,Megasteel,Megasteel 3,Malaysia,Rolling Mill,N,33.0,0.0,105.0
+1997,STATCOM,Uddeholm Tooling,Hagfors,Sweden,Industry,N,11.0,0.0,44.0
+1997,SVC,Namakwa Sands,Namakwa Steel,South Africa,Industry,N,33.0,6.0,86.0
+1996,SVC,Nisco,NISCO Yazd,Iran,Industry,N,33.0,15.0,100.0
+1996,FSC,Pacific Gas & Electric,Round Mountain 1 North,USA,Utility,N,500.0,,384.0
+1996,FSC,Pacific Gas & Electric,Round Mountain 2 North,USA,Utility,N,500.0,,384.0
+1996,SVC,Jisco,JISCO,China,Industry,N,10.0,,30.0
+1996,SVC,Comisión Federal de Electricidad,Escarcega,Mexico,Utility,N,230.0,50.0,150.0
+1996,SVC,Comisión Federal de Electricidad,Xul Ha,Mexico,Utility,N,115.0,20.0,40.0
+1996,SVC,SSAB,Borlänge,Sweden,Rolling Mill,N,11.0,0.0,55.0
+1996,SVC,UMC,Union Metal,Thailand,Industry,N,22.0,0.0,60.0
+1996,SVC,Nucor,Nucor,USA,Industry,N,35.0,0.0,106.0
+1996,SVC,Virginia Power,Colington,USA,Utility,N,115.0,30.0,167.0
+1996,SVC,Saldanha Steel,Saldanha Steel,South Africa,Industry,N,33.0,0.0,165.0
+1996,SVC,Saldanha Steel,Saldanha Steel,South Africa,Rolling Mill,N,33.0,0.0,60.0
+1996,FSC,Colbun,Colbun 1,Chile,Utility,N,230.0,,252.0
+1996,FSC,Colbun,Colbun 2,Chile,Utility,N,230.0,,252.0
+1996,FSC,Svenska Kraftnät,Isovaara,Sweden,Utility,N,400.0,,515.0
+1996,FSC,Transener,Henderson,Argentina,Utility,N,500.0,,596.0
+1996,FSC,Transener,Puelches,Argentina,Utility,N,500.0,,681.0
+1995,SVC,Nakomthai Strip Mill,NSM-Chonburi 2,Thailand,Industry,N,33.0,0.0,55.0
+1995,SVC,Sonelgaz,Naama,Algeria,Utility,N,220.0,10.0,40.0
+1995,SVC,Sonelgaz,Bechar 2,Algeria,Utility,N,220.0,10.0,40.0
+1995,SVC,Sonelgaz,Bechar 1,Algeria,Utility,N,220.0,10.0,40.0
+1995,SVC,Marcial Ucin,Aciérie del Atlantique,France,Industry,N,32.0,0.0,120.0
+1995,SVC,Hanbo Steel,Dangjin-Kun 1,S.Korea,Industry,N,33.0,0.0,80.0
+1995,SVC,Hanbo Steel,Dangjin-Kun 2,S.Korea,Industry,N,33.0,0.0,80.0
+1995,SVC,Hanbo Steel,Dangjin-Kun 3,S.Korea,Industry,N,33.0,0.0,80.0
+1995,SVC,Hanbo Steel,Dangjin-Kun 4,S.Korea,Industry,N,33.0,0.0,80.0
+1995,SVC,Hanbo Steel,Dangjin-Kun 5,S.Korea,Industry,N,33.0,0.0,80.0
+1995,SVC,Mem/Etecen,Chicolayo Oeste,Peru,Utility,N,60.0,30.0,30.0
+1995,SVC,Mem/Etecen,Trujillo Norte,Peru,Utility,N,138.0,30.0,50.0
+1995,SVC,SEC C,Riyadh 1,Saudi Arabia,Utility,N,380.0,150.0,0.0
+1995,SVC,SEC C,Riyadh 2,Saudi Arabia,Utility,N,380.0,150.0,0.0
+1995,SVC,SSAB,Oxelösund,Sweden,Rolling Mill,N,21.0,0.0,72.0
+1995,SVC,Nakomthai Strip Mill,NSM-Chonburi 1,Thailand,Industry,N,33.0,0.0,160.0
+1995,SVC,Tuscaloosa Steel,Tuscaloosa,USA,Industry,N,35.0,0.0,110.0
+1995,SVC,Hanbo Steel,Dangjin-Kun 6,S.Korea,Industry,N,22.0,5.0,75.0
+1995,SVC,Los Alamos National Lab,Los Alamos,USA,Utility,N,115.0,46.0,135.0
+1994,SVC,Furnas,Barro Alto,Brazil,Utility,N,230.0,22.0,33.0
+1994,SVC,Hydro-Québec,Chibougamau 2 ext. SVC Upgrade,Canada,Utility,Y,735.0,110.0,330.0
+1994,SVC,Hydro-Québec,Chibougamau 1 ext. SVC Upgrade,Canada,Utility,Y,735.0,110.0,330.0
+1994,SVC,Hydro-Québec,La Verendrye 2 ext. SVC Upgrade,Canada,Utility,Y,735.0,110.0,330.0
+1994,SVC,Hydro-Québec,La Verendrye 1 ext. SVC Upgrade,Canada,Utility,Y,735.0,110.0,330.0
+1994,SVC,Panzhihua Iron & Steel,Panzhihua 1,China,Rolling Mill,N,11.0,0.0,20.0
+1994,SVC,National Grid (NGC),Hams Hall,Kingdom,Utility,N,13.0,0.0,70.0
+1994,SVC,National Grid (NGC),Coventry,Kingdom,Utility,N,13.0,0.0,70.0
+1994,SVC,National Grid (NGC),Penn,Kingdom,Utility,N,13.0,0.0,70.0
+1994,SVC,National Grid (NGC),Oldbury,Kingdom,Utility,N,13.0,0.0,70.0
+1994,SVC,Salem Steel,Salem,India,Rolling Mill,N,33.0,0.0,20.0
+1994,SVC,Voest Alpine,Posco 1,S.Korea,Industry,N,22.0,0.0,120.0
+1994,SVC,Statnett,Kristiansand,Norway,Utility,N,300.0,200.0,200.0
+1994,SVC,North Star,"Kingman, AZ",USA,Industry,N,35.0,0.0,95.0
+1994,SVC,ZESA,Insukamini,Zimbabwe,Utility,N,330.0,100.0,200.0
+1993,SVC,Chin Tai Steel,Kaohsiung,T aiwan,Industry,N,22.0,5.0,70.0
+1993,SVC,ICDAS,Istanbul 2,Turkey,Industry,N,35.0,0.0,105.0
+1993,SVC,Columbus JV,Middelburg,South Africa,Industry,N,33.0,0.0,165.0
+1993,SVC,Huanghai Iron & Steel,Yantai,China,Industry,N,35.0,0.0,45.0
+1993,SVC,Shanghai Meishan Metallurg. Corp.,Meishan,China,Rolling Mill,N,10.0,0.0,45.0
+1993,SVC,Siam Iron & Steel,Bangkok,Thailand,Industry,N,11.0,0.0,50.0
+1993,SVC,Thailand (EGAT),Bang Saphan,Thailand,Utility,N,230.0,50.0,300.0
+1993,SVC,Columbus JV,Middelburg,South Africa,Rolling Mill,N,33.0,0.0,85.0
+1993,FSC,BC Hydro,McLeese,Canada,Utility,N,500.0,,605.0
+1992,SVC,Northern States Power,Forbes,USA,Utility,N,500.0,450.0,400.0
+1992,SVC,Statnett,Sylling,Norway,Utility,N,400.0,160.0,160.0
+1991,SVC,BC Hydro,Dunsmuir,Canada,Utility,N,132.0,135.0,165.0
+1991,SVC,CISPC,Fuzhou,China,Industry,N,35.0,0.0,60.0
+1991,SVC,T avanir,Omedieh,Iran,Utility,N,420.0,0.0,300.0
+1991,SVC,Ferdofin,Brescia,Italy,Industry,N,16.0,0.0,110.0
+1991,SVC,Natsteel,Singapore,Singapore,Industry,N,22.0,2.0,56.0
+1991,SVC,TKI,Elbistan,Turkey,Industry,N,20.0,0.0,20.0
+1991,SVC,TKI,Elbistan,Turkey,Industry,N,20.0,0.0,20.0
+1991,SVC,TKI,Elbistan,Turkey,Industry,N,6.0,0.0,10.0
+1991,SVC,Nucor,"Blytheville 3, Arkansas",USA,Industry,N,34.0,5.0,195.0
+1991,SVC,Nucor,"Blytheville 4, Arkansas",USA,Rolling Mill,N,34.0,0.0,65.0
+1991,SVC,(BPA),Maple Valley,USA,Utility,N,230.0,300.0,350.0
+1991,SVC,(BPA),Keeler,USA,Utility,N,230.0,300.0,350.0
+1991,SVC,Alaska Energy Authority,Daves Creek,USA,Utility,N,115.0,10.0,25.0
+1991,SVC,Alaska Energy Authority,Soldotna,USA,Utility,N,115.0,40.0,70.0
+1991,SVC,Hydro-Québec,Chamouchouane 2,Canada,Utility,N,735.0,330.0,330.0
+1991,SVC,Hydro-Québec,Chamouchouane 1,Canada,Utility,N,735.0,330.0,330.0
+1991,FSC,Hydro-Québec,Chamouchouane III,Canada,Utility,N,735.0,,243.0
+1991,FSC,Hydro-Québec,Chamouchouane II,Canada,Utility,N,735.0,,243.0
+1991,FSC,Hydro-Québec,Chamouchouane I,Canada,Utility,N,735.0,,243.0
+1991,FSC,Hydro-Québec,Abitibi 1,Canada,Utility,N,735.0,,397.0
+1991,FSC,Hydro-Québec,Abitibi 2,Canada,Utility,N,735.0,,397.0
+1991,FSC,Hydro-Québec,Abitibi 3,Canada,Utility,N,735.0,,397.0
+1991,FSC,Landsvirkjun,Holár,Iceland,Utility,N,132.0,,43.0
+1990,SVC,Electroperu,Tintaya,Peru,Utility,N,138.0,0.0,15.0
+1990,SVC,Marienhuette,Graz,Austria,Industry,N,20.0,0.0,45.0
+1990,SVC,Stadtwerke,Bremen,Germany,Rolling Mill,N,22.0,0.0,110.0
+1990,SVC,Metaldom,Santo Domingo,Republic,Industry,N,34.0,10.0,45.0
+1990,SVC,National Thermal Power (NTPC),Kanpur 1,India,Utility,N,400.0,140.0,140.0
+1990,SVC,National Thermal Power (NTPC),Kanpur 2,India,Utility,N,400.0,140.0,140.0
+1990,SVC,Arvedi,Cremona,Italy,Industry,N,22.0,0.0,65.0
+1990,SVC,KIA,Kunsan,S.Korea,Industry,N,22.0,0.0,90.0
+1990,SVC,Antara Steel,Pasir Gudang,Malaysia,Industry,N,33.0,0.0,110.0
+1990,SVC,(TNB),KL North 1,Malaysia,Utility,N,275.0,100.0,100.0
+1990,SVC,(TNB),KL North 2,Malaysia,Utility,N,275.0,100.0,100.0
+1990,SVC,(TNB),Yong Peng,Malaysia,Utility,N,275.0,100.0,100.0
+1990,SVC,Siam Construction Steel,Rayong,Thailand,Industry,N,22.0,0.0,110.0
+1990,SVC,NTS Steel,Chonburi,Thailand,Industry,N,22.0,0.0,110.0
+1990,SVC,Cukurova II A,Izmir,Turkey,Industry,N,35.0,0.0,110.0
+1990,SVC,Cukurova II B,Izmir,Turkey,Industry,N,35.0,0.0,110.0
+1990,SVC,Keystone,Peoria,USA,Industry,N,35.0,15.0,150.0
+1990,FSC,Hydro-Québec,Bergeronnes 1,Canada,Utility,N,735.0,,238.0
+1990,FSC,Hydro-Québec,Bergeronnes 2,Canada,Utility,N,735.0,,238.0
+1990,FSC,Hydro-Québec,Bergeronnes 3,Canada,Utility,N,735.0,,238.0
+1990,FSC,Hydro-Québec,Arnaud Sud 1,Canada,Utility,N,735.0,,363.0
+1990,FSC,Hydro-Québec,Arnaud Sud 2,Canada,Utility,N,735.0,,363.0
+1990,FSC,Hydro-Québec,Arnaud Sud 3,Canada,Utility,N,735.0,,363.0
+1990,FSC,Hydro-Québec,Arnaud Nord 1,Canada,Utility,N,735.0,,363.0
+1990,FSC,Hydro-Québec,Arnaud Nord 2,Canada,Utility,N,735.0,,363.0
+1990,FSC,Hydro-Québec,Arnaud Nord 3,Canada,Utility,N,735.0,,363.0
+1990,FSC,Hydro-Québec,Perigny,Canada,Utility,N,735.0,,238.0
+1990,FSC,Hydro-Québec,Saguenay,Canada,Utility,N,735.0,,238.0
+1990,FSC,Svenska Kraftnät,Djurmo EK2,Sweden,Utility,Y,400.0,,
+1989,SVC,Lenin Steel,Pernik 3,Bulgaria,Industry,N,35.0,0.0,30.0
+1989,SVC,Tianjim Seamless Tube,Tianjin,China,Industry,N,33.0,,120.0
+1989,SVC,Wuyang Steelworks,Wuyang,China,Industry,N,35.0,,100.0
+1989,SVC,Bohai Aluminium,Bohai,China,Rolling Mill,N,10.0,,36.0
+1989,SVC,Shiu Wing Steel,Hong Kong,China,Industry,N,35.0,,30.0
+1989,SVC,Kang Won Industries,Pohang,S.Korea,Industry,N,22.0,,115.0
+1989,FSC,Transener,Olavarria 1,Argentina,Utility,N,500.0,,245.0
+1989,FSC,Transener,Olavarria 2,Argentina,Utility,N,500.0,,135.0
+1989,FSC,Transener,Olavarria 3,Argentina,Utility,N,500.0,,98.0
+1989,FSC,Transener,Olavarria 4,Argentina,Utility,N,500.0,,72.0
+1989,FSC,Transener,Choele Choel 1,Argentina,Utility,N,500.0,,215.0
+1989,FSC,Transener,Choele Choel 2,Argentina,Utility,N,500.0,,170.0
+1989,FSC,Transener,Choele Choel 3,Argentina,Utility,N,500.0,,156.0
+1989,FSC,Transener,Choele Choel 4,Argentina,Utility,N,500.0,,104.0
+1989,FSC,Furnas,Ivaipora 5,Brazil,Utility,N,800.0,,1056.0
+1989,FSC,Svenska Kraftnät,Djurmo EK4,Sweden,Utility,Y,400.0,,
+1989,FSC,American Electric Power,Kanawha River,USA,Utility,N,345.0,,788.0
+1988,SVC,Sid Mendes Junior,Juiz De Fora 2,Brazil,Industry,N,22.0,,30.0
+1988,SVC,Furnas,Barro Alto,Brazil,Utility,N,230.0,22.0,33.0
+1988,SVC,Sydney Steel,"Sydney, N. Scotia",Canada,Industry,N,35.0,,140.0
+1988,SVC,First Heavy,Qiqihar,China,Industry,N,35.0,,40.0
+1988,SVC,NEEPA,Shenyang,China,Utility,N,500.0,90.0,180.0
+1988,SVC,POSCO,Pohang,S.Korea,Industry,N,22.0,0.0,105.0
+1988,SVC,Sammi Steel,Sammi,S.Korea,Industry,N,30.0,0.0,80.0
+1988,SVC,Smedjebacken,Boxholm,Sweden,Industry,N,20.0,0.0,7.0
+1988,SVC,Kosice Steelworks,Kosice,Slovakia,Industry,N,110.0,0.0,25.0
+1988,SVC,Ekinciler,Iskenderun,Turkey,Industry,N,32.0,0.0,80.0
+1988,SVC,Marion Steel,"Marion, Ohio",USA,Industry,N,14.0,0.0,50.0
+1988,SVC,Maine Electric Power (MEPCO),Chester,USA,Utility,N,345.0,125.0,425.0
+1988,SVC,Jersey Central Power & Light,Atlantic,USA,Utility,N,230.0,0.0,130.0
+1988,FSC,El Paso Electric,"Luna, N.Mexico",USA,Utility,N,345.0,,123.0
+1988,FSC,Tucson Gas & Electric,Vail 2,USA,Utility,N,345.0,,102.0
+1987,SVC,Vattenfall,Hamra,Sweden,Utility,N,400.0,200.0,200.0
+1987,SVC,Hydro-Québec,Chamouchouane 2,Canada,Utility,N,735.0,330.0,330.0
+1987,SVC,Hydro-Québec,Chamouchouane 1,Canada,Utility,N,735.0,330.0,330.0
+1987,SVC,Eletronorte,Coxipo,Brazil,Utility,N,230.0,50.0,70.0
+1987,SVC,SaskPower,Rabbit Lake,Canada,Industry,N,35.0,2.5,15.0
+1987,SVC,Ensidesa,Aviles,Spain,Rolling Mill,N,14.0,0.0,36.0
+1987,SVC,Acc. di Terni,T erni,Italy,Industry,N,15.0,0.0,72.0
+1987,SVC,Mining Corp,Maymyo Burma,Myanmar,Industry,N,33.0,0.0,15.0
+1987,SVC,Powerlink,NEBO,Australia,Utility,N,275.0,80.0,260.0
+1987,SVC,Thailand (EGAT),Tha Tako 2,Thailand,Utility,N,500.0,0.0,150.0
+1987,SVC,Thailand (EGAT),Tha Tako 1,Thailand,Utility,N,500.0,0.0,150.0
+1987,SVC,Kroman,GEBZE,Turkey,Industry,N,35.0,0.0,45.0
+1987,SVC,Nucor,"Crawfordsville I, Indiana",USA,Industry,N,35.0,0.0,140.0
+1987,SVC,Empire Detroit,Mansfield,USA,Industry,N,35.0,0.0,90.0
+1987,SVC,Nucor,"Crawfordsville II, Indiana",USA,Industry,N,35.0,0.0,80.0
+1987,FSC,Furnas,Ivaipora 1,Brazil,Utility,N,765.0,,1017.0
+1987,FSC,Furnas,Ivaipora 2,Brazil,Utility,N,765.0,,1017.0
+1987,FSC,Furnas,Ivaipora 3,Brazil,Utility,N,765.0,,1017.0
+1987,FSC,Furnas,Ivaipora 4,Brazil,Utility,N,765.0,,1056.0
+1987,FSC,Furnas,Itabera 1,Brazil,Utility,N,765.0,,1242.0
+1987,FSC,Furnas,Itabera 2,Brazil,Utility,N,765.0,,1242.0
+1987,FSC,EADE,Apartado,Colombia,Utility,N,110.0,,16.0
+1987,FSC,TEIAS,Sincan 1,Turkey,Utility,N,380.0,,190.0
+1987,FSC,TEIAS,Sincan 2,Turkey,Utility,N,380.0,,190.0
+1987,FSC,TEIAS,Bolu,Turkey,Utility,N,380.0,,256.0
+1986,SVC,Svenska Kraftnät,Stenkullen,Sweden,Utility,N,400.0,200.0,200.0
+1986,SVC,Iton Seine,Bonnieres,France,Industry,N,20.0,10.0,40.0
+1986,SVC,Statnett,Verdal,Norway,Utility,N,300.0,160.0,160.0
+1986,SVC,Energoimpex,Dobrudja 2,Bulgaria,Utility,N,400.0,100.0,200.0
+1986,SVC,Dofasco,Hamilton 3,Canada,Industry,N,14.0,0.0,35.0
+1986,SVC,Dofasco,Hamilton 2,Canada,Rolling Mill,N,14.0,0.0,90.0
+1986,SVC,GISW,Guangzhou,China,Industry,N,35.0,0.0,35.0
+1986,SVC,CNTIC,Hebei,China,Rolling Mill,N,6.0,0.0,13.0
+1986,SVC,CNMIEC,Zhengzhou,China,Utility,N,220.0,120.0,120.0
+1986,SVC,Guangdong,Jiang Men,China,Utility,N,500.0,180.0,110.0
+1986,SVC,Beltrame,Vicenza,Italy,Industry,N,35.0,0.0,110.0
+1986,SVC,Ceylon Electricity Board,Galle,Sri Lanka,Utility,N,132.0,0.0,20.0
+1986,SVC,Ceylon Electricity Board,Chunnakam,Sri Lanka,Utility,N,132.0,0.0,20.0
+1986,SVC,Arbed,Dudelange,Luxembourg,Industry,N,37.0,0.0,32.0
+1986,SVC,Tamsa,Veracruz,Mexico,Industry,N,33.0,0.0,100.0
+1986,SVC,Statnett,Nedre Rössåga,Norway,Utility,N,300.0,160.0,160.0
+1986,SVC,Electrolima,"Lima 1, Balnearios",Peru,Utility,N,60.0,50.0,60.0
+1986,SVC,Electrolima,"Lima 2, Chavarri",Peru,Utility,N,60.0,33.0,40.0
+1986,SVC,BMZ,Zhlobin 4,Belarus,Industry,N,33.0,0.0,15.0
+1986,SVC,BMZ,Zhlobin 3,Belarus,Rolling Mill,N,10.0,0.0,20.0
+1986,SVC,BMZ,Zhlobin 2,Belarus,Rolling Mill,N,10.0,0.0,20.0
+1986,SVC,Diler,GEBZE,Turkey,Industry,N,35.0,0.0,20.0
+1986,SVC,WAPA,Fargo,USA,Utility,N,115.0,0.0,65.0
+1986,SVC,(NYSEG),Fraser,USA,Utility,N,345.0,300.0,325.0
+1986,SVC,Niagara Mohawk,Leeds,USA,Utility,N,345.0,300.0,270.0
+1986,SVC,Sidetur,Barquisimeto,Venezuela,Industry,N,30.0,0.0,30.0
+1986,SVC,Acroni,Acroni,Slovenia,Industry,N,35.0,0.0,125.0
+1986,FSC,TEIAS,Kayabasi 1,Turkey,Utility,N,380.0,,207.0
+1986,FSC,TEIAS,Kayabasi 2,Turkey,Utility,N,380.0,,207.0
+1986,FSC,TEIAS,Kayabasi 3,Turkey,Utility,N,380.0,,207.0
+1985,SVC,National Electric,Bourgas,Bulgaria,Utility,N,131.0,,
+1985,SVC,Kremikovtzy,Sofia,Bulgaria,Industry,N,35.0,0.0,110.0
+1985,SVC,Val Sina,Luanda,Angola,Industry,N,15.0,0.0,9.0
+1985,SVC,Powerlink,Dingo,Australia,Utility,N,132.0,0.0,69.0
+1985,SVC,Victoria,Kerang,Australia,Utility,N,220.0,25.0,50.0
+1985,SVC,Powerlink,Mt McLaren,Australia,Utility,N,132.0,0.0,51.0
+1985,SVC,Transgrid,Broken Hill 1,Australia,Utility,N,220.0,25.0,25.0
+1985,SVC,Powerlink,Grantliegh,Australia,Utility,N,132.0,0.0,51.0
+1985,SVC,Victoria,Horsham,Australia,Utility,N,220.0,0.0,75.0
+1985,SVC,Powerlink,Oonooie,Australia,Utility,N,132.0,0.0,93.0
+1985,SVC,Powerlink,Gregory,Australia,Utility,N,132.0,0.0,51.0
+1985,SVC,Powerlink,Coppabella,Australia,Utility,N,132.0,0.0,93.0
+1985,SVC,Powerlink,Dysart,Australia,Utility,N,132.0,0.0,69.0
+1985,SVC,Powerlink,Blackwater,Australia,Utility,N,132.0,0.0,51.0
+1985,SVC,Transgrid,Broken Hill 2,Australia,Utility,N,220.0,25.0,25.0
+1985,SVC,Powerlink,Moranbah,Australia,Utility,N,132.0,0.0,93.0
+1985,SVC,Energoimpex,Dobrudja 1,Bulgaria,Utility,N,400.0,100.0,200.0
+1985,SVC,TNEB,Madurai,India,Utility,N,132.0,15.0,30.0
+1985,SVC,TNEB,Singaropet,India,Utility,N,132.0,15.0,30.0
+1985,SVC,TNEB,Trichur,India,Utility,N,132.0,15.0,30.0
+1985,SVC,Acciaierie Tanaro,Lesegno,Italy,Industry,N,30.0,0.0,40.0
+1985,SVC,Acciaierie Galtarossa,Verona,Italy,Industry,N,30.0,0.0,60.0
+1985,SVC,Norsk Jernverk,Mo I Rana,Norway,Industry,N,23.0,0.0,85.0
+1985,SVC,Vattenfall,Oxelösund,Sweden,Utility,N,132.0,0.0,25.0
+1985,SVC,PUB,Labrador,Singapore,Utility,N,230.0,50.0,5.0
+1985,SVC,PUB,Kallang Basin,Singapore,Utility,N,230.0,100.0,0.0
+1985,SVC,Thailand (EGAT),Chumphon,Thailand,Utility,N,115.0,20.0,60.0
+1985,SVC,Kansas Gas & Electric,Gordon Evans,USA,Utility,N,138.0,0.0,300.0
+1985,SVC,Kansas Gas & Electric,Murray Gill,USA,Utility,N,138.0,25.0,200.0
+1985,SVC,Ygec,Sanaa,Yemen,Utility,N,132.0,0.0,30.0
+1985,FSC,Hydro-Québec,Kamouraska 1,Canada,Utility,N,315.0,,192.0
+1985,FSC,Hydro-Québec,Kamouraska 2,Canada,Utility,N,315.0,,192.0
+1985,FSC,Hydro-Québec,Kamouraska 3,Canada,Utility,N,315.0,,192.0
+1985,FSC,Hydro-Québec,Kamouraska 4,Canada,Utility,N,315.0,,192.0
+1985,FSC,Hydro-Québec,Joutel,Canada,Utility,N,120.0,,25.0
+1985,FSC,Statnett,Evje,Norway,Utility,N,300.0,,432.0
+1985,FSC,Statnett,Arendal,Norway,Utility,N,300.0,,234.0
+1984,SVC,Lenin Steel,Pernik 1,Bulgaria,Industry,N,38.0,,0.0
+1984,SVC,Alberta Power,Bonnyville,Canada,Utility,N,144.0,25.0,25.0
+1984,SVC,Siderurgica Sevillana,Sevillana,Spain,Industry,N,16.0,0.0,60.0
+1984,SVC,G.T.S. Industries,Dunkerque SOLLAC,France,Rolling Mill,N,90.0,0.0,66.0
+1984,SVC,Avesta Sheffield,Degerfors,Sweden,Industry,N,20.0,10.0,50.0
+1984,SVC,Cukurova,Izmir 3,Turkey,Industry,N,35.0,0.0,80.0
+1984,SVC,Habas,Izmir,Turkey,Industry,N,35.0,0.0,60.0
+1984,SVC,Cukurova,Izmir 4,Turkey,Industry,N,35.0,0.0,80.0
+1984,SVC,Tucson Electric Power,Tucson Arizona,USA,Utility,N,11.0,0.0,30.0
+1984,SVC,ULCO,Kimberley,South Africa,Rolling Mill,N,11.0,0.0,6.0
+1984,SVC,ULCO,Kimberley,South Africa,Rolling Mill,N,11.0,0.0,6.0
+1984,SVC,ULCO,Kimberley,South Africa,Rolling Mill,N,11.0,0.0,6.0
+1984,SVC,Saudi Electricity Company (SEC),Faras,Saudi Arabia,Utility,N,380.0,200.0,0.0
+1984,SVC,Saudi Electricity Company (SEC),Shedgum,Saudi Arabia,Utility,N,380.0,200.0,0.0
+1984,FSC,San Diego Gas & Electric,Imperial Valley 1,USA,Utility,N,500.0,,150.0
+1984,FSC,San Diego Gas & Electric,Imperial Valley 2,USA,Utility,N,500.0,,150.0
+1983,FSC,Pacific Gas & Electric,Vaca Dixon,USA,Utility,N,500.0,,384.0
+1983,FSC,Pacific Gas & Electric,Table Mountain 1,USA,Utility,N,500.0,,600.0
+1983,FSC,Pacific Gas & Electric,Table Mountain 2,USA,Utility,N,500.0,,384.0
+1983,FSC,Pacific Gas & Electric,Table Mountain 3,USA,Utility,N,500.0,,
+1983,FSC,Pacific Gas & Electric,T esla,USA,Utility,N,500.0,,600.0
+1983,SVC,Transalta,Langdon Alberta,Canada,Utility,N,240.0,250.0,250.0
+1983,SVC,British Steel,Port Talbot 1,Kingdom,Rolling Mill,N,11.0,0.0,42.0
+1983,SVC,British Steel,Port Talbot 2,Kingdom,Rolling Mill,N,11.0,0.0,42.0
+1983,SVC,Halyps,Volos,Greece,Industry,N,20.0,0.0,32.0
+1983,SVC,New Zealand Steel,South Auckland,New Zealand,Industry,N,33.0,0.0,30.0
+1983,SVC,Colakoglu,Gebze,Turkey,Industry,N,35.0,0.0,40.0
+1983,SVC,Metas,Izmir,Turkey,Industry,N,35.0,0.0,40.0
+1983,FSC,Bonneville Power Administration,Garrison 1,USA,Utility,N,500.0,,281.0
+1983,FSC,Bonneville Power Administration,Garrison 2,USA,Utility,N,500.0,,281.0
+1983,FSC,Bonneville Power Administration,Garrison 3,USA,Utility,N,500.0,,281.0
+1983,FSC,Bonneville Power Administration,Garrison 4,USA,Utility,N,500.0,,281.0
+1983,SVC,Icdas,Istanbul 1,Turkey,Industry,N,35.0,0.0,30.0
+1982,SVC,Sid Mendes Junior,Juiz de Fora 1,Brazil,Industry,N,22.0,0.0,45.0
+1982,SVC,Dofasco,Hamilton 1,Canada,Rolling Mill,N,14.0,0.0,60.0
+1982,SVC,Hydro-Québec,La Verendrye 2,Canada,Utility,N,735.0,110.0,330.0
+1982,SVC,Hydro-Québec,La Verendrye 1,Canada,Utility,N,735.0,110.0,330.0
+1982,SVC,Hydro-Québec,Chibougamau 1,Canada,Utility,N,735.0,110.0,330.0
+1982,SVC,Hydro-Québec,Chibougamau 2,Canada,Utility,N,735.0,110.0,330.0
+1982,SVC,Hydro-Québec,Chateauguay 2,Canada,Utility,N,120.0,0.0,270.0
+1982,SVC,Marcial Ucin,Azpeitia,Spain,Industry,N,31.0,,45.0
+1982,SVC,Rourkela Steel,Rourkela 1,India,Rolling Mill,N,7.0,0.0,6.5
+1982,SVC,Rourkela Steel,Rourkela 2,India,Rolling Mill,N,7.0,6.5,6.5
+1982,SVC,Belarusian Steel Works,Zhlobin,Belarus,Industry,N,33.0,10.0,130.0
+1982,SVC,W estinghouse,West Mifflin Penn,USA,Industry,N,4.0,0.0,10.0
+1982,SVC,Timken,Canton Ohio,USA,Industry,N,35.0,0.0,85.0
+1982,SVC,Plains Electric,Clapham New Mex,USA,Utility,N,13.0,0.0,50.0
+1982,SVC,Tucson Electric Power,Tucson Arizona,USA,Utility,N,11.0,0.0,30.0
+1982,FSC,Comisión Federal de Electricidad,Temascal 1,Mexico,Utility,N,400.0,,259.0
+1982,FSC,Comisión Federal de Electricidad,Temascal 2,Mexico,Utility,N,400.0,,259.0
+1981,SVC,Aires (SEGBA),Rodriguez 2,Argentina,Utility,N,500.0,160.0,160.0
+1981,SVC,Aires (SEGBA),Rodriguez 1,Argentina,Utility,N,500.0,160.0,160.0
+1981,SVC,Smorgons Steel,Victoria,Australia,Industry,N,22.0,0.0,49.0
+1981,SVC,Victoria,Rowville 1,Australia,Utility,N,220.0,60.0,100.0
+1981,SVC,Victoria,Rowville 2,Australia,Utility,N,220.0,60.0,100.0
+1981,SVC,Algoma Steel,Sault Ste Marie,Canada,Industry,N,12.0,0.0,20.0
+1981,SVC,Hydro-Québec,Chateauguay,Canada,Utility,N,120.0,0.0,270.0
+1981,SVC,Bokaro Steel,Bokaro 2,India,Industry,N,11.0,0.0,30.0
+1981,SVC,Bokaro Steel,Bokaro 3,India,Industry,N,11.0,0.0,23.0
+1981,SVC,Bokaro Steel,Bokaro 1,India,Industry,N,11.0,0.0,23.0
+1981,SVC,Statnett,Röd,Norway,Utility,N,420.0,250.0,250.0
+1981,SVC,Edelca,San Geronimo,Venezuela,Utility,N,765.0,280.0,300.0
+1981,SVC,Edelca,La Horqueta,Venezuela,Utility,N,765.0,280.0,300.0
+1981,SVC,SOE,Tripoli,Libya,Utility,N,230.0,0.0,50.0
+1981,SVC,SOE,Tripoli,Libya,Utility,N,230.0,0.0,50.0
+1981,SVC,SOE,Tripoli,Libya,Utility,N,230.0,0.0,50.0
+1981,SVC,SOE,Tripoli,Libya,Utility,N,230.0,0.0,50.0
+1981,FSC,Bonneville Power Administration,Columbia 1,USA,Utility,N,500.0,0.0,276.0
+1981,FSC,Bonneville Power Administration,Columbia 2,USA,Utility,N,500.0,0.0,276.0
+1980,FSC,(CFE),Puebla 2,Mexico,Utility,N,400.0,0.0,244.0
+1980,FSC,(CFE),Minititlan 1,Mexico,Utility,N,400.0,0.0,37.0
+1980,FSC,(CFE),Minititlan 2,Mexico,Utility,N,400.0,,37.0
+1980,FSC,(CFE),Coatzacoalcos 1,Mexico,Utility,N,400.0,0.0,37.0
+1980,SVC,Hidro Nitro Espanola,Monzon,Spain,Industry,N,66.0,,99.0
+1980,SVC,CNTIC,Wu Han 1,China,Utility,N,500.0,20.0,120.0
+1980,SVC,CNTIC,Wu Han 2,China,Utility,N,500.0,20.0,120.0
+1980,SVC,CERN,CERN,France,Utility,N,18.0,0.0,20.0
+1980,SVC,Nisic,AHWAZ 3,Iran,Industry,N,30.0,0.0,150.0
+1980,SVC,Nisic,AHWAZ 2,Iran,Industry,N,30.0,0.0,150.0
+1980,SVC,Nisic,AHWAZ 1,Iran,Industry,N,30.0,0.0,150.0
+1980,SVC,T avanir,Omedieh,Iran,Utility,N,420.0,0.0,300.0
+1980,SVC,(CFE),Temascal,Mexico,Utility,N,400.0,300.0,300.0
+1980,SVC,(CFE),Acatlan,Mexico,Utility,N,400.0,200.0,0.0
+1980,SVC,CAVM,S. E. Planta 5,Mexico,Utility,N,115.0,0.0,30.0
+1980,SVC,CAVM,S. E. Planta 4,Mexico,Utility,N,115.0,0.0,40.0
+1980,SVC,CAVM,S. E. Planta 3,Mexico,Utility,N,115.0,0.0,40.0
+1980,SVC,(CFE),Puebla,Mexico,Utility,N,230.0,0.0,200.0
+1980,SVC,Amalgamated Steel,Kuala Lumpur,Malaysia,Industry,N,15.0,0.0,50.0
+1980,SVC,Ajaokuta Steel,Ajaokuta 1,Nigeria,Industry,N,11.0,0.0,7.0
+1980,SVC,Ajaokuta Steel,Ajaokuta 2,Nigeria,Industry,N,11.0,0.0,9.0
+1980,SVC,Statnett,Hasle,Norway,Utility,N,420.0,0.0,360.0
+1980,SVC,Statnett,Kvandal,Norway,Utility,N,420.0,160.0,160.0
+1980,SVC,(OEMK),Kursk 1,Russia,Industry,N,110.0,0.0,90.0
+1980,SVC,(OEMK),Kursk 2,Russia,Industry,N,110.0,0.0,90.0
+1980,SVC,Vattenfall,Hagby,Sweden,Utility,N,220.0,200.0,200.0
+1980,SVC,Cathedral Bluffs Shale,Rifle Colorado,USA,Industry,N,13.0,0.0,15.0
+1980,FSC,(CFE),Tecali 1,Mexico,Utility,N,400.0,0.0,66.0
+1980,FSC,(CFE),Tecali 2,Mexico,Utility,N,400.0,0.0,142.0
+1980,FSC,(CFE),Puebla 1,Mexico,Utility,N,400.0,0.0,244.0
+1979,SVC,VEB Kaltwalswerk,Oranienburg,Germany,Industry,N,15.0,,
+1979,SVC,Swedish Steel,Borlänge,Sweden,Industry,N,10.0,,
+1979,SVC,Cukurova,Izmir 2,Turkey,Industry,N,35.0,,
+1979,SVC,Cukurova,Izmir 1,Turkey,Industry,N,35.0,,
+1979,SVC,EPRI,Butte Montana,USA,Industry,N,12.0,,
+1979,SVC,Bethlehem Steel,Johnstown Penns,USA,Industry,N,35.0,,
+1979,SVC,Structural Metals,Seguin Texas,USA,Industry,N,13.0,,
+1979,SVC,Bethlehem Steel,Johnstown Penns,USA,Industry,N,35.0,,
+1979,FSC,Turkish Electricity Authority (TEK),Nevsehir 1,Turkey,Utility,N,400.0,,
+1979,FSC,Turkish Electricity Authority (TEK),Nevsehir 2,Turkey,Utility,N,400.0,,
+1979,FSC,Turkish Electricity Authority (TEK),Osmaniye,Turkey,Utility,N,400.0,,
+1979,FSC,Turkish Electricity Authority (TEK),Seydisehir,Turkey,Utility,N,400.0,,
+1978,SVC,Halyvourgiki,Volos,Greece,Industry,N,15.0,,
+1978,SVC,Vattenfall,Slite,Sweden,Industry,N,6.0,,
+1978,SVC,Lukens Steel,Coatesville Penns,USA,Industry,N,14.0,,
+1978,SVC,Florida Steel,Croft N C,USA,Industry,N,13.0,,
+1978,SVC,Mexico (PNM),Farmington N Mex,USA,Utility,N,11.0,,
+1978,SVC,Mexico (PNM),Farmington N Mex,USA,Utility,N,11.0,,
+1978,SVC,American Electric Power,Beaver Creek,USA,Utility,N,138.0,,
+1978,SVC,Eskom,Ferrum,South Africa,Utility,N,132.0,,30.0
+1977,SVC,Comisión Federal de Electricidad,Carmargo1,Mexico,Utility,N,230.0,50.0,100.0
+1977,SVC,Vitkovice,Ostrava,Republic,Industry,N,22.0,,
+1977,SVC,VEB Stahl und Walzwerk,Brandenburg,Germany,Industry,N,30.0,,
+1977,SVC,SNS,El Hadjar,Algeria,Industry,N,63.0,,
+1977,SVC,FMI,Delta Steel 1,Nigeria,Industry,N,33.0,,
+1977,SVC,FMI,Delta Steel 2,Nigeria,Industry,N,33.0,,
+1977,SVC,FMI,Delta Steel 3,Nigeria,Industry,N,33.0,,
+1977,FSC,Comisión Federal de Electricidad,Culiacan 1,Mexico,Utility,N,230.0,,
+1977,SVC,Comisión Federal de Electricidad,Durango 1,Mexico,Utility,N,230.0,50.0,150.0
+1977,FSC,USBR,Archer,USA,Utility,N,230.0,,
+1977,FSC,USBR,Ault,USA,Utility,N,345.0,,
+1977,FSC,Tucson Gas & Electric,McKinley 1,USA,Utility,N,345.0,,
+1977,FSC,Tucson Gas & Electric,McKinley 2,USA,Utility,N,345.0,,
+1976,SVC,Furnas,Guayaquil,Ecuador,Industry,N,27.0,,
+1976,SVC,Barata,Surabaya,Indonesia,Industry,N,6.0,,
+1976,SVC,EDS,Damaskus,Syrian Arab,Utility,N,66.0,,
+1976,SVC,Minnesota Power & Light,Duluth Minnesota,USA,Utility,N,14.0,,
+1975,SVC,El Fouladh,El Fouladh,Tunisia,Industry,N,11.0,0.0,45.0
+1975,FSC,Eskom,Aires,South Africa,Utility,N,400.0,,
+1975,FSC,Eskom,Kronos,South Africa,Utility,N,400.0,,
+1975,FSC,Eskom,Helios,South Africa,Utility,N,400.0,,
+1975,FSC,Eskom,Juno,South Africa,Utility,N,400.0,,
+1975,FSC,Eskom,Aurora,South Africa,Utility,N,400.0,,
+1975,FSC,Pacific Power & Light,Jim Bridger 1,USA,Utility,N,345.0,,
+1975,FSC,Pacific Power & Light,Jim Bridger 2,USA,Utility,N,345.0,,
+1975,FSC,Pacific Power & Light,Jim Bridger 3,USA,Utility,N,345.0,,
+1975,FSC,Arizona Public Service,Cholla 3,USA,Utility,N,500.0,,
+1975,FSC,Arizona Public Service,Saguaro,USA,Utility,N,500.0,,
+1975,FSC,Hidronor,Henderson 2,Argentina,Utility,N,500.0,,596.0
+1975,FSC,Hidronor,Puelches 2,Argentina,Utility,N,500.0,,681.0
+1974,SVC,DFDSV,Frederiksvaerk,Denmark,Industry,N,30.0,,
+1974,SVC,DFDSV,Frederiksvaerk,Denmark,Industry,N,30.0,,
+1974,SVC,Outokumpu,T orneå,Finland,Industry,N,20.0,,
+1974,SVC,SKF Steel,Hällefors,Sweden,Industry,N,33.0,,
+1974,SVC,Ameron Steel,Etiwanda Calif,USA,Industry,N,33.0,,
+1974,FSC,Eskom,Nestor 2,South Africa,Utility,N,400.0,,
+1974,FSC,Black Hills Power & Light,Spearfish,USA,Utility,N,230.0,,
+1974,FSC,Black Hills Power & Light,Springs,USA,Utility,N,230.0,,
+1974,FSC,USBR,Liberty,USA,Utility,N,345.0,,
+1974,FSC,USBR,Mead,USA,Utility,N,345.0,,
+1974,FSC,Idaho Power,Borah,USA,Utility,N,345.0,,
+1974,FSC,Idaho Power,Kinport,USA,Utility,N,345.0,,
+1974,FSC,Utah P&L,Goshen,USA,Utility,N,345.0,,
+1974,FSC,Tucson Gas & Electric,Vail,USA,Utility,N,345.0,,
+1974,FSC,Tucson Gas & Electric,Greenlee,USA,Utility,N,345.0,,286.0
+1973,SVC,Halmstads Järnverk,Halmstad,Sweden,Industry,N,20.0,,
+1973,FSC,Eskom,Victoria 2,South Africa,Utility,N,400.0,,
+1973,FSC,Eskom,Victoria 1,South Africa,Utility,N,400.0,,
+1973,FSC,Arizona Public Service,Westwing 2,USA,Utility,N,500.0,,
+1973,FSC,Arizona Public Service,Westwing 1,USA,Utility,N,500.0,,
+1973,FSC,Eskom,Luckhoff 1,South Africa,Utility,N,400.0,,530.0
+1973,FSC,Eskom,Luckhoff 2,South Africa,Utility,N,400.0,,530.0
+1972,FSC,Pacific Gas & Electric,Midway 3,USA,Utility,N,500.0,,
+1972,SVC,Smedjebacken,Smedjebacken,Sweden,Industry,N,20.0,,
+1972,SVC,Auburn Steel,Auburn New York,USA,Industry,N,14.0,,
+1972,SVC,Iscor,Vanderbijlpark,South Africa,Industry,N,30.0,,
+1972,FSC,Statnett,Majavatn,Norway,Utility,N,275.0,,
+1972,FSC,Eskom,Komsberg 1,South Africa,Utility,N,400.0,,237.0
+1972,FSC,Eskom,Komsberg 2,South Africa,Utility,N,400.0,,216.0
+1972,FSC,Eskom,Nestor 1,South Africa,Utility,N,400.0,,
+1972,FSC,Eskom,Nestor 3,South Africa,Utility,N,400.0,,
+1972,FSC,Vattenfall,Stöde,Sweden,Utility,N,400.0,,493.0
+1972,FSC,Southern California Edison,Vincent,USA,Utility,N,500.0,,
+1972,FSC,Turkish Electricity Authority (TEK),Kayseri 1,Turkey,Utility,N,400.0,,
+1972,FSC,Turkish Electricity Authority (TEK),Kayseri 2,Turkey,Utility,N,400.0,,
+1971,FSC,Power,Victorville,USA,Utility,N,500.0,,
+1970,FSC,Power,McCallough 2,USA,Utility,N,500.0,,
+1970,FSC,Power,McCallough 1,USA,Utility,N,500.0,,
+1970,FSC,Arizona Public Service,Pinnacle Peak 3,USA,Utility,N,345.0,,
+1970,FSC,Arizona Public Service,Pinnacle Peak 4,USA,Utility,N,345.0,,
+1970,FSC,Arizona Public Service,Navajo 3,USA,Utility,N,500.0,,
+1970,FSC,Arizona Public Service,Navajo 2,USA,Utility,N,500.0,,
+1970,FSC,Arizona Public Service,Navajo 1,USA,Utility,N,500.0,,
+1970,FSC,Arizona Public Service,Moenkopi 4,USA,Utility,N,500.0,,
+1970,FSC,Arizona Public Service,Moenkopi 3,USA,Utility,N,500.0,,
+1970,SVC,Norsk Jernverk,Bergen,Norway,Industry,N,10.0,,
+1970,SVC,Domnarvets Jernverk,Borlänge,Sweden,Industry,N,20.0,,
+1968,FSC,USBR,Pinnacle Peak 1,USA,Utility,N,345.0,,
+1968,FSC,USBR,Pinnacle Peak 3,USA,Utility,N,345.0,,
+1968,FSC,USBR,Flagstaff 1,USA,Utility,N,345.0,,
+1968,FSC,USBR,Flagstaff 2,USA,Utility,N,345.0,,
+1967,FSC,Vattenfall,T andö,Sweden,Utility,N,400.0,,
+1967,FSC,Idaho Power,Boise Bench 1,USA,Utility,N,230.0,,
+1967,FSC,Idaho Power,Boise Bench 2,USA,Utility,N,230.0,,
+1967,FSC,Idaho Power,Boise Bench 3,USA,Utility,N,230.0,,
+1967,FSC,Idaho Power,Boise Bench 4,USA,Utility,N,230.0,,
+1967,FSC,Cadafe,Barbacoa 1,Venezuela,Utility,N,230.0,,
+1967,FSC,Cadafe,Barbacoa 2,Venezuela,Utility,N,230.0,,
+1967,FSC,Cadafe,Bolivar 1,Venezuela,Utility,N,230.0,,
+1967,FSC,Cadafe,Bolivar 2,Venezuela,Utility,N,230.0,,
+1966,FSC,Pacific Gas & Electric,Table Mountain 1,USA,Utility,N,500.0,,
+1966,FSC,Pacific Gas & Electric,Table Mountain 2,USA,Utility,N,500.0,,
+1966,FSC,Pacific Gas & Electric,Midway 1,USA,Utility,N,500.0,,
+1966,FSC,Pacific Gas & Electric,Midway 2,USA,Utility,N,500.0,,
+1966,FSC,Bonneville Power Administration,Bake Oven 2,USA,Utility,N,500.0,,
+1966,FSC,Bonneville Power Administration,Bake Oven 3,USA,Utility,N,500.0,,
+1966,FSC,Arizona Public Service,Moenkopi 1,USA,Utility,N,500.0,,
+1966,FSC,Arizona Public Service,Moenkopi 2,USA,Utility,N,500.0,,
+1966,FSC,Arizona Public Service,Four Corners,USA,Utility,N,500.0,,
+1966,FSC,Southern California Edison,Eldorado-Moenkopi,USA,Utility,N,500.0,,486.0
+1966,FSC,Southern California Edison,Eldorado-Lugo,USA,Utility,N,500.0,,282.0
+1966,FSC,BPA+PG&E,Ft Rock 1,USA,Utility,N,500.0,,
+1966,FSC,BPA+PG&E,Ft Rock 2,USA,Utility,N,500.0,,
+1966,FSC,BPA+PG&E,Sand Springs 1,USA,Utility,N,500.0,,
+1966,FSC,BPA+PG&E,Sand Springs 2,USA,Utility,N,500.0,,
+1966,FSC,BPA+PG&E,Sycan 2,USA,Utility,N,500.0,,
+1966,FSC,BPA+PP&L,Malin 1,USA,Utility,N,500.0,,525.0
+1966,FSC,BPA+PP&L,Malin 2,USA,Utility,N,500.0,,525.0
+1965,FSC,BPA+PG&E,Sycan 1,USA,Utility,N,500.0,,
+1965,FSC,Bonneville Power Administration,Bake Oven 1,USA,Utility,N,500.0,,
+1964,FSC,Vattenfall,Vittersjö 2,Sweden,Utility,N,400.0,,
+1964,FSC,Idaho Power,Midpoint 1,USA,Utility,N,230.0,,
+1964,FSC,Idaho Power,Midpoint 2,USA,Utility,N,230.0,,
+1962,FSC,Arizona Public Service,Cholla 1,USA,Utility,N,345.0,,250.0
+1962,FSC,Arizona Public Service,Cholla 2,USA,Utility,N,345.0,,250.0
+1961,FSC,Vattenfall,Djurmo 2,Sweden,Utility,N,400.0,,
+1961,FSC,Pacific Power & Light,Walla Walla,USA,Utility,N,230.0,,
+1958,FSC,Vattenfall,Haverö 2,Sweden,Utility,N,400.0,,
+1957,FSC,Vattenfall,Kättbo,Sweden,Utility,N,400.0,,
+1953,FSC,Vattenfall,Vittersjö 1,Sweden,Utility,N,400.0,,
+1952,FSC,Vattenfall,Djurmo 1,Sweden,Utility,N,400.0,,
+1952,FSC,Vattenfall,Haverö 1,Sweden,Utility,N,400.0,,
+1949,FSC,Bonneville Power Administration,St Andrews,USA,Utility,N,230.0,,
+1948,FSC,Bonneville Power Administration,Rocky Ford,USA,Utility,N,230.0,,
+1948,FSC,Vattenfall,Alfta,Sweden,Utility,N,230.0,,
+1948,FSC,Bonneville Power Administration,Chekalis,USA,Utility,N,230.0,,
