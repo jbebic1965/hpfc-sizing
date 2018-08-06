@@ -5,6 +5,9 @@ Created on Fri Aug 3 18:53:53 2018
 
 @author: Jovan Z. Bebic
 
+v1.3 JZB 20180806
+Added output of HPFC and UPFC operating points to log file
+
 v1.2 JZB 20180805
 Added target flows functionality and finalized the cases
 
@@ -31,7 +34,7 @@ from datetime import datetime # time stamps
 import os # operating system interface
 
 #%% Code info and file names
-codeVersion = '1.2'
+codeVersion = '1.3'
 codeCopyright = 'GNU General Public License v3.0'
 codeAuthors = 'Jovan Z. Bebic\n'
 codeName = 'SizeFACTS.py'
@@ -592,6 +595,71 @@ def CalculateHPFCop(caseIx):
 
     return
 
+def LogHPFCop(foutLog, caseIx):
+    foutLog.write('\n%s: %s\n' %(caseIx, dfS.Note[caseIx]))
+    QM = dfHPFC.QM[caseIx]
+    SX = dfHPFC.SX[caseIx]
+    SY = dfHPFC.SY[caseIx]
+    
+    UM = dfHPFC.UM[caseIx]
+    UX = dfHPFC.UX[caseIx]
+    UY = dfHPFC.UY[caseIx]
+    
+    S1 = dfS.S1[caseIx] # apparent powers in MW
+    S2 = dfS.S2[caseIx]
+    U1 = (UM+UX)*Ub
+    U2 = (UM+UY)*Ub
+
+    I1 = np.conj(-S1/(3.*U1)) # current in kA
+    I2 = np.conj(S2/(3.*U2))
+    IM = I1-I2
+
+    # foutLog.write('HPFC Ratings -- shunt reactive branch variant\n')
+    foutLog.write('  QM = %.2f\n' %(QM))
+    
+    foutLog.write('  |IM| = %.4f kA, ang(IM) = %.2f deg\n' %(np.abs(IM), np.angle(IM, deg=True)))
+    foutLog.write('  |UM| = %.4f pu, ang(UM) = %.2f deg\n' %(np.abs(UM), np.angle(UM, deg=True)))
+    
+    foutLog.write('  |UX| = %.4f pu, ang(UX) = %.2f deg\n' %(np.abs(UX), np.angle(UX, deg=True)))
+    foutLog.write('  |UY| = %.4f pu, ang(UY) = %.2f deg\n\n' %(np.abs(UY), np.angle(UY, deg=True)))
+    
+    foutLog.write('  PX_hpfc = %.2f\n' %(np.real(SX)))
+    foutLog.write('  QX_hpfc = %.2f\n' %(np.imag(SX)))
+    foutLog.write('  SX_hpfc = %.2f\n\n' %(np.abs(SX)))
+    
+    foutLog.write('  PY_hpfc = %.2f\n' %(np.real(SY)))
+    foutLog.write('  QY_hpfc = %.2f\n' %(np.imag(SY)))
+    foutLog.write('  SY_hpfc = %.2f\n\n' %(np.abs(SY)))
+    
+    foutLog.write('  QM-QX+QY = %.2f\n' %(QM-np.imag(SX)+np.imag(SY)))
+
+    return
+
+def LogUPFCop(foutLog, caseIx):
+    foutLog.write('\n%s: %s\n' %(caseIx, dfS.Note[caseIx]))
+    S1 = dfS.S1[caseIx] # apparent powers in MW
+    S2 = dfS.S2[caseIx]
+    Ush = dfUPFC.Ush[caseIx]
+    User = dfUPFC.User[caseIx]
+
+    I1 = np.conj(-S1/(3.*Ush)) # current in kA
+    I2 = np.conj(S2/(3.*(Ush+User)))
+    Ish = I1 - I2
+
+    Ssh_upfc = 3.*Ush*np.conj(-Ish)
+    Sser_upfc = 3.*(Ush+User)*np.conj(I2)
+    
+    # foutLog.write('\nUPFC Ratings\n')
+    foutLog.write('  Psh = %.2f\n' %(np.real(Ssh_upfc)))
+    foutLog.write('  Qsh = %.2f\n' %(np.imag(Ssh_upfc)))
+    foutLog.write('  Ssh = %.2f\n\n' %(np.abs(Ssh_upfc)))
+    foutLog.write('  Pser = %.2f\n' %(np.real(Sser_upfc)))
+    foutLog.write('  Qser = %.2f\n' %(np.imag(Sser_upfc)))
+    foutLog.write('  Sser = %.2f\n\n' %(np.abs(Sser_upfc)))
+    foutLog.write('  Psh+Pser = %.2f\n' %(np.real(Ssh_upfc)+np.real(Sser_upfc)))
+    foutLog.write('  Qsh+Qser = %.2f\n' %(np.imag(Ssh_upfc)+np.imag(Sser_upfc)))
+    return
+
 #%% Capture start time of code execution and open log file
 codeTstart = datetime.now()
 foutLog = open(os.path.join(dirout, fnameLog), 'w')
@@ -601,7 +669,7 @@ print('This is %s v%s' %(codeName, codeVersion))
 foutLog.write('This is %s v%s\n' %(codeName, codeVersion))
 foutLog.write('%s\n' %(codeCopyright))
 foutLog.write('%s\n' %(codeAuthors))
-foutLog.write('Run started on: %s\n\n' %(str(codeTstart)))
+foutLog.write('Run started on: %s\n' %(str(codeTstart)))
 
 #%% Define datastructure to hold the results
 dfS = pd.DataFrame(columns=['Ss', 'S0', 'S1', 'Sm', "Sm'", 'S2', 'S3', 'S4', 'Sr', 'Note'])
@@ -682,6 +750,7 @@ nu.pf()
 StoreSolutions(nu, 'State02')
 CalculateUPFCop('State02')
 dfS.at['State02', 'Note'] = 'Solved circuit compensated by a UPFC'
+LogUPFCop(foutLog, 'State02')
 
 #%% Set up and solve the HPFC-compensated system: State03 blindly follows the UPFC operating point
 print('Solving State03')
@@ -699,6 +768,7 @@ nh.pf()
 StoreSolutions(nh, 'State03')
 CalculateHPFCop('State03')
 dfS.at['State03', 'Note'] = 'Solved circuit compensated by an HPFC with Q1cmd and Q2cmd as were used in the UPFC case'
+LogHPFCop(foutLog, 'State03')
 
 #%% Set up and solve the HPFC-compensated system: State04 adjusts the UPFC operating point to balance the converter ratings
 print('Solving State04')
@@ -714,6 +784,7 @@ nh4.pf()
 StoreSolutions(nh4, 'State04')
 CalculateHPFCop('State04')
 dfS.at['State04', 'Note'] = 'Solved circuit compensated by an HPFC with adjusted Q1cmd and Q2cmd to balance the HPFC converters ratings'
+LogHPFCop(foutLog, 'State04')
 
 #%% Set up and solve the target flows achieving the desired S2 while preserving flows through Sm
 print('Solving State12')
@@ -736,6 +807,7 @@ nh23.pf()
 StoreSolutions(nh23, 'State23')
 CalculateHPFCop('State23')
 dfS.at['State23', 'Note'] = 'Solved circuit compensated by an HPFC with the first-cut values for Q1cmd, Q2cmd'
+LogHPFCop(foutLog, 'State23')
 
 #%% Set up and solve the HPFC-compensated system: State24 adjusts the UPFC operating point to balance the converter ratings
 print('Solving State24')
@@ -750,6 +822,7 @@ nh24.pf()
 StoreSolutions(nh24, 'State24')
 CalculateHPFCop('State24')
 dfS.at['State24', 'Note'] = 'Solved circuit compensated by an HPFC with adjusted Q1cmd to balance the ratings of HPFC converters'
+LogHPFCop(foutLog, 'State24')
 
 #%% Set up and solve the UPFC-compensated system to match the operating point from State24 (optimized HPFC)
 print('Solving State32')
@@ -764,6 +837,7 @@ nu32.pf()
 StoreSolutions(nu32, 'State32')
 CalculateUPFCop('State32')
 dfS.at['State32', 'Note'] = 'Solved circuit compensated by a UPFC to match the operating point of an optimized HPFC'
+LogUPFCop(foutLog, 'State32')
 
 #%% Set up and solve the UPFC-compensated system to match the operating point from State24 (optimized HPFC)
 print('Solving State25')
@@ -776,6 +850,7 @@ StoreSolutions(ns25, 'State25')
 dfU.at['State25', 'U1'] = dfU.U2.State25 # The circuit for SVC compensation does not include bus U1 (because U1=U2), define it to enable solving HPFC operating point
 CalculateHPFCop('State25')
 dfS.at['State25', 'Note'] = 'Solved circuit compensated by an SVC to approximate the operating point of an optimized HPFC'
+LogHPFCop(foutLog, 'State25')
 
 #%% Sensitivity case
 if False:
@@ -791,13 +866,16 @@ if False:
     StoreSolutions(nh6, 'State06a', snapshot='a')
     dfU.at['State06a', 'U1'] = dfU.U2.State06a # The circuit for SVC compensation does not include bus U1 (because U1=U2), define it to enable solving HPFC operating point
     CalculateHPFCop('State06a')
+    LogHPFCop(foutLog, 'State06a')
     dfS.at['State06a', 'Note'] = 'Solved circuit compensated by SVC using PV commands, P=0 V2pu+0.1% of uncompensated system'
+    LogHPFCop(foutLog, 'State06a')
     nh6.pf('b')
     StoreSolutions(nh6, 'State06b', snapshot='b')
     dfU.at['State06b', 'U1'] = dfU.U2.State06b # The circuit for SVC compensation does not include bus U1 (because U1=U2), define it to enable solving HPFC operating point
     CalculateHPFCop('State06b')
     dfS.at['State06b', 'Note'] = 'Solved circuit compensated by SVC using PV commands, P=0 V2pu+0.2% of uncompensated system'
-
+    LogHPFCop(foutLog, 'State06b')
+    
 #%% Sensitivity case
 if False:
     print('Solving State07')
@@ -814,6 +892,7 @@ if False:
     StoreSolutions(nh7, 'State07')
     CalculateHPFCop('State07')
     dfS.at['State07', 'Note'] = 'Solved circuit compensated by HPFC with adjusted Q1cmd, Q2cmd to balance HPFC converters'
+    LogHPFCop(foutLog, 'State07')
 
 #%% Save results to Excel
 print('Saving to Excel')
@@ -826,11 +905,14 @@ SaveToExcel(caselist, dirout='Results/', SortCases=True)
 
 if OutputPlots:
     # Opening plot files
-    foutLog.write('Starting to plot at: %s\n' %(str(datetime.now())))
+    foutLog.write('\nStarting to plot at: %s\n' %(str(datetime.now())))
     print('Opening plot files')     
     pltPdf1 = dpdf.PdfPages(os.path.join(dirout,fnamePlt))
 
-    for case in ['State01a', 'State02', 'State03', 'State04', 'State11', 'State23', 'State24', 'State25', 'State32']:
+    for case in ['State01a', 'State02', 'State03', 'State04', 
+                 'State11', 
+                 'State23', 'State24', 'State25', 
+                 'State32']:
         OutputVectorsPage(pltPdf1, case, 
                           pageTitle='Calculated by '+codeName+' v'+codeVersion+'\n\n'+r'$\bf{' + case + '}$')
 
@@ -840,7 +922,7 @@ if OutputPlots:
 
 #%% time stamp and close log file
 codeTfinish = datetime.now()
-foutLog.write('\n\nRun finished at: %s\n' %(str(codeTfinish)))
+foutLog.write('\nRun finished at: %s\n' %(str(codeTfinish)))
 codeTdelta = codeTfinish - codeTstart
 foutLog.write('Run Lasted: %.3f seconds\n' %(codeTdelta.total_seconds()))
 foutLog.close()
