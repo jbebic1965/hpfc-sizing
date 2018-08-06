@@ -35,7 +35,7 @@ codeVersion = '1.2'
 codeCopyright = 'GNU General Public License v3.0'
 codeAuthors = 'Jovan Z. Bebic\n'
 codeName = 'SizeFACTS.py'
-dirout = './'
+dirout = 'Results/'
 fnameLog = 'SizeFACTS.log'
 fnamePlt = 'SizeFACTS.pdf'
 OutputPlots = True
@@ -822,7 +822,7 @@ caselist = ['State01a', 'State01s', 'State02', 'State03', 'State04',
             'State11', 'State12', 
             'State23', 'State24', 'State25',
             'State32']
-SaveToExcel(caselist, SortCases=True) 
+SaveToExcel(caselist, dirout='Results/', SortCases=True)
 
 if OutputPlots:
     # Opening plot files
