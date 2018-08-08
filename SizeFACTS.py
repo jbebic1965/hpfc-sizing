@@ -5,8 +5,14 @@ Created on Fri Aug 3 18:53:53 2018
 
 @author: Jovan Z. Bebic
 
+v1.5 JZB 20180807-08
+Added algorithmic adjustment of the HPFC operating point, and algorithmic choice 
+of a system operating point compatible to HPFC. Minor cleanup of other code
+
 v1.4 JZB 20180806
-Turned it into a module and moved input definitions into the imported Config01
+Turned it into a module:
+    - moved input definitions into the imported Config01
+    - moved dataframes into dfResults
 
 v1.31 JZB 20180806
 Added a function to define voltages
@@ -39,7 +45,14 @@ import matplotlib.pyplot as plt
 from datetime import datetime # time stamps
 import os # operating system interface
 
-from Config01 import fs, ws, ZL, Zm, Zs, Zr, Ub, Us, Ur # Circuit parameters and voltages
+# Circuit parameters, specified voltages and apparent powers
+# Apparent powers are given as dictionaries containing specifed values at various locations in the circuit
+from Config01 import fs, ZL, Zm, Zs, Zr, \
+                     Ub, Us, Ur, \
+                     State01s, State02s
+
+# Data structures for storing the results of different scenarios
+from dfResults import dfS, dfU, dfUPFC, dfHPFC
 
 def OutputVectorsPage(pltPdf, caseIx, Iscale=2*1300, pageTitle = ''):
     fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(8,10)) # , sharex=True
@@ -254,7 +267,7 @@ def SaveToExcel(caselist, dirout='./', fnameXlsx='Results.xlsx', SortCases=False
     HPFCcases = list(set(caselist) & set(dfHPFC.index.tolist())) # intersect cases from dfHPFC index with specified cases
     dfHPFCf = dfHPFC.loc[dfHPFC.index.intersection(HPFCcases)]
     if SortCases: dfHPFCf.sort_index(inplace=True)
-    df0 = dfHPFCf.loc[:, 'QM'].round(1)
+    df0 = dfHPFCf.loc[:, ['QM']].applymap(lambda x: x).round(1)
     df1 = dfHPFCf.loc[:, ['SX', 'SY']]
     df1re = df1.applymap(lambda x: np.real(x)).round(2)
     df1im = df1.applymap(lambda x: np.imag(x)).round(1)
@@ -329,7 +342,8 @@ def SolveSr(Urpu, S4, UbLL=220.):
     return np.complex(-nw.lines_t.p1.Zr['now'], -nw.lines_t.q1.Zr['now'])
 
 #%% Solve baseline
-def SolveBaselineFlows(Us, Ur, UbLL=220.):
+def SolveBaselineFlows(UbLL=220.):
+    # all the parameters are defined via Config01 module
     Z12 = 1./(1./Zm + 1./ZL + 1./ZL)
     Is = (Us-Ur)/(Zs + Z12 + Zr)
     Ir = Is
@@ -355,8 +369,99 @@ def SolveBaselineFlows(Us, Ur, UbLL=220.):
     return [pd.Series({'Us':Us/Ub, 'U1':U1/Ub, 'U2':U2/Ub, 'U3':U3/Ub, 'Ur':Ur/Ub}),
             pd.Series({'Ss':Ss, 'S0':S0, 'S1':S1, 'Sm':Sm, "Sm'":Smm, 'S2':S2, 'S3':S3, 'S4':S4, 'Sr':Sr})]
     
+#%% Set system dispatch compatible to HPFC compensation
+def SetSystemDispatch4HPFC(Us, Ur, Ss, Sr, alpha=1.0):
+    # Us, Ur: Voltage vectors at the sending and receiving end [pu]
+    # Ss, Sr: Apparent powers sending and receiving ends of the system [MVA]
+    # alpha: Multiplier for QM; when left at 1, QM is equal to the Imag(S2+S1)
+    Is = np.conj(Ss/(3.*Us*Ub))*1000.
+    U1 = Us - Zs*Is/(Ub*1000.)
+    Ir = np.conj(Sr/(3.*Ur*Ub))*1000.
+    U3 = Ur + Zr*Ir/(Ub*1000.)
+    Im = Ub*(U1 - U3)/Zm*1000.
+    I1 = Is - Im
+    I2 = Ir - Im
+    U2 = U3 + (ZL/2.*I2)/(Ub*1000.)
+    S1 = 3.*Ub*U1*np.conj(-I1)/1000.
+    S2 = 3.*Ub*U2*np.conj(I2)/1000.
+
+    # Adjusting terminal voltages currents of the compensator
+    U12avg = (U1 + U2)/2.
+    I12avg = (I1 + I2)/2.
+    IM = I1 - I2 # shunt current at the compensator 
+    IMr = np.abs(IM)*np.exp(1.j*(np.pi/2+np.angle(U12avg))) # rotated shunt current
+
+    aI2 = I12avg - alpha*IMr/2.
+    aI1 = I12avg + alpha*IMr/2.
+    aU1 = S1/(3.*Ub*np.conj(-aI1)/1000.)
+    aU2 = S2/(3.*Ub*np.conj(aI2)/1000.)
+
+    # Recalculating adjusted voltages and currents in the system
+    aU3 = aU2 - (ZL/2.*aI2)/(Ub*1000.)
+    aIm = Ub*(aU1 - aU3)/Zm*1000.
+    aIs = aI1 + aIm
+    aI3 = aI2
+    aIr = aI3 + aIm
+    aUr = aU3 - Zr*aIr/(Ub*1000.)
+    aUs = aU1 + Zs*aIs/(Ub*1000.)
+
+    # Recalculating adjusted apparent powers
+    aSs = 3.*Ub*aUs*np.conj(aIs)/1000.
+    aS1 = 3.*Ub*aU1*np.conj(-aI1)/1000.
+    aS2 = 3.*Ub*aU2*np.conj(aI2)/1000.
+    aS3 = 3.*Ub*aU3*np.conj(aI2)/1000.
+    aSm = 3.*Ub*aU1*np.conj(aIm)/1000.
+    aSmm = 3.*Ub*aU3*np.conj(aIm)/1000.
+    aS0 = 3.*Ub*aU1*np.conj(-aIs)/1000.
+    aS4 = 3.*Ub*aU3*np.conj(aIr)/1000.
+    aSr = 3.*Ub*aUr*np.conj(aIr)/1000.
+    return [pd.Series({'Us':aUs, 'U1':aU1, 'U2':aU2, 'U3':aU3, 'Ur':aUr}),
+            pd.Series({'Ss':aSs, 'S0':aS0, 'S1':aS1, 'Sm':aSm, "Sm'":aSmm, 'S2':aS2, 'S3':aS3, 'S4':aS4, 'Sr':aSr})]
+    
+#%% Adjust compensator operating points to make it compatible with HPFC technology
+def AdjustCompensation4HPFC(U1, U2, S1, S2, alpha=1.0):
+    # U1, U2: Voltage vectors at compensator terminals [pu]
+    # S1, S2: Apparent powers at compensator terminals [MVA]
+    # alpha: Multiplier for QM; when left at 1, QM is equal to the Imag(S2+S1)
+    I1 = np.conj(-S1/(3.*U1*Ub))*1000. # Currents are in Amperes
+    I2 = np.conj(S2/(3.*U2*Ub))*1000.
+
+    # Adjusting terminal voltages currents of the compensator
+    U12avg = (U1 + U2)/2.
+    I12avg = (I1 + I2)/2.
+    IM = I1 - I2 # shunt current at the compensator 
+    IMr = np.abs(IM)*np.exp(1.j*(np.pi/2+np.angle(U12avg))) # rotated shunt current
+
+    # Adjusting terminal variables
+    aI2 = I12avg - alpha*IMr/2.
+    aI1 = I12avg + alpha*IMr/2.
+    aU1 = S1/(3.*Ub*np.conj(-aI1)/1000.)
+    aU2 = S2/(3.*Ub*np.conj(aI2)/1000.)
+
+    # Recalculating adjusted voltages and currents in the system
+    aU3 = aU2 - (ZL/2.*aI2)/(Ub*1000.)
+    aIm = Ub*(aU1 - aU3)/Zm*1000.
+    aIs = aI1 + aIm
+    aI3 = aI2
+    aIr = aI3 + aIm
+    aUr = aU3 - Zr*aIr/(Ub*1000.)
+    aUs = aU1 + Zs*aIs/(Ub*1000.)
+
+    # Recalculating adjusted apparent powers
+    aSs = 3.*Ub*aUs*np.conj(aIs)/1000.
+    aS1 = 3.*Ub*aU1*np.conj(-aI1)/1000.
+    aS2 = 3.*Ub*aU2*np.conj(aI2)/1000.
+    aS3 = 3.*Ub*aU3*np.conj(aI2)/1000.
+    aSm = 3.*Ub*aU1*np.conj(aIm)/1000.
+    aSmm = 3.*Ub*aU3*np.conj(aIm)/1000.
+    aS0 = 3.*Ub*aU1*np.conj(-aIs)/1000.
+    aS4 = 3.*Ub*aU3*np.conj(aIr)/1000.
+    aSr = 3.*Ub*aUr*np.conj(aIr)/1000.
+    return [pd.Series({'Us':aUs, 'U1':aU1, 'U2':aU2, 'U3':aU3, 'Ur':aUr}),
+            pd.Series({'Ss':aSs, 'S0':aS0, 'S1':aS1, 'Sm':aSm, "Sm'":aSmm, 'S2':aS2, 'S3':aS3, 'S4':aS4, 'Sr':aSr})]
+    
 #%% Create a baseline network: Bus1 is the same as Bus2
-def CreateNetwork(Uspu, Urpu, snapshots=['now'], UbLL=220.):
+def CreateBaselineNetwork(Uspu, Urpu, snapshots=['now'], UbLL=220.):
 
     # create network object
     nw = pypsa.Network() # holds network data
@@ -538,12 +643,12 @@ def CalculateUPFCop(caseIx):
     U1 = dfU.U1[caseIx]*Ub
     S2 = dfS.S2[caseIx]
     U2 = dfU.U2[caseIx]*Ub
-    I1 = np.conj(-S1/(3.*U1))
-    I2 = np.conj(S2/(3.*U2))
+    I1 = np.conj(-S1/(3.*U1))*1000. # currents in amperes
+    I2 = np.conj(S2/(3.*U2))*1000.
 
     Ish = I1 - I2
-    dfUPFC.at[caseIx, 'Ssh'] = 3.*U1*np.conj(-Ish)
-    dfUPFC.at[caseIx, 'Sser'] = 3.*(U2-U1)*np.conj(I2)
+    dfUPFC.at[caseIx, 'Ssh'] = 3.*U1*np.conj(-Ish)/1000.
+    dfUPFC.at[caseIx, 'Sser'] = 3.*(U2-U1)*np.conj(I2)/1000.
     dfUPFC.at[caseIx, 'User'] = (U2-U1)/Ub
     dfUPFC.at[caseIx, 'Ush'] = U1/Ub
 
@@ -555,7 +660,7 @@ def CalculateHPFCop(caseIx):
     S2 = dfS.S2[caseIx]
     U1 = dfU.U1[caseIx]*Ub # voltages in kV
     U2 = dfU.U2[caseIx]*Ub
-    I1 = np.conj(-S1/(3.*U1))*1000. # current in amperes
+    I1 = np.conj(-S1/(3.*U1))*1000. # currents in amperes
     I2 = np.conj(S2/(3.*U2))*1000. 
     IM = I1-I2
     BM = np.abs(IM)/((np.abs(U1)+np.abs(U2))/2.) # Selecting sufficient BM to hit (|U1|+|U2|)/2 with available IM_hpfc
@@ -574,6 +679,7 @@ def CalculateHPFCop(caseIx):
 
     return
 
+#%% Log HPFC operating point (save all relevant info to the log file as formatted text)
 def LogHPFCop(foutLog, caseIx):
     foutLog.write('\n%s: %s\n' %(caseIx, dfS.Note[caseIx]))
     QM = dfHPFC.QM[caseIx]
@@ -614,19 +720,20 @@ def LogHPFCop(foutLog, caseIx):
 
     return
 
+#%% Log UPFC operating point (save all relevant info to the log file as formatted text)
 def LogUPFCop(foutLog, caseIx):
     foutLog.write('\n%s: %s\n' %(caseIx, dfS.Note[caseIx]))
     S1 = dfS.S1[caseIx] # apparent powers in MW
     S2 = dfS.S2[caseIx]
-    Ush = dfUPFC.Ush[caseIx]
-    User = dfUPFC.User[caseIx]
+    Ush = dfUPFC.Ush[caseIx]*Ub
+    User = dfUPFC.User[caseIx]*Ub
 
     I1 = np.conj(-S1/(3.*Ush)) # current in kA
     I2 = np.conj(S2/(3.*(Ush+User)))
     Ish = I1 - I2
 
     Ssh_upfc = 3.*Ush*np.conj(-Ish)
-    Sser_upfc = 3.*(Ush+User)*np.conj(I2)
+    Sser_upfc = 3.*(User)*np.conj(I2)
     
     # foutLog.write('\nUPFC Ratings\n')
     foutLog.write('  Psh = %.2f\n' %(np.real(Ssh_upfc)))
@@ -642,7 +749,7 @@ def LogUPFCop(foutLog, caseIx):
 #%% Main script begins here
 if __name__ == "__main__":
     #%% Code info and file names
-    codeVersion = '1.4'
+    codeVersion = '1.5'
     codeCopyright = 'GNU General Public License v3.0'
     codeAuthors = 'Jovan Z. Bebic\n'
     codeName = 'SizeFACTS.py'
@@ -661,32 +768,7 @@ if __name__ == "__main__":
     foutLog.write('%s\n' %(codeCopyright))
     foutLog.write('%s\n' %(codeAuthors))
     foutLog.write('Run started on: %s\n' %(str(codeTstart)))
-    
-    #%% Define datastructure to hold the results
-    dfS = pd.DataFrame(columns=['Ss', 'S0', 'S1', 'Sm', "Sm'", 'S2', 'S3', 'S4', 'Sr', 'Note'])
-    dfU = pd.DataFrame(columns=['Us', 'U1', 'U2', 'U3', 'Ur'])
-    
-    dfUPFC = pd.DataFrame(columns=['Ssh', 'Sser', 'Ush', 'User'])
-    dfHPFC = pd.DataFrame(columns=['SM', 'SX', 'SY', 'UM', 'UX', 'UY'])
-    
-    #%% Solve for accurate State01 flows: 'State01a'
-    print('Solving State01a')
-    [dfU.at['State01a'], dfS.at['State01a']] = SolveBaselineFlows(Us, Ur)
-    dfS.at['State01a', 'Note'] = "Solved baseline circuit ('a' = accurate)"
-    
-    #%% Specified apparent powers
-    State01s = {'S0': -733   - 161.3j, 
-               'S1': -701.8 - 154.4j,
-               'S2':  701.8 + 154.4j,
-               'S3':  700.6 + 128.5j,
-               'S4':  731.7 + 134.2j}
-    
-    State02s = {'S0': -881.6 - 111.5j, 
-               'S1': -903.4 - 107.1j,
-               'S2':  900.0 + 200.0j,
-               'S3':  899.8 + 158.4j,
-               'S4':  878.0 + 162.3j}
-    
+
     #%% Store specified values into dataframes
     dfS.at['State01s'] = pd.Series(State01s)
     dfS.at['State01s', 'Note'] = 'Apparent powers before compensation, as specified'
@@ -697,6 +779,11 @@ if __name__ == "__main__":
     dfU.at['State01s'] = pd.Series({'Us': Us/Ub, 'Ur': Ur/Ub})
     dfU.at['State02s'] = pd.Series({'Us': Us/Ub, 'Ur': Ur/Ub})
     dfU.at['State03s'] = pd.Series({'Us': Us/Ub, 'Ur': Ur/Ub})
+    
+    #%% Solve for accurate State01 flows: 'State01a'
+    print('Solving State01a')
+    [dfU.at['State01a'], dfS.at['State01a']] = SolveBaselineFlows()
+    dfS.at['State01a', 'Note'] = "Solved baseline circuit ('a' = accurate)"
     
     #%% Define per unit voltages used to set up load flows
     Uspu = np.abs(dfU.Us.State01s)
@@ -713,7 +800,7 @@ if __name__ == "__main__":
     
     #%% Increase flow by taking 200MW more from Us without any compensation
     print('Solving State11')
-    n11 = CreateNetwork(Uspu, Urpu)
+    n11 = CreateBaselineNetwork(Uspu, Urpu)
     n11 = AddGeneratorsUsUr(n11, np.real(dfS.Ss.State01)+200)
     n11.pf()
     StoreSolutions(n11, 'State11')
@@ -752,7 +839,7 @@ if __name__ == "__main__":
     dfS.at['State03', 'Note'] = 'Solved circuit compensated by an HPFC with Q1cmd and Q2cmd as were used in the UPFC case'
     LogHPFCop(foutLog, 'State03')
     
-    #%% Set up and solve the HPFC-compensated system: State04 adjusts the UPFC operating point to balance the converter ratings
+    #%% Set up and solve the HPFC-compensated system. State04 hand-adjusted operating point to balance HPFC converter ratings
     print('Solving State04')
     dQ = 30
     dfS.at['State04s'] = dfS.loc['State03s']
@@ -765,8 +852,21 @@ if __name__ == "__main__":
     nh4.pf()
     StoreSolutions(nh4, 'State04')
     CalculateHPFCop('State04')
-    dfS.at['State04', 'Note'] = 'Solved circuit compensated by an HPFC with adjusted Q1cmd and Q2cmd to balance the HPFC converters ratings'
+    dfS.at['State04', 'Note'] = 'Solved circuit compensated by an HPFC: Hand-adjusted Q1cmd and Q2cmd to balance HPFC converters ratings'
     LogHPFCop(foutLog, 'State04')
+
+    #%% Set up and solve the HPFC-compensated system. State05 algorithmically adjusted system dispatch that balances HPFC converter ratings
+    print('Solving State05')
+    [dfU.at['State05s'], dfS.at['State05s']] = AdjustCompensation4HPFC(dfU.U1.State02, dfU.U2.State02, dfS.S1.State02, dfS.S2.State02)
+    dfS.at['State05s', 'Note'] = 'Algorithmically adjusted compensator operating point for HPFC technology'
+    nh5 = CreateNetwork4PQQComp(np.abs(dfU.Us.State05s), np.abs(dfU.Ur.State05s))
+    nh5 = AddGeneratorsUsUr(nh5, np.real(dfS.Ss.State05s))
+    nh5 = AddGenerators4PQQComp(nh5, np.real(dfS.S2.State05s), np.imag(dfS.S1.State05s), np.imag(dfS.S2.State05s))
+    nh5.pf()
+    StoreSolutions(nh5, 'State05')
+    CalculateHPFCop('State05')
+    dfS.at['State05', 'Note'] = 'Solved circuit compensated by an HPFC: Algorithmically adjusted Q1cmd and Q2cmd to balance HPFC converters ratings'
+    LogHPFCop(foutLog, 'State05')
     
     #%% Set up and solve the target flows achieving the desired S2 while preserving flows through Sm
     print('Solving State12')
@@ -879,7 +979,7 @@ if __name__ == "__main__":
     #%% Save results to Excel
     print('Saving to Excel')
     # caselist = dfS.index.tolist() 
-    caselist = ['State01a', 'State01s', 'State02', 'State03', 'State04', 
+    caselist = ['State01a', 'State01s', 'State02', 'State03', 'State04', 'State05', 'State05s',
                 'State11', 'State12', 
                 'State23', 'State24', 'State25',
                 'State32']
@@ -891,12 +991,14 @@ if __name__ == "__main__":
         print('Opening plot files')     
         pltPdf1 = dpdf.PdfPages(os.path.join(dirout,fnamePlt))
     
-        for case in ['State01a', 'State02', 'State03', 'State04', 
+        for case in ['State01a', 'State02', 'State03', 'State04', 'State05',
                      'State11', 
                      'State23', 'State24', 'State25', 
                      'State32']:
             OutputVectorsPage(pltPdf1, case, 
-                              pageTitle='Calculated by '+codeName+' v'+codeVersion+'\n\n'+r'$\bf{' + case + '}$')
+                              pageTitle='Created by '+ codeName + ' v' + codeVersion + '\n' + 
+                                          r'$\bf{' + case + '}$\n' +
+                                          dfS.Note[case])
     
         # Closing plot files
         print("Closing plot files")
