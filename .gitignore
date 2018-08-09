@@ -4,9 +4,11 @@ __pycache__/
 *$py.class
 
 # working directories
+Private/**
 Retired Code/**
 Retired Images/**
 Inputs/**
+Results/**
 
 # log files
 *.log
