@@ -807,8 +807,8 @@ def LogSystem(foutLog, caseIx):
     foutLog.write('  |Ir| = %.3f kA, ang(Ir) = %.2f deg\n' %(np.abs(Ir), np.angle(Ir, deg=True)))
     
     foutLog.write('Power flows\n')
-    foutLog.write('  Ps = %.1f, ' %(np.real(Ss))) # Formatted results
-    foutLog.write('  Qs = %.1f\n\n' %(np.imag(Ss)))
+    foutLog.write('  Ps = %.1f MW, ' %(np.real(Ss))) # Formatted results
+    foutLog.write('Qs = %.1f MVAr\n\n' %(np.imag(Ss)))
     
     foutLog.write('  P0 = %.1f MW, ' %(np.real(S0)))
     foutLog.write('Q0 = %.1f MVAr\n' %(np.imag(S0)))
