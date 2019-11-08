@@ -40,7 +40,7 @@ app.layout = html.Div([
                     {'label': 'OLC', 'value': 'OLC'},
                     {'label': 'DynaPeaQ', 'value': 'DynaPeaQ'},
                 ],
-                values=['FSC', 'TCSC', 'SVC', 'STATCOM', 'STATCOM PCS6000'],
+                value=['FSC', 'TCSC', 'SVC', 'STATCOM', 'STATCOM PCS6000'],
                 labelStyle = {'display': 'inline-block'}
             ),
         ]),
@@ -55,7 +55,7 @@ app.layout = html.Div([
                     {'label': 'Rolling Mill', 'value': 'Rolling Mill'},
                     {'label': 'Pilot', 'value': 'Pilot'},
                 ],
-                values=['Utility', 'Renewable'],
+                value=['Utility', 'Renewable'],
                 labelStyle = {'display': 'inline-block'}
             ),
         ]),
@@ -114,8 +114,8 @@ def UpdateMarket(yrange, vrange):
 @app.callback(dash.dependencies.Output('market table', 'children'),
              [dash.dependencies.Input('lim year slider', 'value'),
               dash.dependencies.Input('lim voltage slider', 'value'),
-              dash.dependencies.Input('equipments chklist', 'values'),
-              dash.dependencies.Input('applications chklist', 'values')]
+              dash.dependencies.Input('equipments chklist', 'value'),
+              dash.dependencies.Input('applications chklist', 'value')]
     )
 def TabulateMarket(yrange, vrange, equipments, applications):
     df1 = df[(df['Contract Year'] >= yrange[0]) & (df['Contract Year'] <= yrange[1]) & 
@@ -138,8 +138,8 @@ def TabulateMarket(yrange, vrange, equipments, applications):
 @app.callback(dash.dependencies.Output('ABB FACTS Projects', 'figure'),
              [dash.dependencies.Input('lim year slider', 'value'),
               dash.dependencies.Input('lim voltage slider', 'value'),
-              dash.dependencies.Input('equipments chklist', 'values'),
-              dash.dependencies.Input('applications chklist', 'values')]
+              dash.dependencies.Input('equipments chklist', 'value'),
+              dash.dependencies.Input('applications chklist', 'value')]
     )
 def UpdateFigure(yrange, vrange, equipments, applications):
     df1 = df[(df['Contract Year'] >= yrange[0]) & (df['Contract Year'] <= yrange[1]) & 
@@ -175,4 +175,4 @@ def UpdateFigure(yrange, vrange, equipments, applications):
     }
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug=True)
