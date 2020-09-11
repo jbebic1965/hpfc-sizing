@@ -12,12 +12,18 @@ import dash_html_components as html
 import pandas as pd
 import plotly.graph_objs as go
 
-app = dash.Dash()
+
 
 # Fetch the Boostrap CSS (used in the Plotly Dash Oil and Gas demo)
-app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})
+# app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})
+external_stylesheets = [
+        'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css',
+        ]
 # add padding
-# app.css.append_css('jzb_padding.css')
+# app = dash.Dash()
+app = dash.Dash(__name__,
+                # external_scripts=external_scripts,
+                external_stylesheets=external_stylesheets)
 
 # Reading the data
 df = pd.read_csv('ABB List Clean.csv')
@@ -179,4 +185,4 @@ def UpdateFigure(yrange, vrange, equipments, applications):
     }
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, use_reloader=False)
