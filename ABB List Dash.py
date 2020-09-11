@@ -14,37 +14,40 @@ import plotly.graph_objs as go
 
 app = dash.Dash()
 
+# Fetch the Boostrap CSS (used in the Plotly Dash Oil and Gas demo)
+app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})
+# add padding
+# app.css.append_css('jzb_padding.css')
+
+# Reading the data
 df = pd.read_csv('ABB List Clean.csv')
 df = df[df['Contract Year'] >= 1960]
 
-app.layout = html.Div([    
+app.layout = html.Div([
     # column 1
     html.Div([
-        html.Div([
-            html.H3('ABB FACTS project references'),
-            dcc.Graph(id='ABB FACTS Projects'),
-        ], style={'marginBottom':'2.0em'}),
-    ], style={'width':'90%', 'break-inside':'avoid'}), #'width':800
+        html.H3('ABB FACTS project references'),
+        dcc.Graph(id='ABB FACTS Projects'),
+    ], style={'padding-right': 20, 'padding-left': 20}, className = "six columns"),
 
-    # column 2        
+    # column 2
     html.Div([
-        html.Div([
-            html.H3('Select equipment types to consider'), # 
-            dcc.Checklist(id='equipments chklist',
-                options=[
-                    {'label': 'FSC', 'value': 'FSC'},
-                    {'label': 'TCSC', 'value': 'TCSC'},
-                    {'label': 'SVC', 'value': 'SVC'},
-                    {'label': 'STATCOM', 'value': 'STATCOM'},
-                    {'label': 'PCS6000', 'value': 'STATCOM PCS6000'},
-                    {'label': 'OLC', 'value': 'OLC'},
-                    {'label': 'DynaPeaQ', 'value': 'DynaPeaQ'},
-                ],
-                value=['FSC', 'TCSC', 'SVC', 'STATCOM', 'STATCOM PCS6000'],
-                labelStyle = {'display': 'inline-block'}
-            ),
-        ]),
-    
+        html.H3('Select equipment types to consider'), #
+        dcc.Checklist(id='equipments chklist',
+            options=[
+                {'label': 'FSC', 'value': 'FSC'},
+                {'label': 'TCSC', 'value': 'TCSC'},
+                {'label': 'SVC', 'value': 'SVC'},
+                {'label': 'STATCOM', 'value': 'STATCOM'},
+                {'label': 'PCS6000', 'value': 'STATCOM PCS6000'},
+                {'label': 'OLC', 'value': 'OLC'},
+                {'label': 'DynaPeaQ', 'value': 'DynaPeaQ'},
+            ],
+            value=['FSC', 'TCSC', 'SVC', 'STATCOM', 'STATCOM PCS6000'],
+            labelStyle = {'display': 'inline-block'}
+        ),
+
+   
         html.Div([
             html.H3('Select application types to consider'),
             dcc.Checklist(id='applications chklist',
@@ -70,7 +73,7 @@ app.layout = html.Div([
                 value = [df['Contract Year'].min(), df['Contract Year'].max()],
             ),
         ], style={'break-inside':'avoid'}),
-    
+
         html.Div([
             html.H3('Select limits for voltage level'),
             dcc.RangeSlider(id='lim voltage slider',
@@ -83,22 +86,22 @@ app.layout = html.Div([
                 value = [69, df['Voltage'].max()],
             ),
         ], style={'break-inside':'avoid'}),
-                    
 
-    ], style={'width':'90%', 'break-inside':'avoid'}), # 'width':'300'
+
+    ], style={'padding-right': 20, 'padding-left': 20}, className = "three columns"),
 
     # column 3
     html.Div([
         html.Div([
-            html.H3('Market size', style={'marginTop':'2.0em', 'marginBottom':'0.2em'}),
+            html.H3('Total Available Market'),
             dcc.Markdown(id='market size'),
             html.Table(id='market table')
         ])
 
-    ], style={'width':'90%', 'break-inside':'avoid'}), # 'width':500
-            
-], style={'marginLeft':'2%', 'marginRight':'2%', 'text-align':'left', 'columnCount':3}) # # 'marginLeft':'10%', 'marginRight':'10%', 'display':'inline-block'
-                
+    ], style={'padding-right': 20, 'padding-left': 20}, className = "three columns"),
+
+], className = "row")
+
 
 @app.callback(dash.dependencies.Output('market size', 'children'),
              [dash.dependencies.Input('lim year slider', 'value'),
@@ -118,20 +121,21 @@ def UpdateMarket(yrange, vrange):
               dash.dependencies.Input('applications chklist', 'value')]
     )
 def TabulateMarket(yrange, vrange, equipments, applications):
-    df1 = df[(df['Contract Year'] >= yrange[0]) & (df['Contract Year'] <= yrange[1]) & 
-         (df['Voltage'] >= vrange[0]) & (df['Voltage'] <= vrange[1]) & 
+    df1 = df[(df['Contract Year'] >= yrange[0]) & (df['Contract Year'] <= yrange[1]) &
+         (df['Voltage'] >= vrange[0]) & (df['Voltage'] <= vrange[1]) &
          (df['Type'].isin(equipments)) &
          (df['Application'].isin(applications))]
     colTitles = ['Equipment', 'Total ratings [MVAr]', 'Retrofit [%]', 'Value [$M]']
     tblHead = [html.Tr([html.Th(col) for col in colTitles])]
-    rp = {'FSC':7.0, 'TCSC':3.0, 'SVC':12.0, 'STATCOM':15.0, 'STATCOM PCS6000':10.3, 'OLC':22.1, 'DynaPeaQ':10.1}
+    # rp = {'FSC':7.0, 'TCSC':3.0, 'SVC':12.0, 'STATCOM':15.0, 'STATCOM PCS6000':10.3, 'OLC':22.1, 'DynaPeaQ':10.1}
+    rp = {'FSC':40.0, 'TCSC':40.0, 'SVC':40.0, 'STATCOM':40.0, 'STATCOM PCS6000':0., 'OLC':0., 'DynaPeaQ':0.0}
     tblBody = []
     for equipment in equipments:
         total = df1[df1['Type'] == equipment]['Capacitive Rating'].sum()
         rpval = rp[equipment] if equipment in rp.keys() else 0.0
-        tblVals = [equipment, '{0:,.0f}'.format(total), '%.1f'%(rpval), '{0:,.0f}'.format(total*rpval/100*0.15)]
+        tblVals = [equipment, '{0:,.0f}'.format(total), '%.1f'%(rpval), '{0:,.0f}'.format(total*rpval/100*0.15*2.)]
         tblBody.append(html.Tr([html.Td(col) for col in tblVals]))
-    
+
     return tblHead + tblBody
 
 
@@ -142,18 +146,18 @@ def TabulateMarket(yrange, vrange, equipments, applications):
               dash.dependencies.Input('applications chklist', 'value')]
     )
 def UpdateFigure(yrange, vrange, equipments, applications):
-    df1 = df[(df['Contract Year'] >= yrange[0]) & (df['Contract Year'] <= yrange[1]) & 
-             (df['Voltage'] >= vrange[0]) & (df['Voltage'] <= vrange[1]) & 
+    df1 = df[(df['Contract Year'] >= yrange[0]) & (df['Contract Year'] <= yrange[1]) &
+             (df['Voltage'] >= vrange[0]) & (df['Voltage'] <= vrange[1]) &
              (df['Type'].isin(equipments)) &
              (df['Application'].isin(applications))] # df1 = df[(df['Contract Year'] >= lowYear) & (df['Contract Year'] <= hiYear)]
-    return {            
+    return {
         'data': [
             go.Scatter(
                 x=df1[df1['Type'] == i]['Contract Year'],
                 y=df1[df1['Type'] == i]['Capacitive Rating'],
                 text= df1[df1['Type'] == i]['End Country']+', ' + df1[df1['Type'] == i]['Client']+'<BR>'+
-                      df1[df1['Type'] == i]['Project'], # +'<BR>'+ 
-                      # '('+df[df['Type'] == i]['Capacitive Rating']+')', 
+                      df1[df1['Type'] == i]['Project'], # +'<BR>'+
+                      # '('+df[df['Type'] == i]['Capacitive Rating']+')',
                       # '('+str(-df[df['Type'] == i]['Inductive Rating'])+', '+str(df[df['Type'] == i]['Capacitive Rating'])+')',
                 mode='markers',
                 opacity=0.7,
